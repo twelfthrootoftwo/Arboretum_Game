@@ -154,3 +154,85 @@ If there is still a tie, the tied players should plant a tree and the player who
 ## Encoding Game State
 
 *More details of the `Arboretum` class and the string encoding used for interfacing our tests will be included here in a future version after D2B is complete.*
+
+## Evaluation Criteria
+
+It is essential that you refer to the
+[deliverables page](https://cs.anu.edu.au/courses/comp1110/assessments/deliverables/)
+to check that you understand each of the deadlines and what is
+required.  Your assignment will be marked via tests run through git's
+continuous integration (CI) framework, so all submittable materials
+will need to be in git and in the *correct* locations, as prescribed
+by the
+[deliverables page](https://cs.anu.edu.au/courses/comp1110/assessments/deliverables/).
+
+
+**The mark breakdown is described on the
+[deliverables](https://cs.anu.edu.au/courses/comp1110/assessments/deliverables/)
+page.**
+
+### Part One
+
+In the first part of the assignment you will:
+* Set up your assignment (Task #1).
+* Create a design skeleton (Task #2).
+* Implement parts of the text interface to the game (Tasks #3 and #4).
+* Implement a method to draw an arbitrary card from the deck (Task #5)
+* Implement a simple viewer that allows you to visualize game states (Task #6).
+* Implement a check to determine whether a placement is valid (Task #7).
+* Implement a check to determine whether a game state is valid (Task #8)
+
+An indicative grade level for each task for the [completion of part one](https://cs.anu.edu.au/courses/comp1110/assessments/deliverables/#D2C) is as follows:
+
+**Pass**
+* Tasks #1, #2, #3, #4 and #5
+
+**Credit**
+* Task #6 *(in addition to all tasks required for Pass)*
+
+**Distinction**
+* Task #7 and #8 *(in addition to all tasks required for Credit)*
+
+### Part Two
+
+Create a fully working game, using JavaFX to implement a playable
+graphical version of the game in a 1200x700 window.
+
+Notice that aside from the window size, the details of exactly how the
+game looks etc, are **intentionally** left up to you.  The diagrams
+above are for illustration purposes only, although you are welcome to
+use all of the resources provided in this repo.
+
+The only **firm** requirements are that:
+
+* you use Java 17 and JavaFX 17,
+* the game respects the specification of the game given here,
+* the game be easy to play,
+* it runs in a 1200x700 window, and
+* that it is executable on a standard lab machine from a jar file called `game.jar`,
+
+Your game must successfully run from `game.jar` from within another
+user's (i.e.  your tutor's) account on a standard lab machine (in
+other words, your game must not depend on features not self-contained
+within that jar file and the Java 17 runtime).
+
+An indicative grade level for each task for the [completion of part two](https://cs.anu.edu.au/courses/comp1110/assessments/deliverables/#D2F) is as follows:
+
+**Pass**
+* Correctly implements all of the <b>Part One</b> criteria.
+* Appropriate use of git (as demonstrated by the history of your repo).
+* Completion of Task #9 and #10.
+* Executable on a standard lab computer from a runnable jar file,
+  game.jar, which resides in the root level of your group repo.
+
+**Credit**
+* _All of the Pass-level criteria, plus the following..._
+* Task #11.
+
+**Distinction**
+* _All of the Credit-level criteria, plus the following..._
+* Tasks #12, #13, #14 and #15.
+
+**High Distinction**
+* _All of the Distinction-level criteria, plus the following..._
+* Tasks #16, #17 and #18.
