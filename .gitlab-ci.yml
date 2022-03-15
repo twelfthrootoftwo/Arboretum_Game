@@ -27,7 +27,7 @@ compliance:
     - comp1110
   stage: compliance
   script:
-    - python3 /validate.py --gitlablogin ${GITLAB_USER_LOGIN} --gitlabuser "${GITLAB_USER_NAME}" --gitlabprojectname "${CI_PROJECT_NAME}" --assignment /compliance-ass2.yml
+    - python3 /validate.py --gitlablogin ${GITLAB_USER_LOGIN} --gitlabuser "${GITLAB_USER_NAME}" --gitlabprojectname "${CI_PROJECT_NAME}" --assignment /ass2/compliance-ass2.yml
   except:
     variables:
       - $CI_PROJECT_NAME =~ /.*-dev$/
