@@ -23,32 +23,35 @@ src
                     getSpecies()
                     getNumber()
 
-            (C) CardStack
+            (I) Interface CardStack
                 //Deck and discard can be treated the same
                 Class: CardStack(list<card>,boolean showTopCard)
 
-                Constructor deck: {
-                    for species:speciesNums
-                        for int 1..8
-                            list.add(New card(name, species, num))
-                    randomise
-                    showTopCard=false
-                    }
-
-                Constructor discard: {
-                        New list<card> //empty list
-                        showTopCard=true
-                    }
-
                 Methods:
-                randomise()
-                drawTopCard()
-                    card=this.list[last]
-                    this.list[last]=null
-                    return card
-                addTopCard(Card card)
-                    this.list[first empty]=card
-                isEmpty(), return boolean
+                    randomise()
+                    drawTopCard()
+                        card=this.list[last]
+                        this.list[last]=null
+                        return card
+                    addTopCard(Card card)
+                        this.list[first empty]=card
+                    isEmpty(), return boolean
+
+                (C) Class Deck extend CardStack
+                    Constructor deck: {
+                        for species:speciesNums
+                            for int 1..8
+                                list.add(New card(name, species, num))
+                        randomise
+                        showTopCard=false
+                        }
+
+                (C) Class DiscardPile extend CardStack
+                    Constructor discard: {
+                            New list<card> //empty list
+                            showTopCard=true
+                        }
+
 
 
             (C) Position
