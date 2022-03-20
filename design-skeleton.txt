@@ -6,7 +6,7 @@ src
 
         game
             (E) Species
-                A to H
+                A to F
 
             (E) Direction
                 N,S,E,W
@@ -55,7 +55,7 @@ src
 
 
             (C) Position
-                Class: Position(int x, int y, Card card, Direction[] scoringRoutes)
+                Class: Position(int x, int y, Card card, Direction[] scoringRoutes)//positon should only define positon
                 Constructor: {
                     this.x
                     this.y
@@ -95,7 +95,7 @@ src
                 Methods:
                 getName()
                 getArboretum()
-                getDiscardPile() return cardStack discard
+                getDiscardPile() return DiscardPile
                 getHandCards(), return list<card> hand
                 discard(Card)
                 draw(CardStack location)
@@ -103,7 +103,7 @@ src
                     add card to hand
                 play(card,position);
                     position.setCard(card)
-                    position.findScoringRoutes(arboretum)
+                    position.findScoringRoutes(arboretum)// cant directly add to position, position is just a combination part of arboretum.
                     remove card from hand
 
         Event
