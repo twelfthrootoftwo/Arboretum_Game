@@ -1,0 +1,119 @@
+src
+    comp1110.ass2
+        gui
+            (C) Game
+            (C) View
+
+        game
+            (E) Species
+                //A to H
+
+            (C) Card
+                Class: card (String name, String species, int number)
+                Constructor: {
+                    this.name
+                    this.species
+                    this.number
+                    }
+                Methods:
+                    getName()
+                    getSpecies()
+                    getNumber()
+
+            (C) Deck
+                Class: deck (int speciesNum)
+                Constructor: {
+                    for species:speciesNums
+                        for int 1..8
+                            this.deck.add(New card(name, species, num)
+                    }
+                Methods:
+                getCard {
+                    random int from deck.length()
+                    return card from deck.pop(int)
+                    }
+                isEmpty()
+
+            (C) DiscardPile
+                Class: discardPile()
+                Constructor: new List(card)
+                Method: getCards()
+
+            (C) Position
+                Class: Position(int x, int y)
+                Constructor: {
+                    this.x
+                    this.y
+                    }
+                Methods:
+                getX()
+                getY()
+
+            (C) Arboretum
+                Class: Arboretum(int size)
+                Constructor: {
+                    for int i:size, int j: size
+                        this.HashMap.put(Position position(i,j), Card null);
+                    }
+                Methods:
+                addCard(Card card, position)
+                ifPosCanPlace(Position), return boolean
+                showCurrentCards(), return (Position[],Card[])
+                showAvailablePlace(), return Position[]
+                calculateScore(species), return int
+                resetMap()
+
+            (C) Player
+                Constructor: {
+                    this.name
+                    this.arboretum=new Arboretum
+                    this.disardPile=new DiscardPile
+                    this.handCards=list<card>=null
+                    }
+                Methods:
+                getName()
+                getArboretum()
+                getDiscardPile()
+                getHandCards();
+                discard(Card)
+                draw(location);
+                play(card,position);
+
+        Event
+
+            (C) Turn
+                Class: Turn(player, deck)
+                player.draw();
+                player.draw();
+                player.play();
+                player.discard();
+
+            (C) RightToScore(list<Player> players)
+                for player:players
+                    determine which is higher
+                return player A: [scoring species], player B: [scoring species]...
+
+
+            (C) getScore(player, list<species>)
+                score=0
+                    for species:speciesNum
+                        score+=player.getArboretum.calculateScore(species)
+                return score
+
+        (C) Gameplay
+            new Deck(6)
+            new Player(A)
+            newPlayer(B)
+
+            while(!deck.isEmpty) {
+                new Turn(playerA,deck)
+                new Turn(playerB.deck)
+            }
+
+            if Deck.isEmpty()
+                map=RightToScore(List<players>)
+
+            for i:map
+                getScore(i[0],i[1])
+
+            Compare and find winner
