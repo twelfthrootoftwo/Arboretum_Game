@@ -6,10 +6,13 @@ src
 
         game
             (E) Species
-                //A to H
+                A to H
+
+            (E) Direction
+                N,S,E,W
 
             (C) Card
-                Class: card (String name, String species, int number)
+                Class: card (String name, Species species, int number)
                 Constructor: {
                     this.name
                     this.species
@@ -20,27 +23,36 @@ src
                     getSpecies()
                     getNumber()
 
-            (C) Deck
-                Class: deck (int speciesNum)
-                Constructor: {
+            (C) CardStack
+                //Deck and discard can be treated the same
+                Class: CardStack(list<card>,boolean showTopCard)
+
+                Constructor deck: {
                     for species:speciesNums
                         for int 1..8
-                            this.deck.add(New card(name, species, num)
+                            list.add(New card(name, species, num))
+                    randomise
+                    showTopCard=false
                     }
-                Methods:
-                getCard {
-                    random int from deck.length()
-                    return card from deck.pop(int)
-                    }
-                isEmpty()
 
-            (C) DiscardPile
-                Class: discardPile()
-                Constructor: new List(card)
-                Method: getCards()
+                Constructor discard: {
+                        New list<card> //empty list
+                        showTopCard=true
+                    }
+
+                Methods:
+                randomise()
+                drawTopCard()
+                    card=this.list[last]
+                    this.list[last]=null
+                    return card
+                addTopCard(Card card)
+                    this.list[first empty]=card
+                isEmpty(), return boolean
+
 
             (C) Position
-                Class: Position(int x, int y)
+                Class: Position(int x, int y, Card card, Direction[] scoringRoutes)
                 Constructor: {
                     this.x
                     this.y
@@ -48,6 +60,11 @@ src
                 Methods:
                 getX()
                 getY()
+                setCard(Card card)
+                getCard()
+                findScoringRoutes(Arboretum)  //Call this when a card is played here to figure out which adjacent positions are scorable
+                getScoringRoutes()
+                getAdjacentCards(Arboretum), return Position[] //adjacent positions which contain cards
 
             (C) Arboretum
                 Class: Arboretum(int size)
@@ -58,26 +75,33 @@ src
                 Methods:
                 addCard(Card card, position)
                 ifPosCanPlace(Position), return boolean
-                showCurrentCards(), return (Position[],Card[])
+                showCurrentCards(), return Position[]
                 showAvailablePlace(), return Position[]
+                mapScoreRoutes(), return Position[][] //arrays of Positions that form lowest->highest routes
+                    (probably some sort of search algorithm involved here)
                 calculateScore(species), return int
                 resetMap()
 
-            (C) Player
+            (C) Player (String name, Arboretum arboretum, CardStack discard, list<card> hand)
                 Constructor: {
                     this.name
                     this.arboretum=new Arboretum
-                    this.disardPile=new DiscardPile
+                    this.disardPile=new CardStack discard
                     this.handCards=list<card>=null
                     }
                 Methods:
                 getName()
                 getArboretum()
-                getDiscardPile()
-                getHandCards();
+                getDiscardPile() return cardStack discard
+                getHandCards(), return list<card> hand
                 discard(Card)
-                draw(location);
+                draw(CardStack location)
+                    card=location.getTopCard()
+                    add card to hand
                 play(card,position);
+                    position.setCard(card)
+                    position.findScoringRoutes(arboretum)
+                    remove card from hand
 
         Event
 
@@ -89,8 +113,12 @@ src
                 player.discard();
 
             (C) RightToScore(list<Player> players)
-                for player:players
-                    determine which is higher
+                for species:speciesNum
+                    for player:players
+                        get hand score
+                        get contains 1, contains 8
+                    update hand score for player with 8
+                determine which is higher
                 return player A: [scoring species], player B: [scoring species]...
 
 
@@ -107,7 +135,8 @@ src
 
             while(!deck.isEmpty) {
                 new Turn(playerA,deck)
-                new Turn(playerB.deck)
+                if !deck.isEmpty()
+                    new Turn(playerB.deck)
             }
 
             if Deck.isEmpty()
