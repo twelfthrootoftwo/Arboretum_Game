@@ -55,7 +55,7 @@ src
 
 
             (C) Position
-                Class: Position(int x, int y, Card card, Direction[] scoringRoutes)//positon should only define positon
+                Class: Position(int x, int y)
                 Constructor: {
                     this.x
                     this.y
@@ -63,10 +63,6 @@ src
                 Methods:
                 getX()
                 getY()
-                setCard(Card card)
-                getCard()
-                findScoringRoutes(Arboretum)  //Call this when a card is played here to figure out which adjacent positions are scorable
-                getScoringRoutes()
                 getAdjacentCards(Arboretum), return Position[] //adjacent positions which contain cards
 
             (C) Arboretum
@@ -79,6 +75,7 @@ src
                 addCard(Card card, position)
                 ifPosCanPlace(Position), return boolean
                 showCurrentCards(), return Position[]
+                getCard(Position), return Card
                 showAvailablePlace(), return Position[]
                 mapScoreRoutes(), return Position[][] //arrays of Positions that form lowest->highest routes
                     (probably some sort of search algorithm involved here)
