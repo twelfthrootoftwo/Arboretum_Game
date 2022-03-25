@@ -1,7 +1,5 @@
 package comp1110.ass2.game;
 
-import comp1110.ass2.gittest.C;
-
 public class Card {
     String name;//should a card have name??
     Species species;

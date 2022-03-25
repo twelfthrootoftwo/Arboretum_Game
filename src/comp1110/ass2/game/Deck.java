@@ -1,7 +1,5 @@
 package comp1110.ass2.game;
 
-import comp1110.ass2.gittest.C;
-
 import java.util.ArrayList;
 import java.util.List;
 
