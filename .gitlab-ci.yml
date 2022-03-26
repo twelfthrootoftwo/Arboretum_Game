@@ -44,93 +44,93 @@ build:
       - src/comp1110/ass2/*.class
       - src/comp1110/ass2/*/*.class
 
-#task3:
-#  tags:
-#    - comp1110
-#  stage: test
-#  script:
-#    - $JUNIT -c=comp1110.ass2.IsHiddenStateWellFormedTest
-#  allow_failure: true
-#
-#task4:
-#  tags:
-#    - comp1110
-#  stage: test
-#  script:
-#    - $JUNIT -c=comp1110.ass2.IsSharedStateWellFormedTest
-#  allow_failure: true
-#
-#task5:
-#  tags:
-#    - comp1110
-#  stage: test
-#  script:
-#    - $JUNIT -c=comp1110.ass2.DrawFromDeckTest
-#  allow_failure: true
-#
-#task7:
-#  tags:
-#    - comp1110
-#  stage: test
-#  script:
-#    - $JUNIT -c=comp1110.ass2.IsPlacementValidTest
-#  allow_failure: true
-#
-#task8:
-#  tags:
-#    - comp1110
-#  stage: test
-#  script:
-#    - $JUNIT -c=comp1110.ass2.IsStateValidTest
-#  allow_failure: true
-#
-#task9:
-#  tags:
-#    - comp1110
-#  stage: test
-#  script:
-#    - $JUNIT -c=comp1110.ass2.CanScoreTest
-#  allow_failure: true
-#
-#task10:
-#  tags:
-#    - comp1110
-#  stage: test
-#  script:
-#    - $JUNIT -c=comp1110.ass2.GetAllValidPlacementsTest
-#  allow_failure: true
-#
-#task12:
-#  tags:
-#    - comp1110
-#  stage: test
-#  script:
-#    - $JUNIT -c=comp1110.ass2.GetAllViablePathsTest
-#  allow_failure: true
-#
-#task13:
-#  tags:
-#    - comp1110
-#  stage: test
-#  script:
-#    - $JUNIT -c=comp1110.ass2.GetHighestViablePathTest
-#  allow_failure: true
-#
-#task14:
-#  tags:
-#    - comp1110
-#  stage: test
-#  script:
-#    - $JUNIT -c=comp1110.ass2.ChooseDrawLocationTest
-#  allow_failure: true
-#
-#task15:
-#  tags:
-#    - comp1110
-#  stage: test
-#  script:
-#    - $JUNIT -c=comp1110.ass2.GenerateMoveTest
-#  allow_failure: true
+task3:
+  tags:
+    - comp1110
+  stage: test
+  script:
+    - $JUNIT -c=comp1110.ass2.IsHiddenStateWellFormedTest
+  allow_failure: true
+
+task4:
+  tags:
+    - comp1110
+  stage: test
+  script:
+    - $JUNIT -c=comp1110.ass2.IsSharedStateWellFormedTest
+  allow_failure: true
+
+task5:
+  tags:
+    - comp1110
+  stage: test
+  script:
+    - $JUNIT -c=comp1110.ass2.DrawFromDeckTest
+  allow_failure: true
+
+task7:
+  tags:
+    - comp1110
+  stage: test
+  script:
+    - $JUNIT -c=comp1110.ass2.IsPlacementValidTest
+  allow_failure: true
+
+task8:
+  tags:
+    - comp1110
+  stage: test
+  script:
+    - $JUNIT -c=comp1110.ass2.IsStateValidTest
+  allow_failure: true
+
+task9:
+  tags:
+    - comp1110
+  stage: test
+  script:
+    - $JUNIT -c=comp1110.ass2.CanScoreTest
+  allow_failure: true
+
+task10:
+  tags:
+    - comp1110
+  stage: test
+  script:
+    - $JUNIT -c=comp1110.ass2.GetAllValidPlacementsTest
+  allow_failure: true
+
+task12:
+  tags:
+    - comp1110
+  stage: test
+  script:
+    - $JUNIT -c=comp1110.ass2.GetAllViablePathsTest
+  allow_failure: true
+
+task13:
+  tags:
+    - comp1110
+  stage: test
+  script:
+    - $JUNIT -c=comp1110.ass2.GetHighestViablePathTest
+  allow_failure: true
+
+task14:
+  tags:
+    - comp1110
+  stage: test
+  script:
+    - $JUNIT -c=comp1110.ass2.ChooseDrawLocationTest
+  allow_failure: true
+
+task15:
+  tags:
+    - comp1110
+  stage: test
+  script:
+    - $JUNIT -c=comp1110.ass2.GenerateMoveTest
+  allow_failure: true
 
 ## Local Variables:
 ## mode: yaml
