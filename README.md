@@ -153,7 +153,102 @@ If there is still a tie, the tied players should plant a tree and the player who
 
 ## Encoding Game State
 
-*More details of the `Arboretum` class and the string encoding used for interfacing our tests will be included here in a future version after D2B is complete.*
+The following encoding is used as part of the `Arboretum` class as a way of interfacing with the tests for the various tasks.
+You are strongly encouraged to use your own internal representation of the game, and convert to and from the encoding presented here
+as required to fulfill the tests / tasks. Note, the string representation is *neither robust nor convenient* to work with, hence why
+you should use your own approach.
+
+We encourage you to create your own tests. These tests can interface more directly with your code. Do no edit the supplied tests, instead add new files.
+
+At any time in the game, the current game `state` is encoded in two String arrays.
+`sharedState` is a string array representing the shared knowledge in the game.
+`hiddenState` is a string array representing the hidden knowledge in the game.
+
+### Card
+Each card is represented by a two-character string that specifies the tree species on the card and the value of the card.
+The first character corresponds to the species as follows:
+- Cassia : `'a'`
+- Blue Spruce : `'b'`
+- Cherry Blossom : `'c'`
+- Dogwood : `'d'`
+- Jacaranda : `'j'`
+- Maple : `'m'`
+
+The second character is a digit from `1` to `8` inclusive that represents the value of the card.
+
+For example, a Dogwood card of value 7 would be represented by the string `"d7"`
+
+There are four additional tree species. If you are playing with three players, add `Oak` and `Royal Poinciana` species to the deck. If you are playing with four players, add `Tulip Poplar` and `Willow` in addition to the species added for three players.
+
+### Shared State Array `sharedState`
+`sharedState` is a string array representing whose turn it is and each player's Shared information.
+
+`sharedState[0]` is a single-character *Turn* string.
+`sharedState[1]` is player A's *PlayerID* followed by their *Arboretum* string.
+`sharedState[2]` is player A's *PlayerID* followed by their *Discard* string.
+`sharedState[3]` is player B's *PlayerID* followed by their *Arboretum* string.
+`sharedState[4]` is player B's *PlayerID* followed by their *Discard* string.
+
+For example, a sharedState string array might look like:
+`{"B", "Am1C00C00a4S01C00",
+"Ac5a7", "Bj5C00C00j6C00E01", "Bd2"}`
+
+An image displaying this sharedState string can be seen below: 
+
+![Arboretum Shared State](../assets/shared_state_example.svg)
+
+Credit to [Josh (Zhashiya)](https://boardgamegeek.com/user/zhashiya) on board game geek who posted these [fan-made cards](https://boardgamegeek.com/filepage/146943/arboretum-fan-made-cards) they made. Note: Some of the species names differ to our version.
+
+#### Turn and PlayerID string
+The Turn/PlayerID string is one character `"A"`or`"B"` representing a player. In the case of the Turn string, this indicates that it is this player's turn.
+
+#### Arboretum
+A player's arboretum string starts with their *Player ID* and then is followed by a string of placements in the order in which they've been played. The location of each card is respective to the very first card a player has placed in their arboretum this game.
+
+A single placement is represented as an eight-character string as follows:
+
+**{Card}{Direction North/South/Centre}{Distance}{Direction East/West/Centre}{Distance}**
+
+- **{Card}** The first two characters represent the *Card* as described above.
+- **{Direction North/South/Centre}** The third character represents whether this card is North `'N'`, South `'S'` or  Centre `'C'` (ie: no movement) of the first card.
+- **{Distance}** The fourth and fifth characters represent a two-digit number that denotes how far North/South this card is from the first card. For example `"05"` would mean this card is 5 spaces away from the first card in the direction specified by the third character.
+- **{Direction East/West/Centre}** The sixth character represents whether this card is East `'E'`, West `'W'` or  Centre `'C'` (ie: no movement) of the first card.
+- **{Distance}** The seventh and eighth characters represent a two-digit number that denotes how far East/West this card is from the first card. For example `"05"` would mean this card is 5 spaces away from the first card in the direction specified by the sixth character.
+
+If a card is the first card to be played, or it is neither North or South (or alternatively East or West) of the first card played then the corresponding **{Direction}** character should be `'C'` and the **{Distance}** digits should be `"00"`.
+
+In the example above, if my first card played is `"a4"` then my placement string would be `"a4C00C00"`
+If I then played `"m1"` 1 square South of this card, my full placement string would be `"a4C00C00m1S01C00"`
+`"m1"` describes the card played. `"N01"` says it has been played 1 square South of the first card played. `"C00"` says it was placed neither East nor West of the first card.
+
+
+#### Discard
+Each player's discard pile starts with their *Player ID* and is then followed by a number of *Card* strings in the order in which they were added to the discard pile. The final *Card* in this string should be the card that is on top of the player's discard pile.
+
+For example:
+`"Ba2m4a1c7"` tells us that player B first discarded `"a2"`, followed by `"m4"`, then `"a1"` and finally `"c7"`.
+
+### Hidden State Array `hiddenState`
+`hiddenState` is a string array representing each player's hidden information.
+
+`hiddenState[0]` is the *Deck* string.
+`hiddenState[1]` is player A's *PlayerID* followed by their *Hand* string.
+`hiddenState[2]` is player B's *PlayerID* followed by their *Hand* string.
+
+For example, a hiddenState string array might look like this:
+`{"a3a8b5b6c2c7d1d3d7d8m1", "Ab3b4c1j1m2m5m8", "Ba6b7b8c8d2j2j8"}`
+
+#### Deck
+The Deck is a number of *Card* strings representing the cards that are in the deck. These are sorted alphanumerically. ie: They are first sorted alphabetically, and then in ascending numerical order.
+
+For example: `"a1a5a6b8j1"` tells us that `"a1"`, `"a5"`, `"a6"`, `"b8"` and `"j1"` are in the deck whilst there are no cards of other species in the deck.
+
+#### Hand
+A player's hand starts with their *Player ID* and is then followed by 7 - 9 *Card* strings representing the cards in a player's hand. A player always has 7 cards in hand, but will draw 2 cards to bring their total to 9 on their turn. These are also sorted alphanumerically.
+
+For example:
+`"a3c4j5j6j8m3m7"` tells us that this player has `"a3"`, `"c4"`, `"j5"`, `"j6"`, `"j8"`, `"m3"` and `"m7"` in hand.
+
 
 ## Evaluation Criteria
 
