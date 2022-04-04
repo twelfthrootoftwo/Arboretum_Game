@@ -190,7 +190,7 @@ There are four additional tree species. If you are playing with three players, a
 `sharedState[4]` is player B's *PlayerID* followed by their *Discard* string.
 
 For example, a sharedState string array might look like:
-`{"B", "Am1C00C00a4S01C00",
+`{"B", "Am1C00C00a4N01C00",
 "Ac5a7", "Bj5C00C00j6C00E01", "Bd2"}`
 
 An image displaying this sharedState string can be seen below: 
@@ -219,7 +219,7 @@ If a card is the first card to be played, or it is neither North or South (or al
 
 In the example above, if my first card played is `"a4"` then my placement string would be `"a4C00C00"`
 If I then played `"m1"` 1 square South of this card, my full placement string would be `"a4C00C00m1S01C00"`
-`"m1"` describes the card played. `"N01"` says it has been played 1 square South of the first card played. `"C00"` says it was placed neither East nor West of the first card.
+`"m1"` describes the card played. `"S01"` says it has been played 1 square South of the first card played. `"C00"` says it was placed neither East nor West of the first card.
 
 
 #### Discard
