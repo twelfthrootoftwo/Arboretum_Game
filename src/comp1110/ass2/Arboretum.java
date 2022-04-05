@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+import comp1110.ass2.game.Card;
+import comp1110.ass2.game.Deck;
+
 import java.util.Set;
 
 public class Arboretum {
@@ -115,8 +118,17 @@ public class Arboretum {
      * TASK 5
      */
     public static String drawFromDeck(String deck) {
-                                                 return null; // FIXME TASK 5
-                                                                             }
+        // FIXME TASK 5
+
+        Deck constructedDeck=new Deck(deck);
+
+        if(constructedDeck.isEmpty()) return "";
+
+        Card drawnCard=constructedDeck.drawTopCard();
+
+        String cardCode=drawnCard.toString();
+        return cardCode;
+    }
 
     /**
      * Determine whether this placement is valid for the current player. The "Turn String" determines who is making
@@ -297,5 +309,18 @@ public class Arboretum {
     public static String[] generateMove(String[][] gameState) {
         return null;
         // FIXME TASK 15
+    }
+
+    /**
+     * Main method for testing purposes
+     */
+    public static void main(String[] args) {
+        String deckCode="a1a2a3a4a5a6a7a8b1b2b3b4b5b6b7b8c1c2c3c4c5c6c7c8d1d2d3d4d5d6d7d8j1j2j3j4j5j6j7j8m1m2m3m4m5m6m7m8";
+        Deck deck=new Deck(deckCode);
+
+        for(int i=0;i<3;i++) {
+            Card drawn=deck.drawTopCard();
+            System.out.println("Drew "+drawn);
+        }
     }
 }

@@ -36,4 +36,13 @@ public class Card {
         return name;
     }
 
+    /**
+     * Generates card codes in accordance with assignment specification
+     * @return a string card code in species/value form (eg a1)
+     */
+    @Override
+    public String toString() {
+        String cardCode=this.species.toString()+this.number;
+        return cardCode;
+    }
 }

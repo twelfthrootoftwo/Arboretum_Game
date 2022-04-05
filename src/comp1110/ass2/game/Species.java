@@ -1,11 +1,11 @@
 package comp1110.ass2.game;
 
 public enum Species {
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
+    a, //Cassia
+    b, //Blue Spruce
+    c, //Cherry blossom
+    d, //Dogwood
+    j, //Jacaranda
+    m, //Maple
     Null
 }

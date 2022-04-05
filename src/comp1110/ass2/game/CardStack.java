@@ -33,9 +33,12 @@ public abstract class CardStack {
      * Drawn card is removed from the list
      * In game, this is used when drawing from the deck or from a player's discard
      *
-     * @return the card that was drawn
+     * @return the card that was drawn, or null if there are no cards in the stack
      */
     public Card drawTopCard(){
+        //return null if empty
+        if(this.cards.size()==0) return null;
+
         Card drawnCard=this.cards.get(this.cards.size()-1);
         this.cards.remove(this.cards.size()-1);
         return drawnCard;
@@ -56,5 +59,19 @@ public abstract class CardStack {
     public boolean isEmpty(){
         if(this.cards.size()==0) return true;
         else return false;
+    }
+
+    /**
+     * toString method, returning a string in an unsorted version of the assignment specification format
+     * Decks need to produce sorted string codes, so they have a different version of this function
+     * @return a deck code, in string form (eg m1a2c3j4d5)
+     */
+    @Override
+    public String toString() {
+        String stack="";
+        for(int i=0;i<this.cards.size();i++) {
+            stack+=this.cards.get(i).toString();
+        }
+        return stack;
     }
 }
