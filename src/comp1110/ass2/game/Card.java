@@ -1,7 +1,7 @@
 package comp1110.ass2.game;
 
 public class Card {
-    String name;//should a card have name??
+    String name;//should a card have name?? NP: Yeah, this isn't going to do anything, we can remove
     Species species;
     int number;
 

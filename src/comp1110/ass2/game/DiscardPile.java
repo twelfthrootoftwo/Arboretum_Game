@@ -10,7 +10,12 @@ public class DiscardPile extends CardStack{
         this.cards = new ArrayList<>();
     }
 
+    /**
+     * Get the card at the top of the discard
+     * We need this so that the top card (and only the top card) is displayed
+     * @return the top (last) card in this.cards;
+     */
     public Card peekTopCard(){
-        return new Card("testCard",Species.A,1);
+        return this.cards.get(this.cards.size()-1);
     }
 }
