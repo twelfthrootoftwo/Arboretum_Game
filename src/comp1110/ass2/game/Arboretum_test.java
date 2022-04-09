@@ -4,10 +4,10 @@
 //import java.util.HashMap;
 //import java.util.List;
 //
-//public class Arboretum {
+//public class comp1110.ass2.Arboretum {
 //    HashMap<Position, Card> arboretum = new HashMap<>();
 //
-//    public Arboretum(int size){
+//    public comp1110.ass2.Arboretum(int size){
 //        for (int i = 0; i < size; i++){
 //            for (int j = 0; j < size; j++){
 //                this.arboretum.put(new Position(i,j), new Card());

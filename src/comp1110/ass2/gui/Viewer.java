@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
+
 public class Viewer extends Application {
 
     private static final int VIEWER_WIDTH = 1200;
@@ -37,6 +39,23 @@ public class Viewer extends Application {
      * @param gameState TASK 6
      */
     void displayState(String[][] gameState) {
+        System.out.println(Arrays.deepToString(gameState));
+        String[] sharedState = gameState[0];
+        String[] hiddenState = gameState[1];
+        System.out.println(Arrays.toString(sharedState));
+        System.out.println(Arrays.toString(hiddenState));
+        String turn = sharedState[0];
+        String arboretumA = sharedState[1];
+        String discardA = sharedState[2];
+        String arboretumB = sharedState[3];
+        String discardB = sharedState[4];
+        String deck = hiddenState[0];
+        String handA = hiddenState[1];
+        String handB = hiddenState[2];
+
+        Group viewer = new Group();
+
+
         // FIXME Task 6: implement the simple state viewer
     }
 
@@ -47,12 +66,14 @@ public class Viewer extends Application {
         Label boardLabel = new Label("Player Turn ID");
         turnIDTextField = new TextField();
         turnIDTextField.setPrefWidth(TEXTBOX_WIDTH);
+//        Label aArboretum = new Label("Player A comp1110.ass2.Arboretum:");
         Label aArboretum = new Label("Player A Arboretum:");
         aArboretumTextField = new TextField();
         aArboretumTextField.setPrefWidth(TEXTBOX_WIDTH);
         Label aDiscard = new Label("Player A Discard:");
         aDiscardTextField = new TextField();
         aDiscardTextField.setPrefWidth(TEXTBOX_WIDTH);
+//        Label bArboretum = new Label("Player B comp1110.ass2.Arboretum:");
         Label bArboretum = new Label("Player B Arboretum:");
         bArboretumTextField = new TextField();
         bArboretumTextField.setPrefWidth(TEXTBOX_WIDTH);
@@ -91,7 +112,7 @@ public class Viewer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Arboretum Viewer");
+        primaryStage.setTitle("comp1110.ass2.Arboretum Viewer");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         root.getChildren().add(controls);

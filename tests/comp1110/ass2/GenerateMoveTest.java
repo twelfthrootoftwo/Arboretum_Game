@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GenerateMoveTest {
 
     private String errorPrefix(String[][] state) {
-        return "Arboretum.generateMove(" + System.lineSeparator() + "sharedState: " + Arrays.toString(state[0]) + System.lineSeparator() +
+        return "comp1110.ass2.Arboretum.generateMove(" + System.lineSeparator() + "sharedState: " + Arrays.toString(state[0]) + System.lineSeparator() +
                 "hiddenState: " + Arrays.toString(state[1]) + ")"
                 + System.lineSeparator();
     }

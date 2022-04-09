@@ -43,14 +43,14 @@ You will be marked according to whatever is committed to your repository at the 
 You will be assessed on how effectively you use Git as a development tool.
 
 ## Problem Description
-Your task is to implement in Java, using JavaFX, a board game called [Arboretum](https://renegadegamestudios.com/arboretum/),
+Your task is to implement in Java, using JavaFX, a board game called [comp1110.ass2.Arboretum](https://renegadegamestudios.com/arboretum/),
 designed by [Dan Cassar](http://www.dancassar.com/) and published by [Renegade Game Studios](https://renegadegamestudios.com/).
-Board Game Geek provides a [description of Arboretum](https://boardgamegeek.com/boardgame/140934/arboretum), and you can watch
+Board Game Geek provides a [description of comp1110.ass2.Arboretum](https://boardgamegeek.com/boardgame/140934/arboretum), and you can watch
 a [how to play](https://www.youtube.com/watch?v=Ufh606Ettvo) and an [overview and review](https://www.youtube.com/watch?v=mmiXSOG1BtQ).
 
 ## Game Overview
 
-Arboretum is a two- to four-player game in which players attempt to create carefully planned paths between trees. Players take turns *Drawing* cards from the *Deck* and *Discard* piles, placing one card in their *Arboretum* and discarding another card. The game ends when there are no cards left in the deck.
+comp1110.ass2.Arboretum is a two- to four-player game in which players attempt to create carefully planned paths between trees. Players take turns *Drawing* cards from the *Deck* and *Discard* piles, placing one card in their *comp1110.ass2.Arboretum* and discarding another card. The game ends when there are no cards left in the deck.
 
 Use the above resources in addition to the rules description below. In case of any ambiguities, please consult Piazza for a clarification.
 
@@ -153,7 +153,7 @@ If there is still a tie, the tied players should plant a tree and the player who
 
 ## Encoding Game State
 
-The following encoding is used as part of the `Arboretum` class as a way of interfacing with the tests for the various tasks.
+The following encoding is used as part of the `comp1110.ass2.Arboretum` class as a way of interfacing with the tests for the various tasks.
 You are strongly encouraged to use your own internal representation of the game, and convert to and from the encoding presented here
 as required to fulfill the tests / tasks. Note, the string representation is *neither robust nor convenient* to work with, hence why
 you should use your own approach.
@@ -184,9 +184,9 @@ There are four additional tree species. If you are playing with three players, a
 `sharedState` is a string array representing whose turn it is and each player's Shared information.
 
 `sharedState[0]` is a single-character *Turn* string.
-`sharedState[1]` is player A's *PlayerID* followed by their *Arboretum* string.
+`sharedState[1]` is player A's *PlayerID* followed by their *comp1110.ass2.Arboretum* string.
 `sharedState[2]` is player A's *PlayerID* followed by their *Discard* string.
-`sharedState[3]` is player B's *PlayerID* followed by their *Arboretum* string.
+`sharedState[3]` is player B's *PlayerID* followed by their *comp1110.ass2.Arboretum* string.
 `sharedState[4]` is player B's *PlayerID* followed by their *Discard* string.
 
 For example, a sharedState string array might look like:
@@ -195,14 +195,14 @@ For example, a sharedState string array might look like:
 
 An image displaying this sharedState string can be seen below: 
 
-![Arboretum Shared State](../assets/shared_state_example.svg)
+![comp1110.ass2.Arboretum Shared State](../assets/shared_state_example.svg)
 
 Credit to [Josh (Zhashiya)](https://boardgamegeek.com/user/zhashiya) on board game geek who posted these [fan-made cards](https://boardgamegeek.com/filepage/146943/arboretum-fan-made-cards) they made. Note: Some of the species names differ to our version.
 
 #### Turn and PlayerID string
 The Turn/PlayerID string is one character `"A"`or`"B"` representing a player. In the case of the Turn string, this indicates that it is this player's turn.
 
-#### Arboretum
+#### comp1110.ass2.Arboretum
 A player's arboretum string starts with their *Player ID* and then is followed by a string of placements in the order in which they've been played. The location of each card is respective to the very first card a player has placed in their arboretum this game.
 
 A single placement is represented as an eight-character string as follows:

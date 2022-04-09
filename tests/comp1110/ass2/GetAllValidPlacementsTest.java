@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GetAllValidPlacementsTest {
 
     private String errorPrefix(String[][] state) {
-        return "Arboretum.getAllValidPlacements(" + System.lineSeparator() + "sharedState: " + Arrays.toString(state[0]) + System.lineSeparator() +
+        return "comp1110.ass2.Arboretum.getAllValidPlacements(" + System.lineSeparator() + "sharedState: " + Arrays.toString(state[0]) + System.lineSeparator() +
                 "hiddenState: " + Arrays.toString(state[1]) + ")"
                 + System.lineSeparator();
     }

@@ -22,7 +22,7 @@ public class Deck extends CardStack {
 
     /**
      * Given a string code as per the assignment specification, construct an equivalent Deck
-     * (see comments for Arboretum.isHiddenStateWellFormed for string code details)
+     * (see comments for comp1110.ass2.Arboretum.isHiddenStateWellFormed for string code details)
      * @param deckCode - a string specifying the deck order
      */
     public Deck(String deckCode) {

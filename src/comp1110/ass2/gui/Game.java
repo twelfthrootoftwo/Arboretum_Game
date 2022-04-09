@@ -12,11 +12,11 @@ public class Game extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        // FIXME Task 11: Implement a basic playable Arboretum game in JavaFX that only allows cards to be placed in
+        // FIXME Task 11: Implement a basic playable comp1110.ass2.Arboretum game in JavaFX that only allows cards to be placed in
         //   valid places
         // FIXME Task 16: Implement a computer opponent so that a human can play your game against the computer.
         // FIXME Task 18: Implement variant(s).
-        stage.setTitle("Arboretum");
+        stage.setTitle("comp1110.ass2.Arboretum");
         Group root = new Group();
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 

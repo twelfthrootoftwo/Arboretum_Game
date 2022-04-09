@@ -16,7 +16,7 @@ public class DrawFromDeckTest {
     static final List<Character> validChars = Arrays.asList('a', 'b', 'c', 'd', 'j', 'm');
 
     private String errorPrefix(String deck) {
-        return "Arboretum.drawFromBag(\"" + deck + "\")"
+        return "comp1110.ass2.Arboretum.drawFromBag(\"" + deck + "\")"
                 + System.lineSeparator();
     }
 

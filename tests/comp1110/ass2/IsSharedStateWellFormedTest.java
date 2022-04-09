@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class IsSharedStateWellFormedTest {
 
     private String errorPrefix(String[] state) {
-        return "Arboretum.isSharedStateWellFormed(" + Arrays.toString(state) + ")";
+        return "comp1110.ass2.Arboretum.isSharedStateWellFormed(" + Arrays.toString(state) + ")";
     }
 
     private void test(String[] in, boolean expected) {

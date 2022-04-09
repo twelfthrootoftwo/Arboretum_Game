@@ -13,7 +13,7 @@ public class Player {
 
     public Player(String name, int size){
         this.name = name;
-//        this.arboretum = new Arboretum(size);
+//        this.arboretum = new comp1110.ass2.Arboretum(size);
         this.discardPile = new DiscardPile();
         this.hand = new ArrayList<>();
     }

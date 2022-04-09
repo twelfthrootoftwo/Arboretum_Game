@@ -63,10 +63,10 @@ src
                 Methods:
                 getX()
                 getY()
-                getAdjacentCards(Arboretum), return Position[] //adjacent positions which contain cards
+                getAdjacentCards(comp1110.ass2.Arboretum), return Position[] //adjacent positions which contain cards
 
-            (C) Arboretum
-                Class: Arboretum(int size)
+            (C) comp1110.ass2.Arboretum
+                Class: comp1110.ass2.Arboretum(int size)
                 Constructor: {
                     for int i:size, int j: size
                         this.HashMap.put(Position position(i,j), Card null);
@@ -82,10 +82,10 @@ src
                 calculateScore(species), return int
                 resetMap()
 
-            (C) Player (String name, Arboretum arboretum, CardStack discard, list<card> hand)
+            (C) Player (String name, comp1110.ass2.Arboretum arboretum, CardStack discard, list<card> hand)
                 Constructor: {
                     this.name
-                    this.arboretum=new Arboretum
+                    this.arboretum=new comp1110.ass2.Arboretum
                     this.disardPile=new CardStack discard
                     this.handCards=list<card>=null
                     }

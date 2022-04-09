@@ -31,7 +31,7 @@ public class GetHighestViablePathScoreTest {
     };
 
     private String errorPrefix(String[][] state) {
-        return "Arboretum.getHighestViablePathScore(" + System.lineSeparator() + "sharedState: " + Arrays.toString(state[0]) + System.lineSeparator() +
+        return "comp1110.ass2.Arboretum.getHighestViablePathScore(" + System.lineSeparator() + "sharedState: " + Arrays.toString(state[0]) + System.lineSeparator() +
                 "hiddenState: " + Arrays.toString(state[1]) + ")"
                 + System.lineSeparator();
     }
