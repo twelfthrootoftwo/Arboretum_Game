@@ -16,6 +16,8 @@ public class DiscardPile extends CardStack{
      * @param discardCode - a string representing the discard sequence
      */
     public DiscardPile(String discardCode) {
+        this.cards=new ArrayList<>();
+
         //Remove the player code
         discardCode=discardCode.substring(1);
 

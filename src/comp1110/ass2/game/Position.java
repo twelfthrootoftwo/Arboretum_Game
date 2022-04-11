@@ -22,9 +22,9 @@ public class Position {
         int val1=Integer.parseInt(posCode.substring(1,3));
         int val2=Integer.parseInt(posCode.substring(4));
 
-        //N,W are positive, so flip sign on position values that are S,E
-        if(dir1=="S") val1*= -1;
-        if(dir2=="E") val2*= -1;
+        //N,E are positive, so flip sign on position values that are S,W
+        if(dir1.equals("S")) val1*= -1;
+        if(dir2.equals("W")) val2*= -1;
 
         this.x=val2;
         this.y=val1;
@@ -36,5 +36,41 @@ public class Position {
 
     public int getY() {
         return this.y;
+    }
+
+    @Override
+    public String toString() {
+        return("("+this.x+", "+this.y+")");
+    }
+
+    /**
+     * Our Arboretums are hashmaps referenced via position.
+     * We want to ensure that equivalent positions (but with different memory addresses) map to the same entry,
+     * so rewrite the Object.equals() method to check x and y coordinates
+     * @param any - object to compare
+     * @return True if any is an equivalent position, False otherwise
+     */
+    @Override
+    public boolean equals(Object any) {
+        if(this==any) return true;
+        if(!(any instanceof Position)) return false;
+
+        Position toCompare=(Position) any;
+        if(this.x!=toCompare.getX()) return false;
+        if(this.y!=toCompare.getY()) return false;
+
+        return true;
+    }
+
+    /**
+     * Our Arboretums are hashmaps referenced via position.
+     * We want to ensure that equivalent positions (but with different memory addresses) map to the same entry,
+     * so force the hash code to use something that will be consistent as long as the positions are equal
+     * @return an int hash code
+     */
+    @Override
+    public int hashCode() {
+        String refCode=this.toString();
+        return refCode.hashCode();
     }
 }

@@ -63,4 +63,17 @@ public class Card {
         String cardCode=this.species.toString()+this.number;
         return cardCode;
     }
+
+    /**
+     * Check if this card is equal to another card
+     * @param card - the card to check against
+     * @return True if the two cards are identical, False otherwise
+     */
+    public Boolean isEqual(Card card) {
+        Boolean result=true;
+        if(card.getNumber()!=this.number) result=false;
+        if(card.getSpecies()!=this.species) result=false;
+
+        return result;
+    }
 }

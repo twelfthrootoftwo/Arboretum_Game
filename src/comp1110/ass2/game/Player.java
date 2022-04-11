@@ -4,6 +4,7 @@ import comp1110.ass2.Arboretum;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Player {
     String name;
@@ -57,17 +58,37 @@ public class Player {
         this.hand.add(card);
     }
 
+    /**
+     * Checks if the chosen card can be played a thte chosen position; if it can, play it there
+     * @param card - card to play
+     * @param position - position to play card into
+     * @return True if the move was legal and has been processed, False otherwise
+     */
     public boolean play(Card card, Position position){
-        if (this.hand.contains(card)){
-            if (this.arboretum.isPosCanPlace(position)){
-                this.arboretum.addCard(card,position);
-                this.hand.remove(card);
-                return true;
+        if (checkPlay(card,position)) {
+            this.arboretum.addCard(card, position);
+            this.hand.remove(card);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether a play is legal
+     * Considers hand size, cards in hand, and position validity
+     * @param card - card to play
+     * @param position - position to play card into
+     * @return True if the play is legal, false otherwise
+     */
+    public boolean checkPlay(Card card, Position position) {
+        if(this.hand.size()==9) {
+            if (checkCardInHand(card)) {
+                if (this.arboretum.isPosCanPlace(position)) {
+                    return true;
+                }
             }
         }
         return false;
-
-
     }
 
     /**
@@ -88,5 +109,20 @@ public class Player {
         }
 
         return cards;
+    }
+
+    /**
+     * Checks if a specific card is in the player's hand
+     * @param cardToCheck - card to look for
+     * @return True if it's in hand, False otherwise
+     */
+    private boolean checkCardInHand(Card cardToCheck) {
+        Boolean result=false;
+        for (Card card : this.hand) {
+            if(cardToCheck.isEqual(card)) {
+                result=true;
+            }
+        }
+        return result;
     }
 }

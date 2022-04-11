@@ -9,18 +9,23 @@ public class Arbor {
 
     //Initialisation constructor, starting off empty
     public Arbor(int size) {
+        this.arbor=new HashMap<Position,Card>();
+        this.numCards=0;
+        this.limit=size-1;
+
         for(int i=-size+1;i<size;i++) {
             for(int j=-size+1;j<size;j++) {
                 Position newPos=new Position(i,j);
                 this.arbor.put(newPos, null);
-                this.numCards=0;
-                this.limit=size-1;
+
             }
         }
     }
 
     //Constructor for use with the specification testing strings
     public Arbor(String arborCode) {
+        this.arbor=new HashMap<Position,Card>();
+
         //assume we're working with the 2-player variant
         //TODO -  allow this to be variable if there are more suits in play?
         this.limit=8*6-1;
@@ -70,7 +75,9 @@ public class Arbor {
     public Boolean isPosCanPlace(Position pos) {
 
         //if there are no other cards and the target position is (0,0), place here
-        if(this.numCards==0&&pos.getX()==0&pos.getY()==0) return true;
+        if(this.numCards==0&&pos.getX()==0&pos.getY()==0) {
+            return true;
+        }
 
         //if there are other cards, need no card in this position
         if(this.arbor.get(pos)==null) {
@@ -79,7 +86,9 @@ public class Arbor {
 
             //if any of the adjacent positions have cards, this is a valid position
             for(int i=0;i<adjacentPos.length;i++) {
-                if(this.arbor.get(adjacentPos[i])!=null) return true;
+                if(this.arbor.get(adjacentPos[i])!=null) {
+                    return true;
+                }
             }
             return false;
 

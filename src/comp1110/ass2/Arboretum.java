@@ -2,6 +2,8 @@ package comp1110.ass2;
 
 import comp1110.ass2.game.Card;
 import comp1110.ass2.game.Deck;
+import comp1110.ass2.game.Player;
+import comp1110.ass2.game.Position;
 import javafx.scene.image.ImageView;
 
 import java.io.FileNotFoundException;
@@ -152,7 +154,19 @@ public class Arboretum {
      * TASK 7
      */
     public static boolean isPlacementValid(String[][] gameState, String placement) {
-        return false;
+        Player player=new Player("player",48);
+
+        //initialise with appropriate player's information
+        if(gameState[0][0]=="A") {
+            player=new Player("A",gameState[1][1],gameState[0][1],gameState[0][2]);
+        } else {
+            player=new Player("B",gameState[1][2],gameState[0][3],gameState[0][4]);
+        }
+
+        Card cardToPlay=new Card(placement.substring(0,2));
+        Position posToPlay=new Position(placement.substring(2));
+
+        return player.checkPlay(cardToPlay,posToPlay);
         //FIXME TASK 7
     }
 
@@ -588,12 +602,24 @@ public class Arboretum {
      * Main method for testing purposes
      */
     public static void main(String[] args) {
-        String deckCode = "a1a2a3a4a5a6a7a8b1b2b3b4b5b6b7b8c1c2c3c4c5c6c7c8d1d2d3d4d5d6d7d8j1j2j3j4j5j6j7j8m1m2m3m4m5m6m7m8";
-        Deck deck = new Deck(deckCode);
+        String[][] validState = new String[][]{new String[]{"B",
+                "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01", "A",
+                "Bj5C00C00j6S01C00j7S02C00j4S01W01m6C00E01m3C00W02j3N01W01", "B"},
+                new String[]{"a7a8b2b5b6c2c4c5c7d1d3d4d6d7d8m1", "Ab3b4c1j1m2m5m8", "Ba1a3a6b7b8c8d2j2j8"}};
+        String[] placements = {"N01W02", "N02W01", "N01C00", "N01E01", "C00E02", "S01E01", "S02W01",
+                "S01W02", "C00W03"};
+        String[] cards={"a1","a3","a6","b7","b8","c8","d2","j2","j8"};
 
-        for (int i = 0; i < 3; i++) {
-            Card drawn = deck.drawTopCard();
-            System.out.println("Drew " + drawn);
+        for(int i=0;i<placements.length;i++) {
+            for(int j=0;j<cards.length;j++) {
+                String placementString=cards[j]+placements[i];
+                isPlacementValid(validState,placementString);
+            }
         }
+
+        Position test1=new Position("C00C00");
+        Position test2=new Position(0,0);
+        System.out.println(test1.hashCode());
+        System.out.println(test2.hashCode());
     }
 }
