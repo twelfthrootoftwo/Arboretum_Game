@@ -23,8 +23,8 @@ import java.util.Objects;
 
 public class Viewer extends Application {
 
-    private static final int VIEWER_WIDTH = 1600;//1200
-    private static final int VIEWER_HEIGHT = 1000;//700
+    private static final int VIEWER_WIDTH = 1200;//1200
+    private static final int VIEWER_HEIGHT = 700;//700
     private static final int GRID_SIZE = 50;
     private static final int GRID_DIMENSION = 10;
     private static final int WINDOW_XOFFSET = 10;
@@ -43,59 +43,59 @@ public class Viewer extends Application {
     private TextField aHandTextField;
     private TextField bHandTextField;
 
-    Image a1 = new Image(new FileInputStream("assets/cards/a_01.png"), 111, 111, true, true);
-    Image a2 = new Image(new FileInputStream("assets/cards/a_02.png"), 111, 111, true, true);
-    Image a3 = new Image(new FileInputStream("assets/cards/a_03.png"), 111, 111, true, true);
-    Image a4 = new Image(new FileInputStream("assets/cards/a_04.png"), 111, 111, true, true);
-    Image a5 = new Image(new FileInputStream("assets/cards/a_05.png"), 111, 111, true, true);
-    Image a6 = new Image(new FileInputStream("assets/cards/a_06.png"), 111, 111, true, true);
-    Image a7 = new Image(new FileInputStream("assets/cards/a_07.png"), 111, 111, true, true);
-    Image a8 = new Image(new FileInputStream("assets/cards/a_08.png"), 111, 111, true, true);
+    Image a1 = new Image(new FileInputStream("assets/cards/a_01.png"), 91, 91, true, true);
+    Image a2 = new Image(new FileInputStream("assets/cards/a_02.png"), 91, 91, true, true);
+    Image a3 = new Image(new FileInputStream("assets/cards/a_03.png"), 91, 91, true, true);
+    Image a4 = new Image(new FileInputStream("assets/cards/a_04.png"), 91, 91, true, true);
+    Image a5 = new Image(new FileInputStream("assets/cards/a_05.png"), 91, 91, true, true);
+    Image a6 = new Image(new FileInputStream("assets/cards/a_06.png"), 91, 91, true, true);
+    Image a7 = new Image(new FileInputStream("assets/cards/a_07.png"), 91, 91, true, true);
+    Image a8 = new Image(new FileInputStream("assets/cards/a_08.png"), 91, 91, true, true);
 
-    Image b1 = new Image(new FileInputStream("assets/cards/b_01.png"), 111, 111, true, true);
-    Image b2 = new Image(new FileInputStream("assets/cards/b_02.png"), 111, 111, true, true);
-    Image b3 = new Image(new FileInputStream("assets/cards/b_03.png"), 111, 111, true, true);
-    Image b4 = new Image(new FileInputStream("assets/cards/b_04.png"), 111, 111, true, true);
-    Image b5 = new Image(new FileInputStream("assets/cards/b_05.png"), 111, 111, true, true);
-    Image b6 = new Image(new FileInputStream("assets/cards/b_06.png"), 111, 111, true, true);
-    Image b7 = new Image(new FileInputStream("assets/cards/b_07.png"), 111, 111, true, true);
-    Image b8 = new Image(new FileInputStream("assets/cards/b_08.png"), 111, 111, true, true);
+    Image b1 = new Image(new FileInputStream("assets/cards/b_01.png"), 91, 91, true, true);
+    Image b2 = new Image(new FileInputStream("assets/cards/b_02.png"), 91, 91, true, true);
+    Image b3 = new Image(new FileInputStream("assets/cards/b_03.png"), 91, 91, true, true);
+    Image b4 = new Image(new FileInputStream("assets/cards/b_04.png"), 91, 91, true, true);
+    Image b5 = new Image(new FileInputStream("assets/cards/b_05.png"), 91, 91, true, true);
+    Image b6 = new Image(new FileInputStream("assets/cards/b_06.png"), 91, 91, true, true);
+    Image b7 = new Image(new FileInputStream("assets/cards/b_07.png"), 91, 91, true, true);
+    Image b8 = new Image(new FileInputStream("assets/cards/b_08.png"), 91, 91, true, true);
 
-    Image c1 = new Image(new FileInputStream("assets/cards/c_01.png"), 111, 111, true, true);
-    Image c2 = new Image(new FileInputStream("assets/cards/c_02.png"), 111, 111, true, true);
-    Image c3 = new Image(new FileInputStream("assets/cards/c_03.png"), 111, 111, true, true);
-    Image c4 = new Image(new FileInputStream("assets/cards/c_04.png"), 111, 111, true, true);
-    Image c5 = new Image(new FileInputStream("assets/cards/c_05.png"), 111, 111, true, true);
-    Image c6 = new Image(new FileInputStream("assets/cards/c_06.png"), 111, 111, true, true);
-    Image c7 = new Image(new FileInputStream("assets/cards/c_07.png"), 111, 111, true, true);
-    Image c8 = new Image(new FileInputStream("assets/cards/c_08.png"), 111, 111, true, true);
+    Image c1 = new Image(new FileInputStream("assets/cards/c_01.png"), 91, 91, true, true);
+    Image c2 = new Image(new FileInputStream("assets/cards/c_02.png"), 91, 91, true, true);
+    Image c3 = new Image(new FileInputStream("assets/cards/c_03.png"), 91, 91, true, true);
+    Image c4 = new Image(new FileInputStream("assets/cards/c_04.png"), 91, 91, true, true);
+    Image c5 = new Image(new FileInputStream("assets/cards/c_05.png"), 91, 91, true, true);
+    Image c6 = new Image(new FileInputStream("assets/cards/c_06.png"), 91, 91, true, true);
+    Image c7 = new Image(new FileInputStream("assets/cards/c_07.png"), 91, 91, true, true);
+    Image c8 = new Image(new FileInputStream("assets/cards/c_08.png"), 91, 91, true, true);
 
-    Image d1 = new Image(new FileInputStream("assets/cards/d_01.png"), 111, 111, true, true);
-    Image d2 = new Image(new FileInputStream("assets/cards/d_02.png"), 111, 111, true, true);
-    Image d3 = new Image(new FileInputStream("assets/cards/d_03.png"), 111, 111, true, true);
-    Image d4 = new Image(new FileInputStream("assets/cards/d_04.png"), 111, 111, true, true);
-    Image d5 = new Image(new FileInputStream("assets/cards/d_05.png"), 111, 111, true, true);
-    Image d6 = new Image(new FileInputStream("assets/cards/d_06.png"), 111, 111, true, true);
-    Image d7 = new Image(new FileInputStream("assets/cards/d_07.png"), 111, 111, true, true);
-    Image d8 = new Image(new FileInputStream("assets/cards/d_08.png"), 111, 111, true, true);
+    Image d1 = new Image(new FileInputStream("assets/cards/d_01.png"), 91, 91, true, true);
+    Image d2 = new Image(new FileInputStream("assets/cards/d_02.png"), 91, 91, true, true);
+    Image d3 = new Image(new FileInputStream("assets/cards/d_03.png"), 91, 91, true, true);
+    Image d4 = new Image(new FileInputStream("assets/cards/d_04.png"), 91, 91, true, true);
+    Image d5 = new Image(new FileInputStream("assets/cards/d_05.png"), 91, 91, true, true);
+    Image d6 = new Image(new FileInputStream("assets/cards/d_06.png"), 91, 91, true, true);
+    Image d7 = new Image(new FileInputStream("assets/cards/d_07.png"), 91, 91, true, true);
+    Image d8 = new Image(new FileInputStream("assets/cards/d_08.png"), 91, 91, true, true);
 
-    Image j1 = new Image(new FileInputStream("assets/cards/j_01.png"), 111, 111, true, true);
-    Image j2 = new Image(new FileInputStream("assets/cards/j_02.png"), 111, 111, true, true);
-    Image j3 = new Image(new FileInputStream("assets/cards/j_03.png"), 111, 111, true, true);
-    Image j4 = new Image(new FileInputStream("assets/cards/j_04.png"), 111, 111, true, true);
-    Image j5 = new Image(new FileInputStream("assets/cards/j_05.png"), 111, 111, true, true);
-    Image j6 = new Image(new FileInputStream("assets/cards/j_06.png"), 111, 111, true, true);
-    Image j7 = new Image(new FileInputStream("assets/cards/j_07.png"), 111, 111, true, true);
-    Image j8 = new Image(new FileInputStream("assets/cards/j_08.png"), 111, 111, true, true);
+    Image j1 = new Image(new FileInputStream("assets/cards/j_01.png"), 91, 91, true, true);
+    Image j2 = new Image(new FileInputStream("assets/cards/j_02.png"), 91, 91, true, true);
+    Image j3 = new Image(new FileInputStream("assets/cards/j_03.png"), 91, 91, true, true);
+    Image j4 = new Image(new FileInputStream("assets/cards/j_04.png"), 91, 91, true, true);
+    Image j5 = new Image(new FileInputStream("assets/cards/j_05.png"), 91, 91, true, true);
+    Image j6 = new Image(new FileInputStream("assets/cards/j_06.png"), 91, 91, true, true);
+    Image j7 = new Image(new FileInputStream("assets/cards/j_07.png"), 91, 91, true, true);
+    Image j8 = new Image(new FileInputStream("assets/cards/j_08.png"), 91, 91, true, true);
 
-    Image m1 = new Image(new FileInputStream("assets/cards/m_01.png"), 111, 111, true, true);
-    Image m2 = new Image(new FileInputStream("assets/cards/m_02.png"), 111, 111, true, true);
-    Image m3 = new Image(new FileInputStream("assets/cards/m_03.png"), 111, 111, true, true);
-    Image m4 = new Image(new FileInputStream("assets/cards/m_04.png"), 111, 111, true, true);
-    Image m5 = new Image(new FileInputStream("assets/cards/m_05.png"), 111, 111, true, true);
-    Image m6 = new Image(new FileInputStream("assets/cards/m_06.png"), 111, 111, true, true);
-    Image m7 = new Image(new FileInputStream("assets/cards/m_07.png"), 111, 111, true, true);
-    Image m8 = new Image(new FileInputStream("assets/cards/m_08.png"), 111, 111, true, true);
+    Image m1 = new Image(new FileInputStream("assets/cards/m_01.png"), 91, 91, true, true);
+    Image m2 = new Image(new FileInputStream("assets/cards/m_02.png"), 91, 91, true, true);
+    Image m3 = new Image(new FileInputStream("assets/cards/m_03.png"), 91, 91, true, true);
+    Image m4 = new Image(new FileInputStream("assets/cards/m_04.png"), 91, 91, true, true);
+    Image m5 = new Image(new FileInputStream("assets/cards/m_05.png"), 91, 91, true, true);
+    Image m6 = new Image(new FileInputStream("assets/cards/m_06.png"), 91, 91, true, true);
+    Image m7 = new Image(new FileInputStream("assets/cards/m_07.png"), 91, 91, true, true);
+    Image m8 = new Image(new FileInputStream("assets/cards/m_08.png"), 91, 91, true, true);
 
     public Viewer() throws FileNotFoundException {
     }
@@ -520,7 +520,7 @@ public class Viewer extends Application {
                 aDiscardTextField, bArboretum, bArboretumTextField, bDiscard, bDiscardTextField, deck, deckTextField,
                 aHand, aHandTextField, bHand, bHandTextField, displayState);
         vbox.setSpacing(10);
-        vbox.setLayoutX(17.4 * (GRID_SIZE) + (2 * WINDOW_XOFFSET) + (GRID_DIMENSION * GRID_SIZE) + (0.5 * GRID_SIZE));
+        vbox.setLayoutX(10.4 * (GRID_SIZE) + (2 * WINDOW_XOFFSET) + (GRID_DIMENSION * GRID_SIZE) + (0.5 * GRID_SIZE));
         vbox.setLayoutY(WINDOW_YOFFSET);
 
         controls.getChildren().add(vbox);
