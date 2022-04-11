@@ -17,6 +17,18 @@ public class Card {
         this.number = number;
     }
 
+    //constructor for use with assignment spec strings
+    //cardCode should be a 2-char string as per specification format
+    public Card(String cardCode) {
+        String speciesCode=cardCode.substring(0,1);
+        int value=Integer.parseInt(cardCode.substring(1));
+        Species species=Species.valueOf(speciesCode);
+
+        this.name=cardCode;
+        this.species=species;
+        this.number=value;
+    }
+
     public boolean isEmptyCard(){
        if (this.name.equals("null") && this.species == Species.Null && this.number == -1){
            return true;

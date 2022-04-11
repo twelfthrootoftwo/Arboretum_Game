@@ -30,13 +30,9 @@ public class Deck extends CardStack {
         if(deckCode.length()>0) {
             int numCards=deckCode.length()/2;
 
-            //split string to find species and value
-            //then add that card to the deck list
+            //add card to dec, using card constructor built for assignment spec strings
             for(int i=0;i<numCards;i++) {
-                String speciesCode=deckCode.substring(i*2,i*2+1);
-                int value=Integer.parseInt(deckCode.substring(i*2+1,i*2+2));
-                Species species=Species.valueOf(speciesCode);
-                Card nextCard=new Card(deckCode.substring(i*2,i*2+2),species,value);
+                Card nextCard=new Card(deckCode.substring(i*2,i*2+2));
                 this.cards.add(nextCard);
             }
 
