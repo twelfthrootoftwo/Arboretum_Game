@@ -19,6 +19,12 @@ public class Card {
 
     //constructor for use with assignment spec strings
     //cardCode should be a 2-char string as per specification format
+
+    /**
+     * Given a card code typical of the assingment specification format, return the equivalent card
+     * Card codes are eg "j3", strings of length 2 with first character the species code and second character the value
+     * @param cardCode - the card code to translate into a card
+     */
     public Card(String cardCode) {
         String speciesCode=cardCode.substring(0,1);
         int value=Integer.parseInt(cardCode.substring(1));

@@ -30,7 +30,7 @@ public class Deck extends CardStack {
         if(deckCode.length()>0) {
             int numCards=deckCode.length()/2;
 
-            //add card to dec, using card constructor built for assignment spec strings
+            //add card to deck, using card constructor built for assignment spec strings
             for(int i=0;i<numCards;i++) {
                 Card nextCard=new Card(deckCode.substring(i*2,i*2+2));
                 this.cards.add(nextCard);

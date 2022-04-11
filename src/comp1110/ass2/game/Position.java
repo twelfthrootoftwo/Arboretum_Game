@@ -10,6 +10,12 @@ public class Position {
     }
 
     //Constructor for use with assignment specification
+
+    /**
+     * Given a position code in assignment specification format, create the appropriate position
+     * Position codes are defined in comp1110.ass2.Arboretum.isSharedStateWellFormed (placement codes, without the card code at the start)
+     * @param posCode - the code representing a position
+     */
     public Position(String posCode) {
         String dir1=posCode.substring(0,1);
         String dir2=posCode.substring(3,4);
@@ -18,7 +24,7 @@ public class Position {
 
         //N,W are positive, so flip sign on position values that are S,E
         if(dir1=="S") val1*= -1;
-        if(dir2=="S") val2*= -1;
+        if(dir2=="E") val2*= -1;
 
         this.x=val2;
         this.y=val1;
