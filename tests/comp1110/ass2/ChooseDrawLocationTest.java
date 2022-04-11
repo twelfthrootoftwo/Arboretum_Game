@@ -17,7 +17,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class ChooseDrawLocationTest {
 
     private String errorPrefix(String[][] state) {
-        return "comp1110.ass2.Arboretum.chooseDrawLocation(" + System.lineSeparator() + "sharedState: " + Arrays.toString(state[0]) + System.lineSeparator() +
+        return "Arboretum.chooseDrawLocation(" + System.lineSeparator() + "sharedState: " + Arrays.toString(state[0]) + System.lineSeparator() +
                 "hiddenState: " + Arrays.toString(state[1]) + ")"
                 + System.lineSeparator();
     }

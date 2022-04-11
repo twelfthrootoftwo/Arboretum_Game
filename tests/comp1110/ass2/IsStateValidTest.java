@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class IsStateValidTest {
 
     private String errorPrefix(String[][] state) {
-        return "comp1110.ass2.Arboretum.isStateValid(" + System.lineSeparator() + "sharedState: " + Arrays.toString(state[0]) + System.lineSeparator() +
+        return "Arboretum.isStateValid(" + System.lineSeparator() + "sharedState: " + Arrays.toString(state[0]) + System.lineSeparator() +
                 "hiddenState: " + Arrays.toString(state[1]) + ")"
                 + System.lineSeparator();
     }

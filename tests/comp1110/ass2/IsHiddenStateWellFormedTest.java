@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class IsHiddenStateWellFormedTest {
 
     private String errorPrefix(String[] state) {
-        return "comp1110.ass2.Arboretum.isHiddenStateWellFormed(" + Arrays.toString(state) + ")";
+        return "Arboretum.isHiddenStateWellFormed(" + Arrays.toString(state) + ")";
     }
 
     private void test(String[] in, boolean expected) {
