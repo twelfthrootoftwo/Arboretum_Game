@@ -80,22 +80,49 @@ public class Arboretum {
         // Check alphabetic
         for (int i = 0; i < hiddenState[0].length(); i+=2){
             if (!Character.isLowerCase(hiddenState[0].charAt(i))){return false;}
+            if (!(hiddenState[0].charAt(i) == 'a'
+                    || hiddenState[0].charAt(i) == 'b'
+                    || hiddenState[0].charAt(i) == 'c'
+                    || hiddenState[0].charAt(i) == 'd'
+                    || hiddenState[0].charAt(i) == 'j'
+                    || hiddenState[0].charAt(i) == 'm')){
+                return false;
+            }
         }
         for (int i = 1; i < hiddenState[1].length(); i+=2){
+            if (!(hiddenState[1].charAt(i) == 'a'
+                    || hiddenState[1].charAt(i) == 'b'
+                    || hiddenState[1].charAt(i) == 'c'
+                    || hiddenState[1].charAt(i) == 'd'
+                    || hiddenState[1].charAt(i) == 'j'
+                    || hiddenState[1].charAt(i) == 'm')){
+                return false;
+            }
             if (!Character.isLowerCase(hiddenState[1].charAt(i))){return false;}
         }
         for (int i = 1; i < hiddenState[2].length(); i+=2){
+            if (!(hiddenState[2].charAt(i) == 'a'
+                    || hiddenState[2].charAt(i) == 'b'
+                    || hiddenState[2].charAt(i) == 'c'
+                    || hiddenState[2].charAt(i) == 'd'
+                    || hiddenState[2].charAt(i) == 'j'
+                    || hiddenState[2].charAt(i) == 'm')){
+                return false;
+            }
             if (!Character.isLowerCase(hiddenState[2].charAt(i))){return false;}
         }
         // Check numeric
         for (int i = 1; i < hiddenState[0].length(); i+=2){
             if (!Character.isDigit(hiddenState[0].charAt(i))){return false;}
+            if (hiddenState[0].charAt(i) < '1' || hiddenState[0].charAt(i) > '8'){return false;}
         }
         for (int i = 2; i < hiddenState[1].length(); i+=2){
             if (!Character.isDigit(hiddenState[1].charAt(i))){return false;}
+            if (hiddenState[1].charAt(i) < '1' || hiddenState[1].charAt(i) > '8'){return false;}
         }
         for (int i = 2; i < hiddenState[2].length(); i+=2){
             if (!Character.isDigit(hiddenState[2].charAt(i))){return false;}
+            if (hiddenState[2].charAt(i) < '1' || hiddenState[2].charAt(i) > '8'){return false;}
         }
         // Check sorted correctly
         // For deck
@@ -148,6 +175,7 @@ public class Arboretum {
         }
         // Else return true
         return true;
+        //FIXME TASK 3
     }
 
     /**
@@ -223,7 +251,17 @@ public class Arboretum {
      * TASK 4
      */
     public static boolean isSharedStateWellFormed(String[] sharedState) {
-        return false; //FIXME TASK 4
+        // Check turn in the right format
+        if (sharedState[0].length() != 1 || (sharedState[0].charAt(0) != 'A' && sharedState[0].charAt(0) != 'B')){
+            return false;
+        }
+        // Check Player A and Player B's arboretum
+
+
+        // Check Player A and Player B's discard
+
+        return true;
+        //FIXME TASK 4
     }
 
     /**
