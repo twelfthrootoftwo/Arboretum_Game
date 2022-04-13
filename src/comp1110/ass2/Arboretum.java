@@ -79,49 +79,22 @@ public class Arboretum {
         }
         // Check alphabetic
         for (int i = 0; i < hiddenState[0].length(); i+=2){
-            if (!Character.isLowerCase(hiddenState[0].charAt(i))){return false;}
-            if (!(hiddenState[0].charAt(i) == 'a'
-                    || hiddenState[0].charAt(i) == 'b'
-                    || hiddenState[0].charAt(i) == 'c'
-                    || hiddenState[0].charAt(i) == 'd'
-                    || hiddenState[0].charAt(i) == 'j'
-                    || hiddenState[0].charAt(i) == 'm')){
-                return false;
-            }
+            if (checkSpecies(hiddenState, i, 0)) return false;
         }
         for (int i = 1; i < hiddenState[1].length(); i+=2){
-            if (!(hiddenState[1].charAt(i) == 'a'
-                    || hiddenState[1].charAt(i) == 'b'
-                    || hiddenState[1].charAt(i) == 'c'
-                    || hiddenState[1].charAt(i) == 'd'
-                    || hiddenState[1].charAt(i) == 'j'
-                    || hiddenState[1].charAt(i) == 'm')){
-                return false;
-            }
-            if (!Character.isLowerCase(hiddenState[1].charAt(i))){return false;}
+            if (checkSpecies(hiddenState, i, 1)) return false;
         }
         for (int i = 1; i < hiddenState[2].length(); i+=2){
-            if (!(hiddenState[2].charAt(i) == 'a'
-                    || hiddenState[2].charAt(i) == 'b'
-                    || hiddenState[2].charAt(i) == 'c'
-                    || hiddenState[2].charAt(i) == 'd'
-                    || hiddenState[2].charAt(i) == 'j'
-                    || hiddenState[2].charAt(i) == 'm')){
-                return false;
-            }
-            if (!Character.isLowerCase(hiddenState[2].charAt(i))){return false;}
+            if (checkSpecies(hiddenState, i, 2)) return false;
         }
         // Check numeric
         for (int i = 1; i < hiddenState[0].length(); i+=2){
-            if (!Character.isDigit(hiddenState[0].charAt(i))){return false;}
             if (hiddenState[0].charAt(i) < '1' || hiddenState[0].charAt(i) > '8'){return false;}
         }
         for (int i = 2; i < hiddenState[1].length(); i+=2){
-            if (!Character.isDigit(hiddenState[1].charAt(i))){return false;}
             if (hiddenState[1].charAt(i) < '1' || hiddenState[1].charAt(i) > '8'){return false;}
         }
         for (int i = 2; i < hiddenState[2].length(); i+=2){
-            if (!Character.isDigit(hiddenState[2].charAt(i))){return false;}
             if (hiddenState[2].charAt(i) < '1' || hiddenState[2].charAt(i) > '8'){return false;}
         }
         // Check sorted correctly
@@ -169,9 +142,7 @@ public class Arboretum {
             }
             int[] list3 = listSorted3.clone();
             Arrays.sort(listSorted3);
-            if (!Arrays.equals(listSorted3, list3)) {
-                return false;
-            }
+            return Arrays.equals(listSorted3, list3);
         }
         // Else return true
         return true;
@@ -185,7 +156,7 @@ public class Arboretum {
      * @return true if the hiddenState array is well-formed, false if it is not well-formed.
      * Helper Function for TASK 3
      */
-    static int toNumber(int charA, int charB){
+    private static int toNumber(int charA, int charB){
         if (charA == 97){
             return charB-48;
         }
@@ -194,6 +165,22 @@ public class Arboretum {
             charB += 10;
             return toNumber(charA, charB);
         }
+    }
+    /**
+     * Change Character and number to a number that can be used to compare
+     * @param state the given state to check
+     * @param i character at index
+     * @param j index of which string to check
+     * @return true if the species is right, false if the specie does not exist.
+     * Helper Function for TASK 3 and TASK 4
+     */
+    private static boolean checkSpecies(String[] state, int i, int j) {
+        return !(state[j].charAt(i) == 'a'
+                || state[j].charAt(i) == 'b'
+                || state[j].charAt(i) == 'c'
+                || state[j].charAt(i) == 'd'
+                || state[j].charAt(i) == 'j'
+                || state[j].charAt(i) == 'm');
     }
     /**
      * A sharedState string array is well-formed if it complies with the following rules:
@@ -252,16 +239,132 @@ public class Arboretum {
      */
     public static boolean isSharedStateWellFormed(String[] sharedState) {
         // Check turn in the right format
+        if (sharedState.length != 5){return false;}
         if (sharedState[0].length() != 1 || (sharedState[0].charAt(0) != 'A' && sharedState[0].charAt(0) != 'B')){
             return false;
         }
-        // Check Player A and Player B's arboretum
-
-
-        // Check Player A and Player B's discard
-
+        // Check Player A's arboretum
+        // Check number of states
+        if ((sharedState[1].length()-1)%8 != 0){return false;}
+        // Check format of first letter
+        if (sharedState[1].charAt(0) != 'A'){return false;}
+        if (sharedState[1].length() != 1) {
+            // Check the species
+            for (int i = 1; i < sharedState[1].length() - 7; i += 8) {
+                if (checkSpecies(sharedState, i, 1)) return false;
+                // Check card number
+                if (sharedState[1].charAt(i + 1) < '1' || sharedState[1].charAt(i + 1) > '8') {
+                    return false;
+                }
+                // Check directions
+                if (checkDir1(sharedState, i + 2, 1)) return false;
+                if (checkDir2(sharedState, i + 5, 1)) return false;
+                // Check distances
+                if (sharedState[1].charAt(i + 3) < '0' || sharedState[1].charAt(i + 3) > '9') {
+                    return false;
+                }
+                if (sharedState[1].charAt(i + 4) < '0' || sharedState[1].charAt(i + 4) > '9') {
+                    return false;
+                }
+                if (sharedState[1].charAt(i + 6) < '0' || sharedState[1].charAt(i + 6) > '9') {
+                    return false;
+                }
+                if (sharedState[1].charAt(i + 7) < '0' || sharedState[1].charAt(i + 7) > '9') {
+                    return false;
+                }
+            }
+        }
+        // Check Player B's arboretum
+        // Check number of states
+        if ((sharedState[3].length()-1)%8 != 0){return false;}
+        // Check format of first letter
+        if (sharedState[3].charAt(0) != 'B'){return false;}
+        // Check the species
+        if (sharedState[1].length() != 1) {
+            for (int i = 1; i < sharedState[3].length() - 7; i += 8) {
+                if (checkSpecies(sharedState, i, 3)) return false;
+                // Check card number
+                if (sharedState[3].charAt(i + 1) < '1' || sharedState[3].charAt(i + 1) > '8') {
+                    return false;
+                }
+                // Check directions
+                if (checkDir1(sharedState, i + 2, 3)) return false;
+                if (checkDir2(sharedState, i + 5, 3)) return false;
+                // Check distances
+                if (sharedState[3].charAt(i + 3) < '0' || sharedState[3].charAt(i + 3) > '9') {
+                    return false;
+                }
+                if (sharedState[3].charAt(i + 4) < '0' || sharedState[3].charAt(i + 4) > '9') {
+                    return false;
+                }
+                if (sharedState[3].charAt(i + 6) < '0' || sharedState[3].charAt(i + 6) > '9') {
+                    return false;
+                }
+                if (sharedState[3].charAt(i + 7) < '0' || sharedState[3].charAt(i + 7) > '9') {
+                    return false;
+                }
+            }
+        }
+        // Check Player A's discard
+        // Check alphabetic
+        if (sharedState[2].charAt(0) != 'A'){return false;}
+        if ((sharedState[2].length()-1)%2 != 0){return false;}
+        if (sharedState[1].length() != 1) {
+            for (int i = 1; i < sharedState[2].length(); i += 2) {
+                if (checkSpecies(sharedState, i, 2)) return false;
+            }
+            // Check numeric
+            for (int i = 2; i < sharedState[2].length(); i += 2) {
+                if (sharedState[2].charAt(i) < '1' || sharedState[2].charAt(i) > '8') {
+                    return false;
+                }
+            }
+        }
+        // Check Player B's discard
+        // Check alphabetic
+        if (sharedState[4].charAt(0) != 'B'){return false;}
+        if ((sharedState[4].length()-1)%2 != 0){return false;}
+        if (sharedState[1].length() != 1) {
+            for (int i = 1; i < sharedState[4].length(); i += 2) {
+                if (checkSpecies(sharedState, i, 4)) return false;
+            }
+            // Check numeric
+            for (int i = 2; i < sharedState[4].length(); i += 2) {
+                if (sharedState[4].charAt(i) < '1' || sharedState[4].charAt(i) > '8') {
+                    return false;
+                }
+            }
+        }
         return true;
         //FIXME TASK 4
+    }
+
+    /**
+     * Change Character and number to a number that can be used to compare
+     * @param state the given char to check
+     * @param i character at index
+     * @param j index of which string to check
+     * @return true if the 2nd character's direction is right, false if it is wrong.
+     * Helper Function for TASK 4
+     */
+    private static boolean checkDir1(String[] state, int i, int j) {
+        return !(state[j].charAt(i) == 'N'
+                || state[j].charAt(i) == 'S'
+                || state[j].charAt(i) == 'C');
+    }
+
+    /**
+     * Change Character and number to a number that can be used to compare
+     * @param state the given char to check
+     * @param i character at index
+     * @param j index of which string to check
+     * @return true if the 5th character's direction is right, false if it is wrong.
+     * Helper Function for TASK 4
+     */
+    private static boolean checkDir2(String[] state, int i, int j) {
+        return !(state[j].charAt(i) == 'E'
+                || state[j].charAt(i) == 'W'
+                || state[j].charAt(i) == 'C');
     }
 
     /**
