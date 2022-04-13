@@ -49,11 +49,124 @@ public class Arboretum {
      * TASK 3
      */
     public static boolean isHiddenStateWellFormed(String[] hiddenState) {
-        return false;
-        //FIXME TASK 3
+        // Check every string in the right format
+        if (hiddenState.length != 3){
+            return false;
+        }
+        // For the deck
+        if (!hiddenState[0].isEmpty()){
+            if (Character.isUpperCase(hiddenState[0].charAt(0))){return false;}
+        }
+        // For Player A
+        if (hiddenState[1].isEmpty()) {
+            return false;
+        }
+        if (hiddenState[1].charAt(0) != 'A' || hiddenState[1].length() % 2 == 0){
+            return false;
+        }
+        if (hiddenState[1].length() != 1) {
+            if (hiddenState[1].length() < 15 || hiddenState[1].length() > 19) {return false;}
+        }
+        // For Player B
+        if (hiddenState[2].isEmpty()) {
+            return false;
+        }
+        if (hiddenState[2].charAt(0) != 'B' || hiddenState[2].length() % 2 == 0){
+            return false;
+        }
+        if (hiddenState[2].length() != 1) {
+            if (hiddenState[2].length() < 15 || hiddenState[2].length() > 19) {return false;}
+        }
+        // Check alphabetic
+        for (int i = 0; i < hiddenState[0].length(); i+=2){
+            if (!Character.isLowerCase(hiddenState[0].charAt(i))){return false;}
+        }
+        for (int i = 1; i < hiddenState[1].length(); i+=2){
+            if (!Character.isLowerCase(hiddenState[1].charAt(i))){return false;}
+        }
+        for (int i = 1; i < hiddenState[2].length(); i+=2){
+            if (!Character.isLowerCase(hiddenState[2].charAt(i))){return false;}
+        }
+        // Check numeric
+        for (int i = 1; i < hiddenState[0].length(); i+=2){
+            if (!Character.isDigit(hiddenState[0].charAt(i))){return false;}
+        }
+        for (int i = 2; i < hiddenState[1].length(); i+=2){
+            if (!Character.isDigit(hiddenState[1].charAt(i))){return false;}
+        }
+        for (int i = 2; i < hiddenState[2].length(); i+=2){
+            if (!Character.isDigit(hiddenState[2].charAt(i))){return false;}
+        }
+        // Check sorted correctly
+        // For deck
+        if (!hiddenState[0].isEmpty()) {
+            int[] listSorted = new int[hiddenState[0].length() / 2];
+            int j = 0;
+            for (int i = 0; i < hiddenState[0].length() - 1; i += 2) {
+                int x = hiddenState[0].charAt(i);
+                int y = hiddenState[0].charAt(i + 1);
+                listSorted[j] = toNumber(x, y);
+                j += 1;
+            }
+            int[] list = listSorted.clone();
+            Arrays.sort(listSorted);
+            if (!Arrays.equals(listSorted, list)) {
+                return false;
+            }
+        }
+        // For Player A
+        if (hiddenState[1].length() != 1) {
+            int[] listSorted2 = new int[(hiddenState[1].length() - 1) / 2];
+            int j = 0;
+            for (int i = 1; i < hiddenState[1].length() - 1; i += 2) {
+                int x = hiddenState[1].charAt(i);
+                int y = hiddenState[1].charAt(i + 1);
+                listSorted2[j] = toNumber(x, y);
+                j += 1;
+            }
+            int[] list2 = listSorted2.clone();
+            Arrays.sort(listSorted2);
+            if (!Arrays.equals(listSorted2, list2)) {
+                return false;
+            }
+        }
+        // For Player B
+        if (hiddenState[2].length() != 1) {
+            int[] listSorted3 = new int[(hiddenState[2].length() - 1) / 2];
+            int j = 0;
+            for (int i = 1; i < hiddenState[2].length() - 1; i += 2) {
+                int x = hiddenState[2].charAt(i);
+                int y = hiddenState[2].charAt(i + 1);
+                listSorted3[j] = toNumber(x, y);
+                j += 1;
+            }
+            int[] list3 = listSorted3.clone();
+            Arrays.sort(listSorted3);
+            if (!Arrays.equals(listSorted3, list3)) {
+                return false;
+            }
+        }
+        // Else return true
+        return true;
     }
 
-
+    /**
+     * Change Character and number to a number that can be used to compare
+     * @param charA the alphabetic number
+     * @param charB the numerical number
+     * @return true if the hiddenState array is well-formed, false if it is not well-formed.
+     * Helper Function for TASK 3
+     */
+    static int toNumber(int charA, int charB){
+        if (charA == 97){
+            return charB-48;
+        }
+        else{
+            charA -= 1;
+            charB += 10;
+            return toNumber(charA, charB);
+        }
+    }
     /**
      * A sharedState string array is well-formed if it complies with the following rules:
      * <p>
