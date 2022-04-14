@@ -50,52 +50,64 @@ public class Arboretum {
      */
     public static boolean isHiddenStateWellFormed(String[] hiddenState) {
         // Check every string in the right format
-        if (hiddenState.length != 3){
+        if (hiddenState.length != 3) {
             return false;
         }
         // For the deck
-        if (!hiddenState[0].isEmpty()){
-            if (Character.isUpperCase(hiddenState[0].charAt(0))){return false;}
+        if (!hiddenState[0].isEmpty()) {
+            if (Character.isUpperCase(hiddenState[0].charAt(0))) {
+                return false;
+            }
         }
         // For Player A
         if (hiddenState[1].isEmpty()) {
             return false;
         }
-        if (hiddenState[1].charAt(0) != 'A' || hiddenState[1].length() % 2 == 0){
+        if (hiddenState[1].charAt(0) != 'A' || hiddenState[1].length() % 2 == 0) {
             return false;
         }
         if (hiddenState[1].length() != 1) {
-            if (hiddenState[1].length() < 15 || hiddenState[1].length() > 19) {return false;}
+            if (hiddenState[1].length() < 15 || hiddenState[1].length() > 19) {
+                return false;
+            }
         }
         // For Player B
         if (hiddenState[2].isEmpty()) {
             return false;
         }
-        if (hiddenState[2].charAt(0) != 'B' || hiddenState[2].length() % 2 == 0){
+        if (hiddenState[2].charAt(0) != 'B' || hiddenState[2].length() % 2 == 0) {
             return false;
         }
         if (hiddenState[2].length() != 1) {
-            if (hiddenState[2].length() < 15 || hiddenState[2].length() > 19) {return false;}
+            if (hiddenState[2].length() < 15 || hiddenState[2].length() > 19) {
+                return false;
+            }
         }
         // Check alphabetic
-        for (int i = 0; i < hiddenState[0].length(); i+=2){
+        for (int i = 0; i < hiddenState[0].length(); i += 2) {
             if (checkSpecies(hiddenState, i, 0)) return false;
         }
-        for (int i = 1; i < hiddenState[1].length(); i+=2){
+        for (int i = 1; i < hiddenState[1].length(); i += 2) {
             if (checkSpecies(hiddenState, i, 1)) return false;
         }
-        for (int i = 1; i < hiddenState[2].length(); i+=2){
+        for (int i = 1; i < hiddenState[2].length(); i += 2) {
             if (checkSpecies(hiddenState, i, 2)) return false;
         }
         // Check numeric
-        for (int i = 1; i < hiddenState[0].length(); i+=2){
-            if (hiddenState[0].charAt(i) < '1' || hiddenState[0].charAt(i) > '8'){return false;}
+        for (int i = 1; i < hiddenState[0].length(); i += 2) {
+            if (hiddenState[0].charAt(i) < '1' || hiddenState[0].charAt(i) > '8') {
+                return false;
+            }
         }
-        for (int i = 2; i < hiddenState[1].length(); i+=2){
-            if (hiddenState[1].charAt(i) < '1' || hiddenState[1].charAt(i) > '8'){return false;}
+        for (int i = 2; i < hiddenState[1].length(); i += 2) {
+            if (hiddenState[1].charAt(i) < '1' || hiddenState[1].charAt(i) > '8') {
+                return false;
+            }
         }
-        for (int i = 2; i < hiddenState[2].length(); i+=2){
-            if (hiddenState[2].charAt(i) < '1' || hiddenState[2].charAt(i) > '8'){return false;}
+        for (int i = 2; i < hiddenState[2].length(); i += 2) {
+            if (hiddenState[2].charAt(i) < '1' || hiddenState[2].charAt(i) > '8') {
+                return false;
+            }
         }
         // Check sorted correctly
         // For deck
@@ -151,26 +163,28 @@ public class Arboretum {
 
     /**
      * Change Character and number to a number that can be used to compare
+     *
      * @param charA the alphabetic number
      * @param charB the numerical number
      * @return true if the hiddenState array is well-formed, false if it is not well-formed.
      * Helper Function for TASK 3
      */
-    private static int toNumber(int charA, int charB){
-        if (charA == 97){
-            return charB-48;
-        }
-        else{
+    private static int toNumber(int charA, int charB) {
+        if (charA == 97) {
+            return charB - 48;
+        } else {
             charA -= 1;
             charB += 10;
             return toNumber(charA, charB);
         }
     }
+
     /**
      * Change Character and number to a number that can be used to compare
+     *
      * @param state the given state to check
-     * @param i character at index
-     * @param j index of which string to check
+     * @param i     character at index
+     * @param j     index of which string to check
      * @return true if the species is right, false if the specie does not exist.
      * Helper Function for TASK 3 and TASK 4
      */
@@ -182,6 +196,7 @@ public class Arboretum {
                 || state[j].charAt(i) == 'j'
                 || state[j].charAt(i) == 'm');
     }
+
     /**
      * A sharedState string array is well-formed if it complies with the following rules:
      * <p>
@@ -239,15 +254,21 @@ public class Arboretum {
      */
     public static boolean isSharedStateWellFormed(String[] sharedState) {
         // Check turn in the right format
-        if (sharedState.length != 5){return false;}
-        if (sharedState[0].length() != 1 || (sharedState[0].charAt(0) != 'A' && sharedState[0].charAt(0) != 'B')){
+        if (sharedState.length != 5) {
+            return false;
+        }
+        if (sharedState[0].length() != 1 || (sharedState[0].charAt(0) != 'A' && sharedState[0].charAt(0) != 'B')) {
             return false;
         }
         // Check Player A's arboretum
         // Check number of states
-        if ((sharedState[1].length()-1)%8 != 0){return false;}
+        if ((sharedState[1].length() - 1) % 8 != 0) {
+            return false;
+        }
         // Check format of first letter
-        if (sharedState[1].charAt(0) != 'A'){return false;}
+        if (sharedState[1].charAt(0) != 'A') {
+            return false;
+        }
         if (sharedState[1].length() != 1) {
             // Check the species
             for (int i = 1; i < sharedState[1].length() - 7; i += 8) {
@@ -276,9 +297,13 @@ public class Arboretum {
         }
         // Check Player B's arboretum
         // Check number of states
-        if ((sharedState[3].length()-1)%8 != 0){return false;}
+        if ((sharedState[3].length() - 1) % 8 != 0) {
+            return false;
+        }
         // Check format of first letter
-        if (sharedState[3].charAt(0) != 'B'){return false;}
+        if (sharedState[3].charAt(0) != 'B') {
+            return false;
+        }
         // Check the species
         if (sharedState[1].length() != 1) {
             for (int i = 1; i < sharedState[3].length() - 7; i += 8) {
@@ -307,8 +332,12 @@ public class Arboretum {
         }
         // Check Player A's discard
         // Check alphabetic
-        if (sharedState[2].charAt(0) != 'A'){return false;}
-        if ((sharedState[2].length()-1)%2 != 0){return false;}
+        if (sharedState[2].charAt(0) != 'A') {
+            return false;
+        }
+        if ((sharedState[2].length() - 1) % 2 != 0) {
+            return false;
+        }
         if (sharedState[1].length() != 1) {
             for (int i = 1; i < sharedState[2].length(); i += 2) {
                 if (checkSpecies(sharedState, i, 2)) return false;
@@ -322,8 +351,12 @@ public class Arboretum {
         }
         // Check Player B's discard
         // Check alphabetic
-        if (sharedState[4].charAt(0) != 'B'){return false;}
-        if ((sharedState[4].length()-1)%2 != 0){return false;}
+        if (sharedState[4].charAt(0) != 'B') {
+            return false;
+        }
+        if ((sharedState[4].length() - 1) % 2 != 0) {
+            return false;
+        }
         if (sharedState[1].length() != 1) {
             for (int i = 1; i < sharedState[4].length(); i += 2) {
                 if (checkSpecies(sharedState, i, 4)) return false;
@@ -341,9 +374,10 @@ public class Arboretum {
 
     /**
      * Change Character and number to a number that can be used to compare
+     *
      * @param state the given char to check
-     * @param i character at index
-     * @param j index of which string to check
+     * @param i     character at index
+     * @param j     index of which string to check
      * @return true if the 2nd character's direction is right, false if it is wrong.
      * Helper Function for TASK 4
      */
@@ -355,9 +389,10 @@ public class Arboretum {
 
     /**
      * Change Character and number to a number that can be used to compare
+     *
      * @param state the given char to check
-     * @param i character at index
-     * @param j index of which string to check
+     * @param i     character at index
+     * @param j     index of which string to check
      * @return true if the 5th character's direction is right, false if it is wrong.
      * Helper Function for TASK 4
      */
@@ -408,19 +443,19 @@ public class Arboretum {
      * TASK 7
      */
     public static boolean isPlacementValid(String[][] gameState, String placement) {
-        Player player=new Player("player",48);
+        Player player = new Player("player", 48);
 
         //initialise with appropriate player's information
-        if(gameState[0][0]=="A") {
-            player=new Player("A",gameState[1][1],gameState[0][1],gameState[0][2]);
+        if (gameState[0][0] == "A") {
+            player = new Player("A", gameState[1][1], gameState[0][1], gameState[0][2]);
         } else {
-            player=new Player("B",gameState[1][2],gameState[0][3],gameState[0][4]);
+            player = new Player("B", gameState[1][2], gameState[0][3], gameState[0][4]);
         }
 
-        Card cardToPlay=new Card(placement.substring(0,2));
-        Position posToPlay=new Position(placement.substring(2));
+        Card cardToPlay = new Card(placement.substring(0, 2));
+        Position posToPlay = new Position(placement.substring(2));
 
-        return player.checkPlay(cardToPlay,posToPlay);
+        return player.checkPlay(cardToPlay, posToPlay);
         //FIXME TASK 7
     }
 
@@ -478,7 +513,7 @@ public class Arboretum {
         String discardACards = discardA.substring(1);
         int numCardInDiscardA = 0;
         String[] discardACardsList = {};
-        if (!discardACards.equals("")){
+        if (!discardACards.equals("")) {
             discardACardsList = discardACards.split("(?<=\\G.{" + 2 + "})");
             numCardInDiscardA = discardACardsList.length;
         }
@@ -506,7 +541,7 @@ public class Arboretum {
         String discardBCards = discardB.substring(1);
         int numCardInDiscardB = 0;
         String[] discardBCardsList = {};
-        if (!discardBCards.equals("")){
+        if (!discardBCards.equals("")) {
             discardBCardsList = discardBCards.split("(?<=\\G.{" + 2 + "})");
             numCardInDiscardB = discardBCardsList.length;
         }
@@ -517,7 +552,7 @@ public class Arboretum {
         String deck = hiddenState[0];
         int numCardInDeck = 0;
         String[] deckList = {};
-        if (!deck.equals("")){
+        if (!deck.equals("")) {
             deckList = deck.split("(?<=\\G.{" + 2 + "})");
             numCardInDeck = deckList.length;
         }
@@ -528,7 +563,7 @@ public class Arboretum {
         String handACards = handA.substring(1);
         int numCardInHandA = 0;
         String[] handACardsList = {};
-        if (!handACards.equals("")){
+        if (!handACards.equals("")) {
             handACardsList = handACards.split("(?<=\\G.{" + 2 + "})");
             numCardInHandA = handACardsList.length;
         }
@@ -539,7 +574,7 @@ public class Arboretum {
         String handBCards = handB.substring(1);
         int numCardInHandB = 0;
         String[] handBCardsList = {};
-        if (!handBCards.equals("")){
+        if (!handBCards.equals("")) {
             handBCardsList = handBCards.split("(?<=\\G.{" + 2 + "})");
             numCardInHandB = handBCardsList.length;
         }
@@ -579,63 +614,68 @@ public class Arboretum {
                 return false;
             }
         }
-        if (!checkArboretum(arboretumATrees)){
+        if (!checkArboretum(arboretumATrees)) {
 //            System.out.println(3);
             return false;
         }
-        if (!checkArboretum(arboretumBTrees)){
+        if (!checkArboretum(arboretumBTrees)) {
 //            System.out.println(4);
             return false;
         }
-        if (!(numCardInArboretumB == numCardInArboretumA || numCardInArboretumB == numCardInArboretumA - 1)){
+        if (!(numCardInArboretumB == numCardInArboretumA || numCardInArboretumB == numCardInArboretumA - 1)) {
 //            System.out.println(5);
             return false;
         }
-        if (numCardInHandA == 0 && numCardInDeck != 48){
+        if (numCardInHandA == 0 && numCardInDeck != 48) {
 //            System.out.println(6);
             return false;
         }
-        if (numCardInHandB == 0 && numCardInDeck !=48){
+        if (numCardInHandB == 0 && numCardInDeck != 48) {
 //            System.out.println(7);
             return false;
         }
-        if (turn.equals("A") && numCardInHandB != 7 ){
+        if (turn.equals("A") && numCardInHandB != 7) {
 //            System.out.println(8);
-            if (numCardInDeck !=48){
+            if (numCardInDeck != 48) {
                 return false;
             }
 
         }
-        if (turn.equals("A") && !(numCardInHandA == 7 || numCardInHandA == 8|| numCardInHandA == 9)){
+        if (turn.equals("A") && !(numCardInHandA == 7 || numCardInHandA == 8 || numCardInHandA == 9)) {
 //            System.out.println(9);
-            if (numCardInDeck !=48){
+            if (numCardInDeck != 48) {
                 return false;
             }
         }
-        if (turn.equals("B") && numCardInHandA != 7 ){
+        if (turn.equals("B") && numCardInHandA != 7) {
 //            System.out.println(10);
-            if (numCardInDeck !=48){
+            if (numCardInDeck != 48) {
                 return false;
             }
         }
-        if (turn.equals("B") && !(numCardInHandB == 7 || numCardInHandB == 8|| numCardInHandB == 9)){
+        if (turn.equals("B") && !(numCardInHandB == 7 || numCardInHandB == 8 || numCardInHandB == 9)) {
 //            System.out.println(11);
-            if (numCardInDeck !=48){
+            if (numCardInDeck != 48) {
                 return false;
             }
         }
-        if (numCardInDiscardA > numCardInArboretumA){
+        if (numCardInDiscardA > numCardInArboretumA) {
 //            System.out.println(12);
             return false;
         }
-        if (numCardInDiscardB > numCardInArboretumB){
+        if (numCardInDiscardB > numCardInArboretumB) {
 //            System.out.println(13);
             return false;
         }
         return true;
         // FIXME TASK 8
     }
-
+    /**
+     * A Helper function to determine whether the given arboretum is valid.
+     *
+     * @param arboretum the arboretum String
+     * @return true if the arboretum is valid, false if it is not valid.
+     */
     private static boolean checkArboretum(String arboretum) {
 //        System.out.println(arboretum);
         if (!arboretum.equals("")) {
@@ -658,7 +698,7 @@ public class Arboretum {
 
                     startPos = new int[]{0, 0};
                     map.put(name, startPos);
-                    hasNext.put(name,startPos);
+                    hasNext.put(name, startPos);
 //                gridPane.add(new Button(name),0,0);
                 }
 
@@ -707,10 +747,9 @@ public class Arboretum {
 
             }
 
-            if (map.keySet().size() != hasNext.keySet().size()){
+            if (map.keySet().size() != hasNext.keySet().size()) {
                 return false;
             }
-
 
 
         } else {
@@ -862,17 +901,17 @@ public class Arboretum {
                 new String[]{"a7a8b2b5b6c2c4c5c7d1d3d4d6d7d8m1", "Ab3b4c1j1m2m5m8", "Ba1a3a6b7b8c8d2j2j8"}};
         String[] placements = {"N01W02", "N02W01", "N01C00", "N01E01", "C00E02", "S01E01", "S02W01",
                 "S01W02", "C00W03"};
-        String[] cards={"a1","a3","a6","b7","b8","c8","d2","j2","j8"};
+        String[] cards = {"a1", "a3", "a6", "b7", "b8", "c8", "d2", "j2", "j8"};
 
-        for(int i=0;i<placements.length;i++) {
-            for(int j=0;j<cards.length;j++) {
-                String placementString=cards[j]+placements[i];
-                isPlacementValid(validState,placementString);
+        for (int i = 0; i < placements.length; i++) {
+            for (int j = 0; j < cards.length; j++) {
+                String placementString = cards[j] + placements[i];
+                isPlacementValid(validState, placementString);
             }
         }
 
-        Position test1=new Position("C00C00");
-        Position test2=new Position(0,0);
+        Position test1 = new Position("C00C00");
+        Position test2 = new Position(0, 0);
         System.out.println(test1.hashCode());
         System.out.println(test2.hashCode());
     }
