@@ -5,9 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -43,59 +41,59 @@ public class Viewer extends Application {
     private TextField aHandTextField;
     private TextField bHandTextField;
 
-    Image a1 = new Image(new FileInputStream("assets/cards/a_01.png"), 61, 61, true, true);
-    Image a2 = new Image(new FileInputStream("assets/cards/a_02.png"), 61, 61, true, true);
-    Image a3 = new Image(new FileInputStream("assets/cards/a_03.png"), 61, 61, true, true);
-    Image a4 = new Image(new FileInputStream("assets/cards/a_04.png"), 61, 61, true, true);
-    Image a5 = new Image(new FileInputStream("assets/cards/a_05.png"), 61, 61, true, true);
-    Image a6 = new Image(new FileInputStream("assets/cards/a_06.png"), 61, 61, true, true);
-    Image a7 = new Image(new FileInputStream("assets/cards/a_07.png"), 61, 61, true, true);
-    Image a8 = new Image(new FileInputStream("assets/cards/a_08.png"), 61, 61, true, true);
+    Image a1 = new Image(new FileInputStream("assets/cards/a_01.png"), 112, 112, true, true);
+    Image a2 = new Image(new FileInputStream("assets/cards/a_02.png"), 112, 112, true, true);
+    Image a3 = new Image(new FileInputStream("assets/cards/a_03.png"), 112, 112, true, true);
+    Image a4 = new Image(new FileInputStream("assets/cards/a_04.png"), 112, 112, true, true);
+    Image a5 = new Image(new FileInputStream("assets/cards/a_05.png"), 112, 112, true, true);
+    Image a6 = new Image(new FileInputStream("assets/cards/a_06.png"), 112, 112, true, true);
+    Image a7 = new Image(new FileInputStream("assets/cards/a_07.png"), 112, 112, true, true);
+    Image a8 = new Image(new FileInputStream("assets/cards/a_08.png"), 112, 112, true, true);
 
-    Image b1 = new Image(new FileInputStream("assets/cards/b_01.png"), 61, 61, true, true);
-    Image b2 = new Image(new FileInputStream("assets/cards/b_02.png"), 61, 61, true, true);
-    Image b3 = new Image(new FileInputStream("assets/cards/b_03.png"), 61, 61, true, true);
-    Image b4 = new Image(new FileInputStream("assets/cards/b_04.png"), 61, 61, true, true);
-    Image b5 = new Image(new FileInputStream("assets/cards/b_05.png"), 61, 61, true, true);
-    Image b6 = new Image(new FileInputStream("assets/cards/b_06.png"), 61, 61, true, true);
-    Image b7 = new Image(new FileInputStream("assets/cards/b_07.png"), 61, 61, true, true);
-    Image b8 = new Image(new FileInputStream("assets/cards/b_08.png"), 61, 61, true, true);
+    Image b1 = new Image(new FileInputStream("assets/cards/b_01.png"), 112, 112, true, true);
+    Image b2 = new Image(new FileInputStream("assets/cards/b_02.png"), 112, 112, true, true);
+    Image b3 = new Image(new FileInputStream("assets/cards/b_03.png"), 112, 112, true, true);
+    Image b4 = new Image(new FileInputStream("assets/cards/b_04.png"), 112, 112, true, true);
+    Image b5 = new Image(new FileInputStream("assets/cards/b_05.png"), 112, 112, true, true);
+    Image b6 = new Image(new FileInputStream("assets/cards/b_06.png"), 112, 112, true, true);
+    Image b7 = new Image(new FileInputStream("assets/cards/b_07.png"), 112, 112, true, true);
+    Image b8 = new Image(new FileInputStream("assets/cards/b_08.png"), 112, 112, true, true);
 
-    Image c1 = new Image(new FileInputStream("assets/cards/c_01.png"), 61, 61, true, true);
-    Image c2 = new Image(new FileInputStream("assets/cards/c_02.png"), 61, 61, true, true);
-    Image c3 = new Image(new FileInputStream("assets/cards/c_03.png"), 61, 61, true, true);
-    Image c4 = new Image(new FileInputStream("assets/cards/c_04.png"), 61, 61, true, true);
-    Image c5 = new Image(new FileInputStream("assets/cards/c_05.png"), 61, 61, true, true);
-    Image c6 = new Image(new FileInputStream("assets/cards/c_06.png"), 61, 61, true, true);
-    Image c7 = new Image(new FileInputStream("assets/cards/c_07.png"), 61, 61, true, true);
-    Image c8 = new Image(new FileInputStream("assets/cards/c_08.png"), 61, 61, true, true);
+    Image c1 = new Image(new FileInputStream("assets/cards/c_01.png"), 112, 112, true, true);
+    Image c2 = new Image(new FileInputStream("assets/cards/c_02.png"), 112, 112, true, true);
+    Image c3 = new Image(new FileInputStream("assets/cards/c_03.png"), 112, 112, true, true);
+    Image c4 = new Image(new FileInputStream("assets/cards/c_04.png"), 112, 112, true, true);
+    Image c5 = new Image(new FileInputStream("assets/cards/c_05.png"), 112, 112, true, true);
+    Image c6 = new Image(new FileInputStream("assets/cards/c_06.png"), 112, 112, true, true);
+    Image c7 = new Image(new FileInputStream("assets/cards/c_07.png"), 112, 112, true, true);
+    Image c8 = new Image(new FileInputStream("assets/cards/c_08.png"), 112, 112, true, true);
 
-    Image d1 = new Image(new FileInputStream("assets/cards/d_01.png"), 61, 61, true, true);
-    Image d2 = new Image(new FileInputStream("assets/cards/d_02.png"), 61, 61, true, true);
-    Image d3 = new Image(new FileInputStream("assets/cards/d_03.png"), 61, 61, true, true);
-    Image d4 = new Image(new FileInputStream("assets/cards/d_04.png"), 61, 61, true, true);
-    Image d5 = new Image(new FileInputStream("assets/cards/d_05.png"), 61, 61, true, true);
-    Image d6 = new Image(new FileInputStream("assets/cards/d_06.png"), 61, 61, true, true);
-    Image d7 = new Image(new FileInputStream("assets/cards/d_07.png"), 61, 61, true, true);
-    Image d8 = new Image(new FileInputStream("assets/cards/d_08.png"), 61, 61, true, true);
+    Image d1 = new Image(new FileInputStream("assets/cards/d_01.png"), 112, 112, true, true);
+    Image d2 = new Image(new FileInputStream("assets/cards/d_02.png"), 112, 112, true, true);
+    Image d3 = new Image(new FileInputStream("assets/cards/d_03.png"), 112, 112, true, true);
+    Image d4 = new Image(new FileInputStream("assets/cards/d_04.png"), 112, 112, true, true);
+    Image d5 = new Image(new FileInputStream("assets/cards/d_05.png"), 112, 112, true, true);
+    Image d6 = new Image(new FileInputStream("assets/cards/d_06.png"), 112, 112, true, true);
+    Image d7 = new Image(new FileInputStream("assets/cards/d_07.png"), 112, 112, true, true);
+    Image d8 = new Image(new FileInputStream("assets/cards/d_08.png"), 112, 112, true, true);
 
-    Image j1 = new Image(new FileInputStream("assets/cards/j_01.png"), 61, 61, true, true);
-    Image j2 = new Image(new FileInputStream("assets/cards/j_02.png"), 61, 61, true, true);
-    Image j3 = new Image(new FileInputStream("assets/cards/j_03.png"), 61, 61, true, true);
-    Image j4 = new Image(new FileInputStream("assets/cards/j_04.png"), 61, 61, true, true);
-    Image j5 = new Image(new FileInputStream("assets/cards/j_05.png"), 61, 61, true, true);
-    Image j6 = new Image(new FileInputStream("assets/cards/j_06.png"), 61, 61, true, true);
-    Image j7 = new Image(new FileInputStream("assets/cards/j_07.png"), 61, 61, true, true);
-    Image j8 = new Image(new FileInputStream("assets/cards/j_08.png"), 61, 61, true, true);
+    Image j1 = new Image(new FileInputStream("assets/cards/j_01.png"), 112, 112, true, true);
+    Image j2 = new Image(new FileInputStream("assets/cards/j_02.png"), 112, 112, true, true);
+    Image j3 = new Image(new FileInputStream("assets/cards/j_03.png"), 112, 112, true, true);
+    Image j4 = new Image(new FileInputStream("assets/cards/j_04.png"), 112, 112, true, true);
+    Image j5 = new Image(new FileInputStream("assets/cards/j_05.png"), 112, 112, true, true);
+    Image j6 = new Image(new FileInputStream("assets/cards/j_06.png"), 112, 112, true, true);
+    Image j7 = new Image(new FileInputStream("assets/cards/j_07.png"), 112, 112, true, true);
+    Image j8 = new Image(new FileInputStream("assets/cards/j_08.png"), 112, 112, true, true);
 
-    Image m1 = new Image(new FileInputStream("assets/cards/m_01.png"), 61, 61, true, true);
-    Image m2 = new Image(new FileInputStream("assets/cards/m_02.png"), 61, 61, true, true);
-    Image m3 = new Image(new FileInputStream("assets/cards/m_03.png"), 61, 61, true, true);
-    Image m4 = new Image(new FileInputStream("assets/cards/m_04.png"), 61, 61, true, true);
-    Image m5 = new Image(new FileInputStream("assets/cards/m_05.png"), 61, 61, true, true);
-    Image m6 = new Image(new FileInputStream("assets/cards/m_06.png"), 61, 61, true, true);
-    Image m7 = new Image(new FileInputStream("assets/cards/m_07.png"), 61, 61, true, true);
-    Image m8 = new Image(new FileInputStream("assets/cards/m_08.png"), 61, 61, true, true);
+    Image m1 = new Image(new FileInputStream("assets/cards/m_01.png"), 112, 112, true, true);
+    Image m2 = new Image(new FileInputStream("assets/cards/m_02.png"), 112, 112, true, true);
+    Image m3 = new Image(new FileInputStream("assets/cards/m_03.png"), 112, 112, true, true);
+    Image m4 = new Image(new FileInputStream("assets/cards/m_04.png"), 112, 112, true, true);
+    Image m5 = new Image(new FileInputStream("assets/cards/m_05.png"), 112, 112, true, true);
+    Image m6 = new Image(new FileInputStream("assets/cards/m_06.png"), 112, 112, true, true);
+    Image m7 = new Image(new FileInputStream("assets/cards/m_07.png"), 112, 112, true, true);
+    Image m8 = new Image(new FileInputStream("assets/cards/m_08.png"), 112, 112, true, true);
 
     public Viewer() throws FileNotFoundException {
     }
@@ -106,7 +104,6 @@ public class Viewer extends Application {
      * @param gameState TASK 6
      */
     void displayState(String[][] gameState) {
-
 //        System.out.println(Arrays.deepToString(gameState));
         String[] sharedState = gameState[0];
         String[] hiddenState = gameState[1];
@@ -122,7 +119,7 @@ public class Viewer extends Application {
         String handA = hiddenState[1];
         String handB = hiddenState[2];
         if (!Objects.equals(turn, "") && !Objects.equals(arboretumA, "") && !Objects.equals(discardA, "") && !Objects.equals(arboretumB, "") && !Objects.equals(discardB, "") && !Objects.equals(deck, "") && !Objects.equals(handA, "") && !Objects.equals(handB, "")) {
-
+            ScrollPane scrollPane = new ScrollPane();
             Label arboretum_A = new Label("Player A arboretum: " + arboretumA);
             Label discard_A = new Label("Player A discard: " + discardA);
             Label hand_A = new Label("Player A hand(hidden): " + handA);
@@ -137,9 +134,11 @@ public class Viewer extends Application {
 
             sharedA.setBackground(new Background(new BackgroundFill(Color.rgb(185, 230, 160), CornerRadii.EMPTY, Insets.EMPTY)));
 
+
             VBox arboretumABox = new VBox();
             GridPane gridPaneSA = addArboretum(arboretumA);
             arboretumABox.getChildren().addAll(arboretum_A, gridPaneSA);
+
 
             VBox discardABox = new VBox();
 
@@ -203,9 +202,15 @@ public class Viewer extends Application {
             HBox all = new HBox();
             all.getChildren().addAll(vboxS, vboxD);
 
-            root.getChildren().addAll(all);
+            scrollPane.setContent(all);
+            scrollPane.setPrefSize(1050,700);
+            root.getChildren().addAll(scrollPane);
 
         }else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Some inputs are missing...", ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.show();
+//            root.getChildren().addAll(alert);
             System.out.println("some inputs are missing...");
         }
         // FIXME Task 6: implement the simple state viewer
@@ -277,7 +282,7 @@ public class Viewer extends Application {
         GridPane gridPane = new GridPane();
 
         //Setting size for the pane
-        gridPane.setMinSize(200, 100);
+        gridPane.setMinSize(100, 50);
 
         //Setting the padding
         gridPane.setPadding(new Insets(10, 10, 10, 10));
@@ -310,7 +315,7 @@ public class Viewer extends Application {
         GridPane gridPane = new GridPane();
 
         //Setting size for the pane
-        gridPane.setMinSize(200, 100);
+        gridPane.setMinSize(100, 50);
 
         //Setting the padding
         gridPane.setPadding(new Insets(10, 10, 10, 10));
@@ -349,7 +354,7 @@ public class Viewer extends Application {
         GridPane gridPane = new GridPane();
 
         //Setting size for the pane
-        gridPane.setMinSize(200, 100);
+        gridPane.setMinSize(100, 50);
 
         //Setting the padding
         gridPane.setPadding(new Insets(10, 10, 10, 10));
@@ -383,7 +388,7 @@ public class Viewer extends Application {
         GridPane gridPane = new GridPane();
 
         //Setting size for the pane
-        gridPane.setMinSize(400, 200);
+        gridPane.setMinSize(100, 50);
 
         //Setting the padding
         gridPane.setPadding(new Insets(10, 10, 10, 10));
@@ -506,11 +511,11 @@ public class Viewer extends Application {
 
         Button displayState = new Button("Display State");
         displayState.setOnAction(e -> {
-//            String[] sharedState = {turnIDTextField.getText(), aArboretumTextField.getText(),
-//                    aDiscardTextField.getText(), bArboretumTextField.getText(), bDiscardTextField.getText()};
-            String[] sharedState = {"A", "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01", "Aa7c4d6", "Bj5C00C00j6S01C00j7S02W01j4C00W01m6C00E01m3C00W02j3N01W01", "Bb2d4c5a1d5"};
-//            String[] hiddenState = {deckTextField.getText(), aHandTextField.getText(), bHandTextField.getText()};
-            String[] hiddenState = {"a3a8b5b6c2c7d1d3d7d8m1", "Ab3b4c1j1m2m5m8", "Ba6b7b8c8d2j2j8"};
+            String[] sharedState = {turnIDTextField.getText(), aArboretumTextField.getText(),
+                    aDiscardTextField.getText(), bArboretumTextField.getText(), bDiscardTextField.getText()};
+//            String[] sharedState = {"A", "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01", "Aa7c4d6", "Bj5C00C00j6S01C00j7S02W01j4C00W01m6C00E01m3C00W02j3N01W01", "Bb2d4c5a1d5"};
+            String[] hiddenState = {deckTextField.getText(), aHandTextField.getText(), bHandTextField.getText()};
+//            String[] hiddenState = {"a3a8b5b6c2c7d1d3d7d8m1", "Ab3b4c1j1m2m5m8", "Ba6b7b8c8d2j2j8"};
             displayState(new String[][]{sharedState, hiddenState});//[[A, Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01, Aa7c4d6, Bj5C00C00j6S01C00j7S02W01j4C00W01m6C00E01m3C00W02j3N01W01, Bb2d4c5a1d5], [a3a8b5b6c2c7d1d3d7d8m1, Ab3b4c1j1m2m5m8, Ba6b7b8c8d2j2j8]]
 
         });
