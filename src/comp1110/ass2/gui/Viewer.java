@@ -21,8 +21,8 @@ import java.util.Objects;
 
 public class Viewer extends Application {
 
-    private static final int VIEWER_WIDTH = 1200;//1200
-    private static final int VIEWER_HEIGHT = 700;//700
+    private static final int VIEWER_WIDTH = 1200;
+    private static final int VIEWER_HEIGHT = 700;
     private static final int GRID_SIZE = 50;
     private static final int GRID_DIMENSION = 10;
     private static final int WINDOW_XOFFSET = 10;
@@ -104,12 +104,10 @@ public class Viewer extends Application {
      * @param gameState TASK 6
      */
     void displayState(String[][] gameState) {
-//        System.out.println(Arrays.deepToString(gameState));
         String[] sharedState = gameState[0];
         String[] hiddenState = gameState[1];
-//        System.out.println(Arrays.toString(sharedState));
-//        System.out.println(Arrays.toString(hiddenState));
 
+        //put all gameState to tree strings
         String turn = sharedState[0];
         String arboretumA = sharedState[1];
         String discardA = sharedState[2];
@@ -118,6 +116,7 @@ public class Viewer extends Application {
         String deck = hiddenState[0];
         String handA = hiddenState[1];
         String handB = hiddenState[2];
+
         if (!Objects.equals(turn, "") && !Objects.equals(arboretumA, "") && !Objects.equals(discardA, "") && !Objects.equals(arboretumB, "") && !Objects.equals(discardB, "") && !Objects.equals(deck, "") && !Objects.equals(handA, "") && !Objects.equals(handB, "")) {
             ScrollPane scrollPane = new ScrollPane();
             Label arboretum_A = new Label("Player A arboretum: " + arboretumA);
@@ -129,60 +128,59 @@ public class Viewer extends Application {
             Label deckC = new Label("Deck(hidden): " + deck);
             Label turnP = new Label("turn: " + turn);
 
-
+            //Player A part
+            //player A share area
             HBox sharedA = new HBox();
-
             sharedA.setBackground(new Background(new BackgroundFill(Color.rgb(185, 230, 160), CornerRadii.EMPTY, Insets.EMPTY)));
 
-
+            //player A arboretum (left part)
             VBox arboretumABox = new VBox();
             GridPane gridPaneSA = addArboretum(arboretumA);
             arboretumABox.getChildren().addAll(arboretum_A, gridPaneSA);
 
-
+            //player A discard + hand (right part)
             VBox discardABox = new VBox();
 
+            //player A hand
             VBox hiddenA = new VBox();
             hiddenA.setBackground(new Background(new BackgroundFill(Color.rgb(189, 189, 189), CornerRadii.EMPTY, Insets.EMPTY)));
             GridPane gridPaneHA = addHand(handA);
             hiddenA.getChildren().addAll(hand_A, gridPaneHA);
 
+            //player A discard
             GridPane gridPaneDA = addDiscard(discardA);
             discardABox.getChildren().addAll(discard_A, gridPaneDA, hiddenA);
 
             sharedA.getChildren().addAll(arboretumABox, discardABox);
 
-//        HBox hiddenA = new HBox();
-//        GridPane gridPaneHA = addHand(handA);
-//        hiddenA.getChildren().addAll(hand_A,gridPaneHA);
 
-
+            //Player B part
+            //player B share area
             HBox sharedB = new HBox();
-
             sharedB.setBackground(new Background(new BackgroundFill(Color.rgb(185, 230, 160), CornerRadii.EMPTY, Insets.EMPTY)));
 
+            //player B arboretum (left part)
             VBox arboretumBBox = new VBox();
             GridPane gridPaneSB = addArboretum(arboretumB);
             arboretumBBox.getChildren().addAll(arboretum_B, gridPaneSB);
 
+            //player B discard + hand (right part)
             VBox discardBBox = new VBox();
 
+            //player B hand
             VBox hiddenB = new VBox();
             hiddenB.setBackground(new Background(new BackgroundFill(Color.rgb(189, 189, 189), CornerRadii.EMPTY, Insets.EMPTY)));
             GridPane gridPaneHB = addHand(handB);
             hiddenB.getChildren().addAll(hand_B, gridPaneHB);
 
+            //player B discard
             GridPane gridPaneDB = addDiscard(discardB);
             discardBBox.getChildren().addAll(discard_B, gridPaneDB, hiddenB);
 
-
             sharedB.getChildren().addAll(arboretumBBox, discardBBox);
 
-//        HBox hiddenB = new HBox();
-//        GridPane gridPaneHB = addHand(handB);
-//        hiddenB.getChildren().addAll(hand_B,gridPaneHB);
 
-
+            //deck and turn
             VBox vboxD = new VBox();
             vboxD.setBackground(new Background(new BackgroundFill(Color.rgb(230, 90, 90), CornerRadii.EMPTY, Insets.EMPTY)));
             VBox discardDBox = new VBox();
@@ -193,24 +191,21 @@ public class Viewer extends Application {
             vboxD.getChildren().addAll(discardDBox, turnP);
 
 
+            //add scroll
             VBox vboxS = new VBox();
             vboxS.getChildren().addAll(sharedA, sharedB);
-
-//        VBox vboxH = new VBox();
-//        vboxH.getChildren().addAll(sharedA,sharedB);
-
             HBox all = new HBox();
             all.getChildren().addAll(vboxS, vboxD);
 
             scrollPane.setContent(all);
-            scrollPane.setPrefSize(1050,700);
+            scrollPane.setPrefSize(1050, 700);
             root.getChildren().addAll(scrollPane);
 
-        }else {
+        } else {
+            //if input not complete, pop up warning
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Some inputs are missing...", ButtonType.OK);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.show();
-//            root.getChildren().addAll(alert);
             System.out.println("some inputs are missing...");
         }
         // FIXME Task 6: implement the simple state viewer
@@ -272,11 +267,8 @@ public class Viewer extends Application {
     }
 
     private GridPane addHand(String hand) {
-
         String newArboretum = hand.substring(1);
-
         String[] trees = newArboretum.split("(?<=\\G.{" + 2 + "})");
-//        System.out.println(Arrays.toString(chunks));
 
         //Creating a Grid Pane
         GridPane gridPane = new GridPane();
@@ -306,10 +298,7 @@ public class Viewer extends Application {
     }
 
     private GridPane addDeck(String discard) {
-
-
         String[] trees = discard.split("(?<=\\G.{" + 2 + "})");
-//        System.out.println(Arrays.toString(chunks));
 
         //Creating a Grid Pane
         GridPane gridPane = new GridPane();
@@ -344,11 +333,8 @@ public class Viewer extends Application {
     }
 
     private GridPane addDiscard(String discard) {
-
         String newArboretum = discard.substring(1);
-
         String[] trees = newArboretum.split("(?<=\\G.{" + 2 + "})");
-//        System.out.println(Arrays.toString(chunks));
 
         //Creating a Grid Pane
         GridPane gridPane = new GridPane();
@@ -378,11 +364,8 @@ public class Viewer extends Application {
     }
 
     private GridPane addArboretum(String arboretum) {
-
         String newArboretum = arboretum.substring(1);
-
         String[] trees = newArboretum.split("(?<=\\G.{" + 8 + "})");
-//        System.out.println(Arrays.toString(chunks));
 
         //Creating a Grid Pane
         GridPane gridPane = new GridPane();
@@ -408,7 +391,6 @@ public class Viewer extends Application {
             int stepV = Integer.parseInt(tree.substring(3, 5));
             String directionH = tree.substring(5, 6);
             int stepH = Integer.parseInt(tree.substring(6));
-//            System.out.println(name + " " + directionV + " " + stepV+ " " + directionH + " " + stepH);
 
             int newPosV = 0;
             int newPosH = 0;
@@ -417,12 +399,9 @@ public class Viewer extends Application {
             }
             if (directionV.equals("N")) {
                 newPosV = startPos[0] - stepV;
-//                System.out.println(newPosV);
-//                System.out.println(northest);
                 if (northest > newPosV) {
                     northest = newPosV;
                 }
-//                System.out.println(northest);
             }
             if (directionV.equals("S")) {
                 newPosV = startPos[0] + stepV;
@@ -441,31 +420,18 @@ public class Viewer extends Application {
             }
             int[] newPos = {newPosV, newPosH};
             map.put(name, newPos);
-//            System.out.println(Arrays.toString(newPos));
 
             if (directionV.equals("C") && directionH.equals("C")) {
-
                 startPos = new int[]{0, 0};
                 map.put(name, startPos);
-//                gridPane.add(new Button(name),0,0);
             }
 
         }
-
-//        gridPane.add(text1, 0, 0);
-//        gridPane.add(textField1, 1, 0);
-//        gridPane.add(text2, 0, 1);
-//        gridPane.add(textField2, 1, 1);
-//        gridPane.add(button1, 0, 2);
-//        gridPane.add(button2, 1, 2);
-//        System.out.println(map.values());
-//        System.out.println(northest+ "  " +westest);
 
         for (String key : map.keySet()) {
             int[] value = map.get(key);
             value[0] = value[0] + Math.abs(northest);
             value[1] = value[1] + Math.abs(westest);
-//            System.out.println(key+ "  " +Arrays.toString(value));
             try {
                 gridPane.add(new ImageView(addImage(key)), value[1], value[0]);
             } catch (FileNotFoundException e) {
@@ -473,7 +439,6 @@ public class Viewer extends Application {
             }
 
         }
-
         return gridPane;
     }
 
@@ -511,8 +476,7 @@ public class Viewer extends Application {
 
         Button displayState = new Button("Display State");
         displayState.setOnAction(e -> {
-            String[] sharedState = {turnIDTextField.getText(), aArboretumTextField.getText(),
-                    aDiscardTextField.getText(), bArboretumTextField.getText(), bDiscardTextField.getText()};
+            String[] sharedState = {turnIDTextField.getText(), aArboretumTextField.getText(), aDiscardTextField.getText(), bArboretumTextField.getText(), bDiscardTextField.getText()};
 //            String[] sharedState = {"A", "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01", "Aa7c4d6", "Bj5C00C00j6S01C00j7S02W01j4C00W01m6C00E01m3C00W02j3N01W01", "Bb2d4c5a1d5"};
             String[] hiddenState = {deckTextField.getText(), aHandTextField.getText(), bHandTextField.getText()};
 //            String[] hiddenState = {"a3a8b5b6c2c7d1d3d7d8m1", "Ab3b4c1j1m2m5m8", "Ba6b7b8c8d2j2j8"};

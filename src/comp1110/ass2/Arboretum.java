@@ -480,24 +480,29 @@ public class Arboretum {
      * TASK 8
      */
     public static boolean isStateValid(String[][] gameState) {
-//        System.out.println(Arrays.deepToString(gameState));
         String[] sharedState = gameState[0];
         String[] hiddenState = gameState[1];
-//        System.out.println(Arrays.toString(sharedState));
-//        System.out.println(Arrays.toString(hiddenState));
-        //turn
+
+
+        //turn a string shows who's turn. e.g. "A"  "B"
         String turn = sharedState[0];
 
-        //arboretumA
+
+        //arboretumA a string shows Player A's arboretum. e.g. "Aa6C00C00d6S01C00"
+        //arboretumACardsList an array shows Player A's arboretum. e.g. [a6, d6, b3, d8, j6, d1, a8, m6, j2, d4]
         String arboretumA = sharedState[1];
         String arboretumATrees = arboretumA.substring(1);
-//        System.out.println(arboretumATrees);
-//        System.out.println(arboretumATrees.equals(""));
         String[] arboretumACardsList = {};
         int numCardInArboretumA = 0;
+
+        //check if arboretum is empty. e.g. "A"
         if (!arboretumATrees.equals("")) {
+
+            //separate arboretum by every 8 bit. e.g. "a6C00C00"
             String[] arboretumATreesList = arboretumATrees.split("(?<=\\G.{" + 8 + "})");
             numCardInArboretumA = arboretumATreesList.length;
+
+            //create an array to store all name of tree on arboretum
             for (String tree : arboretumATreesList) {
                 String name = tree.substring(0, 2);
                 List<String> list = new ArrayList<>(Arrays.stream(arboretumACardsList).toList());
@@ -505,19 +510,21 @@ public class Arboretum {
                 arboretumACardsList = list.toArray(new String[0]);
             }
         }
-//        System.out.println("numCardInArboretumA: " + numCardInArboretumA);
-//        System.out.println(arboretumATrees);
 
-        //discardA
+
+        //discardA a string shows Player A's discard. e.g. "Ab5m4j3"
+        //discardACards an array shows Player A's discard. e.g. [b5, m4, j3]
         String discardA = sharedState[2];
         String discardACards = discardA.substring(1);
         int numCardInDiscardA = 0;
         String[] discardACardsList = {};
+
+        //check if discard is empty. e.g. "A"
         if (!discardACards.equals("")) {
             discardACardsList = discardACards.split("(?<=\\G.{" + 2 + "})");
             numCardInDiscardA = discardACardsList.length;
         }
-//        System.out.println("numCardInDiscardA: " + numCardInDiscardA);
+
 
         //arboretumB
         String arboretumB = sharedState[3];
@@ -534,7 +541,7 @@ public class Arboretum {
                 arboretumBCardsList = list.toArray(new String[0]);
             }
         }
-//        System.out.println("numCardInArboretumB: " + numCardInArboretumB);
+
 
         //discardB
         String discardB = sharedState[4];
@@ -545,10 +552,9 @@ public class Arboretum {
             discardBCardsList = discardBCards.split("(?<=\\G.{" + 2 + "})");
             numCardInDiscardB = discardBCardsList.length;
         }
-//        System.out.println("numCardInDiscardB: " + numCardInDiscardB);
 
 
-        //deck
+        //deck a string shows the deck. e.g. "a1a2a3a4a5a6a7b2b4b5b6b7c1c3c4c5c6c8d1d2d3d5d7j1j3j4j6j7j8m3m4m5m6m7"
         String deck = hiddenState[0];
         int numCardInDeck = 0;
         String[] deckList = {};
@@ -556,9 +562,9 @@ public class Arboretum {
             deckList = deck.split("(?<=\\G.{" + 2 + "})");
             numCardInDeck = deckList.length;
         }
-//        System.out.println("numCardInDeck: " + numCardInDeck);
 
-        //handA
+
+        //handA a string shows cards in player A's hand. e.g. "Aa8b3c2d6d8j5m2"
         String handA = hiddenState[1];
         String handACards = handA.substring(1);
         int numCardInHandA = 0;
@@ -567,9 +573,9 @@ public class Arboretum {
             handACardsList = handACards.split("(?<=\\G.{" + 2 + "})");
             numCardInHandA = handACardsList.length;
         }
-//        System.out.println("numCardInHandA: " + numCardInHandA);
 
-        //handB
+
+        //handB a string shows cards in player B's hand. e.g. "Aa8b3c2d6d8j5m2"
         String handB = hiddenState[2];
         String handBCards = handB.substring(1);
         int numCardInHandB = 0;
@@ -578,18 +584,8 @@ public class Arboretum {
             handBCardsList = handBCards.split("(?<=\\G.{" + 2 + "})");
             numCardInHandB = handBCardsList.length;
         }
-//        System.out.println("numCardInHandB: " + numCardInHandB);
 
-//        System.out.println(Arrays.toString(arboretumACardsList));
-//        System.out.println(Arrays.toString(discardACardsList));
-//        System.out.println(Arrays.toString(arboretumBCardsList));
-//        System.out.println(Arrays.toString(discardBCardsList));
-//        System.out.println(Arrays.toString(deckList));
-//        System.out.println(Arrays.toString(handACardsList));
-//        System.out.println(Arrays.toString(handBCardsList));
-//        if (arboretumACardsList.length + discardACardsList.length + arboretumBCardsList.length + discardBCardsList.length + deckList.length + handACardsList.length + handBCardsList.length != 48){
-//            return false;
-//        }
+        // put all cards in gameState[] to a list.
         List<String> allCards = new ArrayList<>();
         allCards.addAll(Arrays.stream(arboretumACardsList).toList());
         allCards.addAll(Arrays.stream(discardACardsList).toList());
@@ -598,78 +594,81 @@ public class Arboretum {
         allCards.addAll(Arrays.stream(deckList).toList());
         allCards.addAll(Arrays.stream(handACardsList).toList());
         allCards.addAll(Arrays.stream(handBCardsList).toList());
+        //remove empty string ""
         allCards.removeIf(card -> card.equals(""));
-//        System.out.println("allCards" + allCards);
-//        System.out.println(arboretumATrees);
-//        System.out.println(checkArboretum(arboretumATrees));
-//        System.out.println(checkArboretum("j5C00C00j6S01C00j7S02W01j4C00W01m6C00E01m3C00W02j3N01W01"));
+
+
+        //starting filter
+
+        //There are exactly 48 cards in the game across the deck and each player's hand, arboretum and discard pile.
         if (allCards.size() != 48) {
-//            System.out.println(1);
             return false;
         }
+
+        //There are no duplicates of any cards.
         Set<String> duplicates = new HashSet<>();
         for (String card : allCards) {
             if (!duplicates.add(card)) {
-//                System.out.println(2);
                 return false;
             }
         }
+
+        //Every card in each player's arboretum is adjacent to at least one card played _before_ it.^
         if (!checkArboretum(arboretumATrees)) {
-//            System.out.println(3);
             return false;
         }
         if (!checkArboretum(arboretumBTrees)) {
-//            System.out.println(4);
             return false;
         }
+
+        //The number of card's in player B's arboretum is equal to, or one less than the number of cards in player A's
         if (!(numCardInArboretumB == numCardInArboretumA || numCardInArboretumB == numCardInArboretumA - 1)) {
-//            System.out.println(5);
             return false;
         }
+
+        // Each player may have 0 cards in hand only if all cards are in the deck.
         if (numCardInHandA == 0 && numCardInDeck != 48) {
-//            System.out.println(6);
             return false;
         }
         if (numCardInHandB == 0 && numCardInDeck != 48) {
-//            System.out.println(7);
             return false;
         }
-        if (turn.equals("A") && numCardInHandB != 7) {
-//            System.out.println(8);
-            if (numCardInDeck != 48) {
-                return false;
-            }
 
-        }
-        if (turn.equals("A") && !(numCardInHandA == 7 || numCardInHandA == 8 || numCardInHandA == 9)) {
-//            System.out.println(9);
+        //Otherwise, a player has exactly 7 cards in their hand if it is not their turn.
+        if (turn.equals("A") && numCardInHandB != 7) {
             if (numCardInDeck != 48) {
                 return false;
             }
         }
         if (turn.equals("B") && numCardInHandA != 7) {
-//            System.out.println(10);
+            if (numCardInDeck != 48) {
+                return false;
+            }
+        }
+
+        //If it is a player's turn, they may have 7, 8, or 9 cards in hard.
+        if (turn.equals("A") && !(numCardInHandA == 7 || numCardInHandA == 8 || numCardInHandA == 9)) {
             if (numCardInDeck != 48) {
                 return false;
             }
         }
         if (turn.equals("B") && !(numCardInHandB == 7 || numCardInHandB == 8 || numCardInHandB == 9)) {
-//            System.out.println(11);
             if (numCardInDeck != 48) {
                 return false;
             }
         }
+
+        //The number of cards in a player's discard pile is less than or equal to the number of cards in their arboretum.
         if (numCardInDiscardA > numCardInArboretumA) {
-//            System.out.println(12);
             return false;
         }
         if (numCardInDiscardB > numCardInArboretumB) {
-//            System.out.println(13);
             return false;
         }
         return true;
         // FIXME TASK 8
     }
+
     /**
      * A Helper function to determine whether the given arboretum is valid.
      *
@@ -677,29 +676,33 @@ public class Arboretum {
      * @return true if the arboretum is valid, false if it is not valid.
      */
     private static boolean checkArboretum(String arboretum) {
-//        System.out.println(arboretum);
+        //check if arboretum is empty. e.g. "A"
         if (!arboretum.equals("")) {
+            //a map that store all trees by order in arboretum.
             HashMap<String, int[]> map = new HashMap<>();
+            //another map that try to add valid trees by order from last map.
+            // If these two map's length doesn't match, return false.
             HashMap<String, int[]> hasNext = new HashMap<>();
             String[] arboretumBTreesList = arboretum.split("(?<=\\G.{" + 8 + "})");
             int[] startPos = {0, 0};
 
+            //put all trees to an array by order. e.g. [a6C00C00, d6S01C00, b3C00W01, d8N01W01]
             for (String tree : arboretumBTreesList) {
                 String name = tree.substring(0, 2);
+
+                //get tree absolute location to start position(0,0). S & E positive; N & W negative.
+                // e.g. d6 is on [1,0], b3 is on [0, -1], d8 is on [-1, -1]
                 String directionV = tree.substring(2, 3);
                 int stepV = Integer.parseInt(tree.substring(3, 5));
                 String directionH = tree.substring(5, 6);
                 int stepH = Integer.parseInt(tree.substring(6));
-//            System.out.println(name + " " + directionV + " " + stepV+ " " + directionH + " " + stepH);
 
                 int newPosV = 0;
                 int newPosH = 0;
                 if (directionV.equals("C") && directionH.equals("C")) {
-
                     startPos = new int[]{0, 0};
                     map.put(name, startPos);
                     hasNext.put(name, startPos);
-//                gridPane.add(new Button(name),0,0);
                 }
 
                 if (directionV.equals("C")) {
@@ -707,7 +710,6 @@ public class Arboretum {
                 }
                 if (directionV.equals("N")) {
                     newPosV = startPos[0] - stepV;
-//                System.out.println(newPosV);
                 }
                 if (directionV.equals("S")) {
                     newPosV = startPos[0] + stepV;
@@ -723,6 +725,7 @@ public class Arboretum {
                 }
                 int[] newPos = {newPosV, newPosH};
 
+                //check if next tree by given order can be put.
                 for (int[] pos : map.values()) {
                     if ((pos[0] == newPosV + 1 || pos[0] == newPosV - 1) && pos[1] == newPosH) {
                         hasNext.put(name, newPos);
@@ -731,19 +734,8 @@ public class Arboretum {
                         hasNext.put(name, newPos);
                     }
                 }
-//                for (String key : map.keySet()) {
-//                    int[] value = map.get(key);
-//                    System.out.println("old: " + key + " " + Arrays.toString(value));
-//
-//                }
-//                for (String key : hasNext.keySet()) {
-//                    int[] value = hasNext.get(key);
-//                    System.out.println("new: " + key + " " + Arrays.toString(value));
-//
-//                }
-//                System.out.println("-----------------------------------");
+                //normally add trees to map
                 map.put(name, newPos);
-//            System.out.println(Arrays.toString(newPos));
 
             }
 
