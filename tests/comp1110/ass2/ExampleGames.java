@@ -6,7 +6,7 @@ public class ExampleGames {
             "a1a2a3a4a5a6a7a8b1b2b3b4b5b6b7b8c1c2c3c4c5c6c7c8d1d2d3d4d5d6d7d8j1j2j3j4j5j6j7j8m1m2m3m4m5m6m7m8", "A", "B"}},
             // beginning game state. All cards in deck.
             {{"B", "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01", "Aa7c4d6",
-                    "Bj5C00C00j6S01C00j7S02W00j4C00W01m6C00E01m3C00W02j3N01W01", "Bb2d4c5a1d5"},
+                    "Bj5C00C00j6S01C00j7S02C00j4C00W01m6C00E01m3C00W02j3N01W01", "Bb2d4c5a1d5"},
                     {"a3a8c2c7d1d3d7d8m1", "Ab3b4c1j1m2m5m8", "Ba6b5b6b7b8c8d2j2j8"}},
             {{"B", "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01", "A",
                     "Bj5C00C00j6S01C00j7S02C00j4C00W01m6C00E01m3C00W02j3N01W01", "B"},
