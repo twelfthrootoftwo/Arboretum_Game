@@ -1,0 +1,44 @@
+# IMPORTANT: It is very important that you correctly complete this originality
+# statement.
+#
+# This is your statement of your submitted work being your own.
+# Incorrectly filling out this statement could lead to charges
+# of academic misconduct.
+# 
+# For information on how to fill this out correctly, see
+# https://cs.anu.edu.au/courses/comp1110/help/faq/09-originality/
+#
+
+declaration: >-
+  I submit the work below for assessment as my best work. I declare that this
+  is entirely my own work, with the following documented exceptions:
+
+
+
+# Use this to list any code that you used that you did not write,
+# aside from code provided by the lecturer.  Provide a comment
+# explaining your use and the URL to that code and the licence for
+# that code
+#
+# Add as many "url+licence+comment" entries as necessary
+# (or remove it altogether if you haven't used any external code)
+code:
+  - comment: Example of overriding equals method for classes (used in Position.equals)
+    url: https://stackoverflow.com/questions/34452816/java-comparing-two-identical-objects-gives-false
+    licence: Creative Commons CC BY-SA 3.0 https://stackoverflow.com/help/licensing
+
+# I wish to submit the following classes as entirely my own (remove this if
+# you want to just submit methods):
+class:
+   - https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/game/Arbor.java
+   - https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/game/CardStack.java
+
+# I wish to submit the following methods as entirely my own (remove this if
+# you want to just submit classes):
+method:
+   - Assignment specification string constructors and outputs for Position, Card, Deck, Discard, Player
+   - https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/game/Deck.java#L56-72
+
+# sign *your* name and uid here
+name: Natasha Pegler
+uid: u7447030

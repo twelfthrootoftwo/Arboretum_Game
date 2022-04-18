@@ -31,9 +31,9 @@ collaboration:
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 code:
-  - comment:
-    url:
-    licence:
+  - comment: Example of overriding equals method for classes
+    url: https://stackoverflow.com/questions/34452816/java-comparing-two-identical-objects-gives-false
+    licence: CC BY-SA 3.0 https://stackoverflow.com/help/licensing
 
 # Use this to list any assets (artwork, sound, etc) that you used.
 # Provide a comment explaining your use of that asset and the URL
@@ -50,8 +50,8 @@ assets:
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
 signatures:
-  - name:
-    uid:
+  - name: Natasha Pegler
+    uid: u7447030
   - name:
     uid:
   - name:
