@@ -109,7 +109,7 @@ public class Arboretum {
                 return false;
             }
         }
-        // Check sorted correctly
+        // Check if it is sorted correctly
         // For deck
         if (!hiddenState[0].isEmpty()) {
             int[] listSorted = new int[hiddenState[0].length() / 2];
@@ -180,7 +180,7 @@ public class Arboretum {
     }
 
     /**
-     * Change Character and number to a number that can be used to compare
+     * Check if the given species is in the right format
      *
      * @param state the given state to check
      * @param i     character at index
@@ -373,7 +373,7 @@ public class Arboretum {
     }
 
     /**
-     * Change Character and number to a number that can be used to compare
+     * Check if the given direction is in the right format
      *
      * @param state the given char to check
      * @param i     character at index
@@ -388,7 +388,7 @@ public class Arboretum {
     }
 
     /**
-     * Change Character and number to a number that can be used to compare
+     * Check if the given direction is in the right format
      *
      * @param state the given char to check
      * @param i     character at index

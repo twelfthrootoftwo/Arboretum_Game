@@ -1,0 +1,41 @@
+# IMPORTANT: It is very important that you correctly complete this originality
+# statement.
+#
+# This is your statement of your submitted work being your own.
+# Incorrectly filling out this statement could lead to charges
+# of academic misconduct.
+# 
+# For information on how to fill this out correctly, see
+# https://cs.anu.edu.au/courses/comp1110/help/faq/09-originality/
+#
+
+declaration: >-
+  I submit the work below for assessment as my best work. I declare that this
+  is entirely my own work, with the following documented exceptions:
+
+# Use this to list any code that you used that you did not write,
+# aside from code provided by the lecturer.  Provide a comment
+# explaining your use and the URL to that code and the licence for
+# that code
+#
+# Add as many "url+licence+comment" entries as necessary
+# (or remove it altogether if you haven't used any external code)
+code:
+  - comment: Method of how to clone a list
+    url: https://stackoverflow.com/questions/869033/how-do-i-copy-an-object-in-java
+    licence: Creative Commons CC BY-SA 3.0 https://stackoverflow.com/help/licensing
+
+# I wish to submit the following methods as entirely my own (remove this if
+# you want to just submit classes):
+method:
+   - isHiddenStateWellFormed()
+   - toNumber()
+   - checkSpecies()
+   - isSharedStateWellFormed()
+   - checkDir1()
+   - checkDir2()
+   - https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/game/Arboretum.java#L51-403
+
+# sign *your* name and uid here
+name: Hongzhe Zhu
+uid: u7338066
