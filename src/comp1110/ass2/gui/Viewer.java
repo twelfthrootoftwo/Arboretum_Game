@@ -180,7 +180,7 @@ public class Viewer extends Application {
             sharedB.getChildren().addAll(arboretumBBox, discardBBox);
 
 
-            //deck and turn
+            //deck and turn part
             VBox vboxD = new VBox();
             vboxD.setBackground(new Background(new BackgroundFill(Color.rgb(230, 90, 90), CornerRadii.EMPTY, Insets.EMPTY)));
             VBox discardDBox = new VBox();
@@ -207,6 +207,7 @@ public class Viewer extends Application {
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.show();
             System.out.println("some inputs are missing...");
+
         }
         // FIXME Task 6: implement the simple state viewer
     }
@@ -359,9 +360,10 @@ public class Viewer extends Application {
             }
 
         }
-
+        System.out.println(Math.pow(30,35) % 29);
         return gridPane;
     }
+
 
     private GridPane addArboretum(String arboretum) {
         String newArboretum = arboretum.substring(1);
