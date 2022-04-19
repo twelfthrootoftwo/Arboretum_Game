@@ -39,7 +39,7 @@ public class IsPlacementValidTest {
         String[][] validState = new String[][]{new String[]{"B",
                 "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01a7N03E01", "A",
                 "Bj5C00C00j6S01C00m1C00W01j7S02C00j4S01W01m6C00E01m3C00W02j3N01W01", "B"},
-                new String[]{"a8b2b5b6c2c4c5c7d1d3d4d6d7d8", "Ab3b4c1j1m2m5m8", "Ba1a3a6b7b8c8d2j2j8"}};
+                new String[]{"a8b2b5b6c2c4c5c7d1d3d4d5d6d7d8", "Ab3b4c1j1m2m5m8", "Ba1a3a6b7b8c8d2j2j8"}};
         String[] placements = {"N01W02", "N02W01", "N01C00", "N01E01", "C00E02", "S01E01", "S02W01",
                 "S01W02", "C00W03", "S02E01"};
         String[] cards = validState[1][2].substring(1).split("(?<=\\G.{2})");
@@ -56,7 +56,7 @@ public class IsPlacementValidTest {
         String[][] validState = new String[][]{new String[]{"B",
                 "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01", "A",
                 "Bj5C00C00j6S01C00j7C00W01j4S01W01m6C00E01m3C00W02j3N01W01", "B"},
-                new String[]{"a7a8b2b5b6c2c4c5c7d1d3d4d6d7d8m1", "Ab3b4c1j1m2m5m8", "Ba1a3a6b7b8c8d2j2j8"}};
+                new String[]{"a7a8b2b5b6c2c4c5c7d1d3d4d5d6d7d8m1", "Ab3b4c1j1m2m5m8", "Ba1a3a6b7b8c8d2j2j8"}};
         String[] invalidPlacements = {"N02W02", "N02C00", "N01E02", "S01E02", "S02E01", "S02W02", "S01W03", "N01W03"};
         String[] cards = validState[1][2].substring(1).split("(?<=\\G.{2})");
 
