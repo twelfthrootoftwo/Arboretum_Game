@@ -19,9 +19,9 @@ declaration: >-
 #
 # Add as many "name+comment" entries as necessary
 # (or remove it altogether if you haven't collaborated with anyone)
-collaboration:
-  - name:
-    comment: >-
+#collaboration:
+#  - name:
+#    comment: >-
 
 # Use this to list any code that you used that you did not write,
 # aside from code provided by the lecturer.  Provide a comment
@@ -42,9 +42,9 @@ code:
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external assets)
 assets:
-  - comment:
-    url:
-    licence:
+  - comment: Card art
+    url: https://boardgamegeek.com/filepage/146943/arboretum-fan-made-cards
+    licence: BoardGameGeek terms of service https://boardgamegeek.com/terms#toc14
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
