@@ -48,10 +48,10 @@ public class ExampleGames {
             {{"B", "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01c8N02W02c1S01C00b6N03E01m8N03W01m1S02E01a8N04E01c2N01W01b4N02E02", "Aa3c4", "Bj5C00C00j6S01C00j7S01W01j4C00W01m6C00E01m3C00W02j3N01W01d2N02W01d7S02C00b8S02E01b3N01C00d1N03W01d8S03C00b2N02C00j8S01E01", "Bd4"},
                     {"a7c5", "Ac7d3d5j1m5", "Ba1a6b5b7d6j2m2"}}, // Player A has too few cards in hand
             {{"A", "Aa6C00C00d6S01C00", "Ab5m4j3", "Bc7C00C00b8C00E01", "B"}, {
-                    "a1a2a5a7b2b6b7c1c3c4c5c6c8d2d3d5d7j4j6j7j8m3m5m6m7", "Aa8b1b3d1d8j1j2j5m2", "Ba3a4b4c2d4m1m8"}}, //
+                "a1a2a5a7b2b6b7c1c3c4c5c6c8d2d3d5d7j4j6j7j8m3m5m6m7", "Aa8b1b3d1d8j1j2j5m2", "Ba3a4b4c2d4m1m8"}}, //
             // Player A has too many cards in discard pile
             {{"A", "A", "A", "B", "B"}, {
-                    "a1a2a3a4a5a6a7b1b2b4b5b6b7b8c1c3c4c5c6c7c8d1d2d3d4d5d7j1j2j3j4j6j7j8m1m3m4m5m6m7m8",
+                "a1a2a3a4a5a6a7b1b2b4b5b6b7b8c1c3c4c5c6c7c8d1d2d3d4d5d7j1j2j3j4j6j7j8m1m3m4m5m6m7m8",
                     "Aa8b3c2d6d8j5m2", "B"}}, // Player B has 0 cards in hand, but should have 7
 
     };
