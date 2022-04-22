@@ -1,18 +1,15 @@
 package comp1110.ass2.game;
 
 public class Card {
-    String name;//should a card have name?? NP: Yeah, this isn't going to do anything, we can remove
     Species species;
     int number;
 
     public Card(){
-        this.name = "null";
         this.species = Species.Null;
         this.number = -1;
     }
 
-    public Card(String name, Species species, int number){
-        this.name = name;//???
+    public Card(Species species, int number){
         this.species = species;
         this.number = number;
     }
@@ -30,13 +27,12 @@ public class Card {
         int value=Integer.parseInt(cardCode.substring(1));
         Species species=Species.valueOf(speciesCode);
 
-        this.name=cardCode;
         this.species=species;
         this.number=value;
     }
 
     public boolean isEmptyCard(){
-       if (this.name.equals("null") && this.species == Species.Null && this.number == -1){
+       if (this.species == Species.Null && this.number == -1){
            return true;
        }
        return false;
@@ -48,10 +44,6 @@ public class Card {
 
     public Species getSpecies() {
         return species;
-    }
-
-    public String getName() {
-        return name;
     }
 
     /**

@@ -742,8 +742,6 @@ public class Arboretum {
             if (map.keySet().size() != hasNext.keySet().size()) {
                 return false;
             }
-
-
         } else {
             return true;
         }
@@ -854,6 +852,7 @@ public class Arboretum {
      * TASK 14
      */
     public static String chooseDrawLocation(String[][] gameState) {
+        System.out.println(Arrays.deepToString(gameState));
         return null;
         // FIXME TASK 14
     }

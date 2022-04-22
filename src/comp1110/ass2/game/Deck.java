@@ -11,9 +11,12 @@ public class Deck extends CardStack {
         this.speciesNums = speciesNums;
         if (speciesNums == 6) {
             for (Species species : Species.values()) {
-                for (int i = 1; i < 9; i++) {
-                    this.cards.add(new Card("someName", species, i));
+                if (species != Species.Null){
+                    for (int i = 1; i < 9; i++) {
+                        this.cards.add(new Card(species, i));
+                    }
                 }
+
             }
 
         }

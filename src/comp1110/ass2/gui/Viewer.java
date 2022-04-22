@@ -478,10 +478,10 @@ public class Viewer extends Application {
 
         Button displayState = new Button("Display State");
         displayState.setOnAction(e -> {
-            String[] sharedState = {turnIDTextField.getText(), aArboretumTextField.getText(), aDiscardTextField.getText(), bArboretumTextField.getText(), bDiscardTextField.getText()};
-//            String[] sharedState = {"A", "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01", "Aa7c4d6", "Bj5C00C00j6S01C00j7S02W01j4C00W01m6C00E01m3C00W02j3N01W01", "Bb2d4c5a1d5"};
-            String[] hiddenState = {deckTextField.getText(), aHandTextField.getText(), bHandTextField.getText()};
-//            String[] hiddenState = {"a3a8b5b6c2c7d1d3d7d8m1", "Ab3b4c1j1m2m5m8", "Ba6b7b8c8d2j2j8"};
+//            String[] sharedState = {turnIDTextField.getText(), aArboretumTextField.getText(), aDiscardTextField.getText(), bArboretumTextField.getText(), bDiscardTextField.getText()};
+            String[] sharedState = {"A", "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01", "Aa7c4d6", "Bj5C00C00j6S01C00j7S02W01j4C00W01m6C00E01m3C00W02j3N01W01", "Bb2d4c5a1d5"};
+//            String[] hiddenState = {deckTextField.getText(), aHandTextField.getText(), bHandTextField.getText()};
+            String[] hiddenState = {"a3a8b5b6c2c7d1d3d7d8m1", "Ab3b4c1j1m2m5m8", "Ba6b7b8c8d2j2j8"};
             displayState(new String[][]{sharedState, hiddenState});//[[A, Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01, Aa7c4d6, Bj5C00C00j6S01C00j7S02W01j4C00W01m6C00E01m3C00W02j3N01W01, Bb2d4c5a1d5], [a3a8b5b6c2c7d1d3d7d8m1, Ab3b4c1j1m2m5m8, Ba6b7b8c8d2j2j8]]
 
         });
