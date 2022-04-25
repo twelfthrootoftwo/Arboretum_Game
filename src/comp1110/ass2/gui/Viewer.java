@@ -99,6 +99,7 @@ public class Viewer extends Application {
     }
 
     /**
+     * Contribution: Junxian
      * Draw a placement in the window, removing any previously drawn placements
      *
      * @param gameState TASK 6
@@ -360,7 +361,7 @@ public class Viewer extends Application {
             }
 
         }
-        System.out.println(Math.pow(30,35) % 29);
+        System.out.println(Math.pow(30, 35) % 29);
         return gridPane;
     }
 

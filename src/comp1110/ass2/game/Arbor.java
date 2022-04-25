@@ -15,6 +15,7 @@ public class Arbor {
     /**
      * Contribution: Natasha
      * Initialisation constructor, starting off empty
+     *
      * @param size - the maximum number of cards a player can play
      */
     public Arbor(int size) {
@@ -22,7 +23,7 @@ public class Arbor {
         this.arboretumList = new ArrayList<>();
         this.numCards = 0;
         this.limit = size - 1;
-        this.scoringMap=new HashMap<Position, ArrayList<Position>>();
+        this.scoringMap = new HashMap<Position, ArrayList<Position>>();
 
         for (int i = -size + 1; i < size; i++) {
             for (int j = -size + 1; j < size; j++) {
@@ -36,6 +37,7 @@ public class Arbor {
     /**
      * Contribution: Natasha
      * Constructor for use with assignment specification strings
+     *
      * @param arborCode - the string representing the arboretum, in assignment specification format
      */
     public Arbor(String arborCode) {
@@ -92,6 +94,7 @@ public class Arbor {
 
     /**
      * Contribution: Natasha
+     * Modified: Junxian
      * Check a position to see if it's a valid place to add a card
      * A position is valid if it's the first card going into (0,0), or if the position is currently empty and adjacent to a filled spot.
      *
@@ -107,7 +110,7 @@ public class Arbor {
 
         //from chen: the above should be: if there are no other cards, the input pos can be anypos.
         // but in player.play, this anypos should be reset to 0,0
-        if (this.numCards == 0 ) {
+        if (this.numCards == 0) {
             return true;
         }
 
@@ -166,7 +169,7 @@ public class Arbor {
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
-        for (String card:this.arboretumList) {
+        for (String card : this.arboretumList) {
             output.append(card);
         }
         return output.toString();
@@ -175,6 +178,7 @@ public class Arbor {
     public int getNumCards() {
         return numCards;
     }
+
     /**
      * Contribution: Natasha
      * Fills in the HashMap of all scoring steps on this arbor.
@@ -183,7 +187,7 @@ public class Arbor {
      */
     public void findScoringMap() {
         //reset score map, in case it's been calculated previously
-        this.scoringMap=new HashMap<>();
+        this.scoringMap = new HashMap<>();
 
         //fill in all positions and find their scoring paths
         for (int i = -this.limit; i <= this.limit; i++) {
@@ -197,25 +201,26 @@ public class Arbor {
     /**
      * Contribution: Natasha
      * Given a position in this arbor, return all (adjacent) positions that form valid scoring routes, i.e. contain cards with numerical values higher than that of the card in this position
+     *
      * @param pos - the starting position
      * @return an ArrayList of positions that are valid scoring steps
      */
     public ArrayList<Position> getScoringSteps(Position pos) {
-        Position[] adjacentPos=getAdjacentPos(pos);
-        ArrayList<Position> scoringDirs=new ArrayList<>();
-        Card thisCard=arbor.get(pos);
+        Position[] adjacentPos = getAdjacentPos(pos);
+        ArrayList<Position> scoringDirs = new ArrayList<>();
+        Card thisCard = arbor.get(pos);
 
         //check if there's a card here
-        if(thisCard==null) {
+        if (thisCard == null) {
             return scoringDirs;
         }
 
         //check for cards in each of the surrounding positions
-        for(Position testPos : adjacentPos) {
-            Card testCard=arbor.get(testPos);
-            if(testCard!=null) {
+        for (Position testPos : adjacentPos) {
+            Card testCard = arbor.get(testPos);
+            if (testCard != null) {
                 //if there is a card, check if its value is greater than the card here (i.e. it's a valid scoring step)
-                if(testCard.getNumber()>thisCard.getNumber()) {
+                if (testCard.getNumber() > thisCard.getNumber()) {
                     scoringDirs.add(testPos);
                 }
             }

@@ -9,13 +9,14 @@ public class Deck extends CardStack {
 
     /**
      * Constructs the initial deck with all required cards, then shuffles
+     *
      * @param speciesNums - the number of species to include in the deck
      */
     public Deck(int speciesNums) {
         this.speciesNums = speciesNums;
         if (speciesNums == 6) {
             for (Species species : Species.values()) {
-                if (species != Species.Null){
+                if (species != Species.Null) {
                     for (int i = 1; i < 9; i++) {
                         this.cards.add(new Card(species, i));
                     }
@@ -53,6 +54,23 @@ public class Deck extends CardStack {
 
     public int getCapacity() {
         return speciesNums * 8;
+    }
+
+    public String getDeckString() {
+        String stack = "";
+        List<String> sortedCodes = new ArrayList<>();
+
+        //gather list of card codes, then sort
+        for (int i = 0; i < this.cards.size(); i++) {
+            sortedCodes.add(this.cards.get(i).toString());
+        }
+
+        //convert sorted list into single string
+        for (String cardString : sortedCodes) {
+            stack += cardString;
+        }
+
+        return stack;
     }
 
     /**

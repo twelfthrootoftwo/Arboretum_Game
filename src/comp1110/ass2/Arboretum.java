@@ -462,6 +462,7 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Junxian
      * Determine whether the given gameState is valid.
      * A state is valid if the following conditions are met:
      * <p>
@@ -482,6 +483,7 @@ public class Arboretum {
      * TASK 8
      */
     public static boolean isStateValid(String[][] gameState) {
+
         String[] sharedState = gameState[0];
         String[] hiddenState = gameState[1];
 
@@ -672,12 +674,13 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Junxian
      * A Helper function to determine whether the given arboretum is valid.
      *
      * @param arboretum the arboretum String
      * @return true if the arboretum is valid, false if it is not valid.
      */
-    private static boolean checkArboretum(String arboretum) {
+    public static boolean checkArboretum(String arboretum) {
         //check if arboretum is empty. e.g. "A"
         if (!arboretum.equals("")) {
             //a map that store all trees by order in arboretum.
@@ -702,12 +705,18 @@ public class Arboretum {
                 int newPosV = 0;
                 int newPosH = 0;
                 if (directionV.equals("C") && directionH.equals("C")) {
+                    if (stepV != 0 || stepH != 0) {
+                        return false;
+                    }
                     startPos = new int[]{0, 0};
                     map.put(name, startPos);
                     hasNext.put(name, startPos);
                 }
 
                 if (directionV.equals("C")) {
+                    if (stepV != 0) {
+                        return false;
+                    }
                     newPosV = startPos[0];
                 }
                 if (directionV.equals("N")) {
@@ -717,6 +726,9 @@ public class Arboretum {
                     newPosV = startPos[0] + stepV;
                 }
                 if (directionH.equals("C")) {
+                    if (stepH != 0) {
+                        return false;
+                    }
                     newPosH = startPos[0];
                 }
                 if (directionH.equals("W")) {
