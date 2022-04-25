@@ -1,0 +1,31 @@
+# IMPORTANT: It is very important that you correctly complete this originality
+# statement.
+#
+# This is your statement of your submitted work being your own.
+# Incorrectly filling out this statement could lead to charges
+# of academic misconduct.
+#
+# For information on how to fill this out correctly, see
+# https://cs.anu.edu.au/courses/comp1110/help/faq/09-originality/
+#
+
+declaration: >-
+  I declare that everything I have submitted for stage D of this assignment
+  and all stages before it is entirely my own work, with the following
+  exceptions:
+
+# Use this to list any code that you used that you did not write,
+# aside from code provided by the lecturer.  Provide a comment
+# explaining your use and the URL to that code and the licence for
+# that code
+#
+# Add as many "url+licence+comment" entries as necessary
+# (or remove it altogether if you haven't used any external code)
+code:
+  - comment: using part of codes in IsHiddenStateWellFormedTest.java from tests file.
+  - comment: using part of codes in IsSharedStateWellFormedTest.java from tests file.
+
+
+# sign *your* name and uid here
+name: Hongzhe Zhu
+uid: u7338066
