@@ -9,9 +9,8 @@ public class Position {
         this.y = y;
     }
 
-    //Constructor for use with assignment specification
-
     /**
+     * Contribution: Natasha
      * Given a position code in assignment specification format, create the appropriate position
      * Position codes are defined in comp1110.ass2.Arboretum.isSharedStateWellFormed (placement codes, without the card code at the start)
      * @param posCode - the code representing a position
@@ -61,12 +60,18 @@ public class Position {
         return output;
     }
 
+    /**
+     * Contribution: Natasha
+     * Alternate toString that prints useful information and is identical as long as positions have the same x and y coordinates
+     * @return a string of form "(x, y)"
+     */
     @Override
     public String toString() {
         return("("+this.x+", "+this.y+")");
     }
 
     /**
+     * Contribution: Natasha
      * Our Arboretums are hashmaps referenced via position.
      * We want to ensure that equivalent positions (but with different memory addresses) map to the same entry,
      * so rewrite the Object.equals() method to check x and y coordinates
@@ -86,6 +91,7 @@ public class Position {
     }
 
     /**
+     * Contribution: Natasha
      * Our Arboretums are hashmaps referenced via position.
      * We want to ensure that equivalent positions (but with different memory addresses) map to the same entry,
      * so force the hash code to use something that will be consistent as long as the positions are equal

@@ -7,15 +7,22 @@ import java.util.List;
 public class Arbor {
     private HashMap<Position, Card> arbor;
     private List<String> arboretumList;
+    private HashMap<Position, ArrayList<Position>> scoringMap;
     private int numCards;
     private int limit;
 
-    //Initialisation constructor, starting off empty
+
+    /**
+     * Contribution: Natasha
+     * Initialisation constructor, starting off empty
+     * @param size - the maximum number of cards a player can play
+     */
     public Arbor(int size) {
         this.arbor = new HashMap<Position, Card>();
         this.arboretumList = new ArrayList<>();
         this.numCards = 0;
         this.limit = size - 1;
+        this.scoringMap=new HashMap<Position, ArrayList<Position>>();
 
         for (int i = -size + 1; i < size; i++) {
             for (int j = -size + 1; j < size; j++) {
@@ -26,7 +33,11 @@ public class Arbor {
         }
     }
 
-    //Constructor for use with the specification testing strings
+    /**
+     * Contribution: Natasha
+     * Constructor for use with assignment specification strings
+     * @param arborCode - the string representing the arboretum, in assignment specification format
+     */
     public Arbor(String arborCode) {
         this.arbor = new HashMap<Position, Card>();
 
@@ -53,6 +64,7 @@ public class Arbor {
     }
 
     /**
+     * Contribution: Natasha
      * Add the specified card to the specified position.
      * This assumes the position has already been checked to make sure it's valid (see isPosCanPlace)
      *
@@ -68,6 +80,7 @@ public class Arbor {
     }
 
     /**
+     * Contribution: Natasha
      * Get the card at the input position
      *
      * @param pos - the position to check
@@ -78,6 +91,7 @@ public class Arbor {
     }
 
     /**
+     * Contribution: Natasha
      * Check a position to see if it's a valid place to add a card
      * A position is valid if it's the first card going into (0,0), or if the position is currently empty and adjacent to a filled spot.
      *
@@ -114,6 +128,7 @@ public class Arbor {
     }
 
     /**
+     * Contribution: Natasha
      * Returns an array of positions adjacent to a given position
      *
      * @param startPos - the position to check around
@@ -160,5 +175,52 @@ public class Arbor {
     public int getNumCards() {
         return numCards;
     }
+    /**
+     * Contribution: Natasha
+     * Fills in the HashMap of all scoring steps on this arbor.
+     * Resets the scoring map to null first, so any existing map will be overwritten.
+     * This assumes that the arbor can't be modified, only expanded (in which case all the old information will be recalculated).
+     */
+    public void findScoringMap() {
+        //reset score map, in case it's been calculated previously
+        this.scoringMap=new HashMap<>();
 
+        //fill in all positions and find their scoring paths
+        for (int i = -this.limit; i <= this.limit; i++) {
+            for (int j = -this.limit; j <= this.limit; j++) {
+                Position newPos = new Position(i, j);
+                this.scoringMap.put(newPos, getScoringSteps(newPos));
+            }
+        }
+    }
+
+    /**
+     * Contribution: Natasha
+     * Given a position in this arbor, return all (adjacent) positions that form valid scoring routes, i.e. contain cards with numerical values higher than that of the card in this position
+     * @param pos - the starting position
+     * @return an ArrayList of positions that are valid scoring steps
+     */
+    public ArrayList<Position> getScoringSteps(Position pos) {
+        Position[] adjacentPos=getAdjacentPos(pos);
+        ArrayList<Position> scoringDirs=new ArrayList<>();
+        Card thisCard=arbor.get(pos);
+
+        //check if there's a card here
+        if(thisCard==null) {
+            return scoringDirs;
+        }
+
+        //check for cards in each of the surrounding positions
+        for(Position testPos : adjacentPos) {
+            Card testCard=arbor.get(testPos);
+            if(testCard!=null) {
+                //if there is a card, check if its value is greater than the card here (i.e. it's a valid scoring step)
+                if(testCard.getNumber()>thisCard.getNumber()) {
+                    scoringDirs.add(testPos);
+                }
+            }
+        }
+
+        return scoringDirs;
+    }
 }

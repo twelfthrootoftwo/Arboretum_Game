@@ -18,6 +18,7 @@ public class Card {
     //cardCode should be a 2-char string as per specification format
 
     /**
+     * Contribution: Natasha
      * Given a card code typical of the assingment specification format, return the equivalent card
      * Card codes are eg "j3", strings of length 2 with first character the species code and second character the value
      * @param cardCode - the card code to translate into a card
@@ -47,6 +48,7 @@ public class Card {
     }
 
     /**
+     * Contribution: Natasha
      * Generates card codes in accordance with assignment specification
      * @return a string card code in species/value form (eg a1)
      */
@@ -57,6 +59,7 @@ public class Card {
     }
 
     /**
+     * Contribution: Natasha
      * Check if this card is equal to another card
      * @param card - the card to check against
      * @return True if the two cards are identical, False otherwise

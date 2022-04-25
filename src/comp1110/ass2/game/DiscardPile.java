@@ -11,6 +11,7 @@ public class DiscardPile extends CardStack{
     }
 
     /**
+     * Contribution: Natasha
      * Given a string code as per the assignment specification, construct an equivalent Deck
      * (see comments for comp1110.ass2.Arboretum.isSharedStateWellFormed for string code details)
      * @param discardCode - a string representing the discard sequence
@@ -33,6 +34,7 @@ public class DiscardPile extends CardStack{
     }
 
     /**
+     * Contribution: Natasha
      * Get the card at the top of the discard
      * We need this so that the top card (and only the top card) is displayed
      * @return the top (last) card in this.cards;

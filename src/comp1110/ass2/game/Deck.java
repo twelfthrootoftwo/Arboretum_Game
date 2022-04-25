@@ -7,6 +7,10 @@ import java.util.List;
 public class Deck extends CardStack {
     int speciesNums = 0;
 
+    /**
+     * Constructs the initial deck with all required cards, then shuffles
+     * @param speciesNums - the number of species to include in the deck
+     */
     public Deck(int speciesNums) {
         this.speciesNums = speciesNums;
         if (speciesNums == 6) {
@@ -24,6 +28,7 @@ public class Deck extends CardStack {
     }
 
     /**
+     * Contribution: Natasha
      * Given a string code as per the assignment specification, construct an equivalent Deck
      * (see comments for comp1110.ass2.Arboretum.isHiddenStateWellFormed for string code details)
      *
@@ -51,6 +56,7 @@ public class Deck extends CardStack {
     }
 
     /**
+     * Contribution: Natasha
      * Generate a sorted deck code string, as per assignment specifications
      * Our implementation shuffles the deck at creation, but the specification wants the deck to be unshuffled
      *
