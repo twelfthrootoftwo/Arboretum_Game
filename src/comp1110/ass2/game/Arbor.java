@@ -1,15 +1,19 @@
 package comp1110.ass2.game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Arbor {
     private HashMap<Position, Card> arbor;
+    private List<String> arboretumList;
     private int numCards;
     private int limit;
 
     //Initialisation constructor, starting off empty
     public Arbor(int size) {
         this.arbor = new HashMap<Position, Card>();
+        this.arboretumList = new ArrayList<>();
         this.numCards = 0;
         this.limit = size - 1;
 
@@ -56,6 +60,9 @@ public class Arbor {
      * @param pos  - the position to add the card to
      */
     public void addCard(Card card, Position pos) {
+        String cardName = card.toString() + pos.toArborString();
+        this.arboretumList.add(cardName);
+
         this.arbor.put(pos, card);
         this.numCards++;
     }
@@ -79,8 +86,14 @@ public class Arbor {
      */
     public Boolean isPosCanPlace(Position pos) {
 
-        //if there are no other cards and the target position is (0,0), place here
-        if (this.numCards == 0 && pos.getX() == 0 & pos.getY() == 0) {
+//        //if there are no other cards and the target position is (0,0), place here
+//        if (this.numCards == 0 && pos.getX() == 0 & pos.getY() == 0) {
+//            return true;
+//        }
+
+        //from chen: the above should be: if there are no other cards, the input pos can be anypos.
+        // but in player.play, this anypos should be reset to 0,0
+        if (this.numCards == 0 ) {
             return true;
         }
 
@@ -133,6 +146,19 @@ public class Arbor {
         }
 
         return adjacentPos;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        for (String card:this.arboretumList) {
+            output.append(card);
+        }
+        return output.toString();
+    }
+
+    public int getNumCards() {
+        return numCards;
     }
 
 }

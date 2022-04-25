@@ -41,16 +41,37 @@ public class Player {
     public Arbor getArboretum() {
         return arboretum;
     }
+    public String getArboretumString() {
+        String output = this.getName() + this.getArboretum().toString();
+        return output;
+    }
 
     public CardStack getDiscardPile() {
         return discardPile;
     }
 
+    public String getDiscardPileString(){
+        StringBuilder output = new StringBuilder(this.getName());
+        for (Card card:this.getDiscardPile().cards) {
+            output.append(card.toString());
+        }
+        return output.toString();
+    }
     public List<Card> getHand() {
         return hand;
     }
-    public void discard(Card card){
 
+    public String getHandString() {
+        StringBuilder output = new StringBuilder(this.getName());
+        for (Card card:this.hand) {
+            output.append(card.toString());
+        }
+        return output.toString();
+    }
+
+
+    public void discard(Card card){
+        this.discardPile.addTopCard(card);
     }
 
     public void draw(CardStack location){
@@ -66,9 +87,15 @@ public class Player {
      */
     public boolean play(Card card, Position position){
         if (checkPlay(card,position)) {
-            this.arboretum.addCard(card, position);
+            if (this.arboretum.getNumCards() == 0){
+                this.arboretum.addCard(card, new Position(0,0));
+            }else {
+                this.arboretum.addCard(card, position);
+            }
             this.hand.remove(card);
             return true;
+
+
         }
         return false;
     }
@@ -81,9 +108,13 @@ public class Player {
      * @return True if the play is legal, false otherwise
      */
     public boolean checkPlay(Card card, Position position) {
+        System.out.println(0);
         if(this.hand.size()==9) {
+            System.out.println(1);
             if (checkCardInHand(card)) {
+                System.out.println(2);
                 if (this.arboretum.isPosCanPlace(position)) {
+                    System.out.println(3);
                     return true;
                 }
             }

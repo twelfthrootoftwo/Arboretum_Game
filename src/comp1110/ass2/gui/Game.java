@@ -1,8 +1,10 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.Event.Turn;
+import comp1110.ass2.game.Card;
 import comp1110.ass2.game.Deck;
 import comp1110.ass2.game.Player;
+import comp1110.ass2.game.Position;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -99,6 +102,66 @@ public class Game extends Application {
     public Game() throws FileNotFoundException {
     }
 
+    public Image addImage(String img) throws FileNotFoundException {
+
+        return switch (img) {
+            case "a1" -> a1;
+            case "a2" -> a2;
+            case "a3" -> a3;
+            case "a4" -> a4;
+            case "a5" -> a5;
+            case "a6" -> a6;
+            case "a7" -> a7;
+            case "a8" -> a8;
+            case "b1" -> b1;
+            case "b2" -> b2;
+            case "b3" -> b3;
+            case "b4" -> b4;
+            case "b5" -> b5;
+            case "b6" -> b6;
+            case "b7" -> b7;
+            case "b8" -> b8;
+            case "c1" -> c1;
+            case "c2" -> c2;
+            case "c3" -> c3;
+            case "c4" -> c4;
+            case "c5" -> c5;
+            case "c6" -> c6;
+            case "c7" -> c7;
+            case "c8" -> c8;
+            case "d1" -> d1;
+            case "d2" -> d2;
+            case "d3" -> d3;
+            case "d4" -> d4;
+            case "d5" -> d5;
+            case "d6" -> d6;
+            case "d7" -> d7;
+            case "d8" -> d8;
+            case "j1" -> j1;
+            case "j2" -> j2;
+            case "j3" -> j3;
+            case "j4" -> j4;
+            case "j5" -> j5;
+            case "j6" -> j6;
+            case "j7" -> j7;
+            case "j8" -> j8;
+            case "m1" -> m1;
+            case "m2" -> m2;
+            case "m3" -> m3;
+            case "m4" -> m4;
+            case "m5" -> m5;
+            case "m6" -> m6;
+            case "m7" -> m7;
+            case "m8" -> m8;
+            default -> null;
+        };
+    }
+
+    private final Group root = new Group();
+    private final Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
+
+
+
     @Override
     public void start(Stage stage) throws Exception {
         // FIXME Task 11: Implement a basic playable comp1110.ass2.Arboretum game in JavaFX that only allows cards to be placed in
@@ -106,23 +169,37 @@ public class Game extends Application {
         // FIXME Task 16: Implement a computer opponent so that a human can play your game against the computer.
         // FIXME Task 18: Implement variant(s).
         stage.setTitle("comp1110.ass2.Arboretum");
-        Group root = new Group();
-        Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
+
 
         //setup
         Deck deck = new Deck(6);
-        Player playerA = new Player("John",48);
-        Player playerB = new Player("hanna",48);
+        Player playerA = new Player("A",48);
+        Player playerB = new Player("B",48);
 
         for (int i = 0; i < 7; i++) {
             playerA.draw(deck);
             playerB.draw(deck);
         }
+        playerA.draw(deck);
+        playerA.draw(deck);
+        Card card1 = playerA.getHand().get(0);
+//        System.out.println(playerA.checkPlay(card,new Position(10,0)));
+        playerA.play(card1,new Position(10,0));
+        playerA.draw(deck);
+        Card card2 = playerA.getHand().get(0);
+        playerA.play(card2,new Position(0,1));
 
-        while (!isGameEnd()){
-            new Turn(playerA,deck);
-            new Turn(playerB,deck);
-        }
+        System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, "A")));
+        update(generateGameState(playerA,playerB,deck,"A"));
+        stage.setScene(scene);
+        stage.show();
+
+//        while (!isGameEnd()){
+//            new Turn(playerA,deck);
+//            new Turn(playerB,deck);
+//        }
+
+
         if (isGameEnd()){
             getWinner();
         }
@@ -130,8 +207,7 @@ public class Game extends Application {
 
 
 
-        stage.setScene(scene);
-        stage.show();
+
     }
     private Player getWinner(){
         return null;
@@ -142,13 +218,17 @@ public class Game extends Application {
     private String[][] generateGameState(Player playerA,Player playerB,Deck deck,String turn){
         //put all gameState to tree strings
 //        String nextTurn = turn; //sharedState[0];
-        String arboretumA = playerA.getArboretum().toString();//sharedState[1];
-        String discardA = playerA.getDiscardPile().toString();//sharedState[2];
-        String arboretumB = playerB.getArboretum().toString();//sharedState[3];
-        String discardB = playerB.getDiscardPile().toString();//sharedState[4];
+        String arboretumA =  playerA.getArboretumString();//sharedState[1];
+        System.out.println("arboretumA: " + arboretumA);
+        String discardA = playerA.getDiscardPileString();//sharedState[2];
+        System.out.println("discardA: " + discardA);
+        String arboretumB = playerB.getArboretumString();//sharedState[3];
+//        System.out.println("arboretumB" + arboretumB);
+        String discardB = playerB.getDiscardPileString();//sharedState[4];
+//        System.out.println("discardB" + discardB);
 //        String deck = deck.toString()hiddenState[0];
-        String handA = playerA.getHand().toString();//hiddenState[1];
-        String handB = playerB.getHand().toString();//hiddenState[2];
+        String handA = playerA.getHandString();//hiddenState[1];
+        String handB = playerB.getHandString();//hiddenState[2];
 
         String[] sharedState = {turn,arboretumA,discardA,arboretumB,discardB};
         String[] hiddenState = {deck.toString(),handA,handB};
@@ -158,7 +238,8 @@ public class Game extends Application {
         return gameState;
     }
 
-    private void update(String[][] gameState,Group root){
+    private void update(String[][] gameState) throws FileNotFoundException {
+
         String[] sharedState = gameState[0];
         String[] hiddenState = gameState[1];
 
@@ -253,95 +334,46 @@ public class Game extends Application {
             all.getChildren().addAll(vboxS, vboxD);
 
             scrollPane.setContent(all);
-            scrollPane.setPrefSize(1050, 700);
-            root.getChildren().addAll(scrollPane);
+            scrollPane.setPrefSize(1200, 700);
+            this.root.getChildren().addAll(new GUICard("a1",addImage("a1")));
 
 
         }
     }
-    private Image addImage(String img) throws FileNotFoundException {
 
-        return switch (img) {
-            case "a1" -> a1;
-            case "a2" -> a2;
-            case "a3" -> a3;
-            case "a4" -> a4;
-            case "a5" -> a5;
-            case "a6" -> a6;
-            case "a7" -> a7;
-            case "a8" -> a8;
-            case "b1" -> b1;
-            case "b2" -> b2;
-            case "b3" -> b3;
-            case "b4" -> b4;
-            case "b5" -> b5;
-            case "b6" -> b6;
-            case "b7" -> b7;
-            case "b8" -> b8;
-            case "c1" -> c1;
-            case "c2" -> c2;
-            case "c3" -> c3;
-            case "c4" -> c4;
-            case "c5" -> c5;
-            case "c6" -> c6;
-            case "c7" -> c7;
-            case "c8" -> c8;
-            case "d1" -> d1;
-            case "d2" -> d2;
-            case "d3" -> d3;
-            case "d4" -> d4;
-            case "d5" -> d5;
-            case "d6" -> d6;
-            case "d7" -> d7;
-            case "d8" -> d8;
-            case "j1" -> j1;
-            case "j2" -> j2;
-            case "j3" -> j3;
-            case "j4" -> j4;
-            case "j5" -> j5;
-            case "j6" -> j6;
-            case "j7" -> j7;
-            case "j8" -> j8;
-            case "m1" -> m1;
-            case "m2" -> m2;
-            case "m3" -> m3;
-            case "m4" -> m4;
-            case "m5" -> m5;
-            case "m6" -> m6;
-            case "m7" -> m7;
-            case "m8" -> m8;
-            default -> null;
-        };
-    }
 
     private GridPane addHand(String hand) {
         String newArboretum = hand.substring(1);
-        String[] trees = newArboretum.split("(?<=\\G.{" + 2 + "})");
 
         //Creating a Grid Pane
         GridPane gridPane = new GridPane();
+        if (!newArboretum.equals("")) {
+            String[] trees = newArboretum.split("(?<=\\G.{" + 2 + "})");
 
-        //Setting size for the pane
-        gridPane.setMinSize(100, 50);
+            //Setting size for the pane
+            gridPane.setMinSize(100, 50);
 
-        //Setting the padding
-        gridPane.setPadding(new Insets(10, 10, 10, 10));
+            //Setting the padding
+            gridPane.setPadding(new Insets(10, 10, 10, 10));
 
-        gridPane.setVgap(5);
-        gridPane.setHgap(5);
+            gridPane.setVgap(5);
+            gridPane.setHgap(5);
 
-        //Setting the Grid alignment
-        gridPane.setAlignment(Pos.CENTER);
-        for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
-            String tree = trees[i];
-            try {
-                gridPane.add(new ImageView(addImage(tree)), i, 0);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            //Setting the Grid alignment
+            gridPane.setAlignment(Pos.CENTER);
+            for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
+                String tree = trees[i];
+                try {
+//                    gridPane.add(new ImageView(addImage(tree)), i, 0);
+                    gridPane.add(new GUICard(tree,addImage(tree)), i, 0);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
             }
 
-        }
 
+        }
         return gridPane;
     }
 
@@ -366,9 +398,23 @@ public class Game extends Application {
             String tree = trees[i];
             try {
                 if (i < 8) {
-                    gridPane.add(new ImageView(addImage(tree)), 0, i);
-                } else {
-                    gridPane.add(new ImageView(addImage(tree)), 1, i - 8);
+//                    gridPane.add(new ImageView(addImage(tree)), 0, i);
+                    gridPane.add(new GUICard(tree,addImage(tree)), 0, i);
+                } else if (i < 16) {
+//                    gridPane.add(new ImageView(addImage(tree)), 1, i - 8);
+                    gridPane.add(new GUICard(tree,addImage(tree)), 1, i - 8);
+                }else if (i < 24) {
+//                    gridPane.add(new ImageView(addImage(tree)), 2, i - 16);
+                    gridPane.add(new GUICard(tree,addImage(tree)), 2, i - 16);
+                }else if (i < 32) {
+//                    gridPane.add(new ImageView(addImage(tree)), 3, i - 24);
+                    gridPane.add(new GUICard(tree,addImage(tree)), 3, i - 24);
+                }else if (i < 40) {
+//                    gridPane.add(new ImageView(addImage(tree)), 4, i - 32);
+                    gridPane.add(new GUICard(tree,addImage(tree)), 4, i - 32);
+                }else if (i < 48){
+//                    gridPane.add(new ImageView(addImage(tree)), 5, i - 40);
+                    gridPane.add(new GUICard(tree,addImage(tree)), 5, i - 40);
                 }
 
             } catch (FileNotFoundException e) {
@@ -382,109 +428,116 @@ public class Game extends Application {
 
     private GridPane addDiscard(String discard) {
         String newArboretum = discard.substring(1);
-        String[] trees = newArboretum.split("(?<=\\G.{" + 2 + "})");
 
         //Creating a Grid Pane
         GridPane gridPane = new GridPane();
 
-        //Setting size for the pane
-        gridPane.setMinSize(100, 50);
+        if (!newArboretum.equals("")) {
+            String[] trees = newArboretum.split("(?<=\\G.{" + 2 + "})");
 
-        //Setting the padding
-        gridPane.setPadding(new Insets(10, 10, 10, 10));
+            //Setting size for the pane
+            gridPane.setMinSize(100, 50);
 
-        gridPane.setVgap(5);
-        gridPane.setHgap(5);
+            //Setting the padding
+            gridPane.setPadding(new Insets(10, 10, 10, 10));
 
-        //Setting the Grid alignment
-        gridPane.setAlignment(Pos.CENTER);
-        for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
-            String tree = trees[i];
-            try {
-                gridPane.add(new ImageView(addImage(tree)), i, 0);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            gridPane.setVgap(5);
+            gridPane.setHgap(5);
+
+            //Setting the Grid alignment
+            gridPane.setAlignment(Pos.CENTER);
+            for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
+                String tree = trees[i];
+                try {
+                    gridPane.add(new GUICard(tree,addImage(tree)), i, 0);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
             }
+            System.out.println(Math.pow(30, 35) % 29);
 
         }
-        System.out.println(Math.pow(30,35) % 29);
         return gridPane;
     }
 
 
     private GridPane addArboretum(String arboretum) {
         String newArboretum = arboretum.substring(1);
-        String[] trees = newArboretum.split("(?<=\\G.{" + 8 + "})");
 
         //Creating a Grid Pane
         GridPane gridPane = new GridPane();
+        if (!newArboretum.equals("")) {
+            String[] trees = newArboretum.split("(?<=\\G.{" + 8 + "})");
 
-        //Setting size for the pane
-        gridPane.setMinSize(100, 50);
+            //Setting size for the pane
+            gridPane.setMinSize(100, 50);
 
-        //Setting the padding
-        gridPane.setPadding(new Insets(10, 10, 10, 10));
+            //Setting the padding
+            gridPane.setPadding(new Insets(10, 10, 10, 10));
 
-        gridPane.setVgap(5);
-        gridPane.setHgap(5);
+            gridPane.setVgap(5);
+            gridPane.setHgap(5);
 
-        //Setting the Grid alignment
-        gridPane.setAlignment(Pos.CENTER);
-        HashMap<String, int[]> map = new HashMap<>();
-        int[] startPos = {0, 0};
-        int northest = 0;
-        int westest = 0;
-        for (String tree : trees) {
-            String name = tree.substring(0, 2);
-            String directionV = tree.substring(2, 3);
-            int stepV = Integer.parseInt(tree.substring(3, 5));
-            String directionH = tree.substring(5, 6);
-            int stepH = Integer.parseInt(tree.substring(6));
+            //Setting the Grid alignment
+            gridPane.setAlignment(Pos.CENTER);
+            HashMap<String, int[]> map = new HashMap<>();
+            int[] startPos = {0, 0};
+            int northest = 0;
+            int westest = 0;
+            for (String tree : trees) {
+                String name = tree.substring(0, 2);
+                String directionV = tree.substring(2, 3);
+                int stepV = Integer.parseInt(tree.substring(3, 5));
+                String directionH = tree.substring(5, 6);
+                int stepH = Integer.parseInt(tree.substring(6));
 
-            int newPosV = 0;
-            int newPosH = 0;
-            if (directionV.equals("C")) {
-                newPosV = startPos[0];
-            }
-            if (directionV.equals("N")) {
-                newPosV = startPos[0] - stepV;
-                if (northest > newPosV) {
-                    northest = newPosV;
+                int newPosV = 0;
+                int newPosH = 0;
+                if (directionV.equals("C")) {
+                    newPosV = startPos[0];
                 }
-            }
-            if (directionV.equals("S")) {
-                newPosV = startPos[0] + stepV;
-            }
-            if (directionH.equals("C")) {
-                newPosH = startPos[0];
-            }
-            if (directionH.equals("W")) {
-                newPosH = startPos[0] - stepH;
-                if (westest > newPosH) {
-                    westest = newPosH;
+                if (directionV.equals("N")) {
+                    newPosV = startPos[0] - stepV;
+                    if (northest > newPosV) {
+                        northest = newPosV;
+                    }
                 }
-            }
-            if (directionH.equals("E")) {
-                newPosH = startPos[0] + stepH;
-            }
-            int[] newPos = {newPosV, newPosH};
-            map.put(name, newPos);
+                if (directionV.equals("S")) {
+                    newPosV = startPos[0] + stepV;
+                }
+                if (directionH.equals("C")) {
+                    newPosH = startPos[0];
+                }
+                if (directionH.equals("W")) {
+                    newPosH = startPos[0] - stepH;
+                    if (westest > newPosH) {
+                        westest = newPosH;
+                    }
+                }
+                if (directionH.equals("E")) {
+                    newPosH = startPos[0] + stepH;
+                }
+                int[] newPos = {newPosV, newPosH};
+                map.put(name, newPos);
 
-            if (directionV.equals("C") && directionH.equals("C")) {
-                startPos = new int[]{0, 0};
-                map.put(name, startPos);
+                if (directionV.equals("C") && directionH.equals("C")) {
+                    startPos = new int[]{0, 0};
+                    map.put(name, startPos);
+                }
+
             }
 
-        }
+            for (String key : map.keySet()) {
+                int[] value = map.get(key);
+                value[0] = value[0] + Math.abs(northest);
+                value[1] = value[1] + Math.abs(westest);
+                try {
+                    gridPane.add(new GUICard(key,addImage(key)), value[1], value[0]);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
 
-        for (String key : map.keySet()) {
-            int[] value = map.get(key);
-            value[0] = value[0] + Math.abs(northest);
-            value[1] = value[1] + Math.abs(westest);
-            try {
-                gridPane.add(new ImageView(addImage(key)), value[1], value[0]);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             }
 
         }

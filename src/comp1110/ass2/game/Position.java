@@ -38,6 +38,29 @@ public class Position {
         return this.y;
     }
 
+    public String toArborString(){
+        String dirV = "";
+        String dirH = "";
+        String stepV = String.format("%02d", Math.abs(this.getY()));
+        String stepH = String.format("%02d", Math.abs(this.getX()));
+        if (this.x > 0){
+            dirH = "E";
+        }else if (this.x < 0){
+            dirH = "W";
+        }else {
+            dirH = "C";
+        }
+        if (this.y > 0){
+            dirV = "S";
+        }else if (this.y < 0){
+            dirV = "N";
+        }else {
+            dirV = "C";
+        }
+        String output = dirV + stepV + dirH + stepH;
+        return output;
+    }
+
     @Override
     public String toString() {
         return("("+this.x+", "+this.y+")");
