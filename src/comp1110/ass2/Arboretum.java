@@ -12,6 +12,7 @@ import java.util.*;
 public class Arboretum {
 
     /**
+     * Contribution: Hongzhe
      * A hiddenState string array is well-formed if it complies with the following rules:
      * <p>
      * hiddenState[0] - Deck
@@ -162,6 +163,7 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Hongzhe
      * Change Character and number to a number that can be used to compare
      *
      * @param charA the alphabetic number
@@ -180,6 +182,7 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Hongzhe
      * Check if the given species is in the right format
      *
      * @param state the given state to check
@@ -198,6 +201,7 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Hongzhe
      * A sharedState string array is well-formed if it complies with the following rules:
      * <p>
      * sharedState[0] - a single character ID string, either "A" or "B" representing whose turn it is.
@@ -373,6 +377,7 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Hongzhe
      * Check if the given direction is in the right format
      *
      * @param state the given char to check
@@ -388,6 +393,7 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Hongzhe
      * Check if the given direction is in the right format
      *
      * @param state the given char to check
