@@ -20,6 +20,7 @@ public class Player {
     }
 
     /**
+     * Contribution: Natasha
      * Given a set of assignment specification codes, construct a Player in the given game state.
      * These values are as specified in comp1110.ass2.Arboretum.isHiddenStateWellFormed and isSharedStateWellFormed
      * @param name - A or B
@@ -53,13 +54,20 @@ public class Player {
 
     }
 
+    /**
+     * Contribution: Natasha
+     * Draws a card from the specified location and add it to the player's hand
+     * Location can be any CardStack (i.e. either discard pile or deck)
+     * @param location - the CardStack to draw from
+     */
     public void draw(CardStack location){
         Card card = location.drawTopCard();
         this.hand.add(card);
     }
 
     /**
-     * Checks if the chosen card can be played a thte chosen position; if it can, play it there
+     * Contribution: Natasha
+     * Checks if the chosen card can be played a the chosen position; if it can, play it there
      * @param card - card to play
      * @param position - position to play card into
      * @return True if the move was legal and has been processed, False otherwise
@@ -74,6 +82,7 @@ public class Player {
     }
 
     /**
+     * Contribution: Natasha
      * Checks whether a play is legal
      * Considers hand size, cards in hand, and position validity
      * @param card - card to play
@@ -92,6 +101,7 @@ public class Player {
     }
 
     /**
+     * Contribution: Natasha
      * Generate the hand of the player from assignment specification format
      * @param handCode - a string representing the player's hand, in assignment specification format
      * @return a List<card> suitable for addition to the "hand" field of this class
@@ -112,6 +122,7 @@ public class Player {
     }
 
     /**
+     * Contribution: Natasha
      * Checks if a specific card is in the player's hand
      * @param cardToCheck - card to look for
      * @return True if it's in hand, False otherwise

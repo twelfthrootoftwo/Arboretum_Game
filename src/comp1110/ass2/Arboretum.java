@@ -403,6 +403,7 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Natasha
      * Given a deck string, draw a random card from the deck.
      * You may assume that the deck string is well-formed.
      *
@@ -424,6 +425,7 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Natasha
      * Determine whether this placement is valid for the current player. The "Turn String" determines who is making
      * this placement.
      * <p>

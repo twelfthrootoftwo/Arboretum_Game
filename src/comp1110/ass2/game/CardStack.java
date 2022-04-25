@@ -9,6 +9,7 @@ public abstract class CardStack {
 
 
     /**
+     * Contribution: Natasha
      * Randomise the order of this.cards (i.e. "shuffle the deck")
      * This should be independent of the number of cards actually in this.cards, but in actual gameplay will only be used on a full deck prior to starting the game
      */
@@ -29,6 +30,7 @@ public abstract class CardStack {
     }
 
     /**
+     * Contribution: Natasha
      * Draws the top card (last card in the list)
      * Drawn card is removed from the list
      * In game, this is used when drawing from the deck or from a player's discard
@@ -45,6 +47,7 @@ public abstract class CardStack {
     }
 
     /**
+     * Contribution: Natasha
      * Adds a card to the top of the stack
      *
      * @param card - the card to be added
@@ -54,6 +57,7 @@ public abstract class CardStack {
     }
 
     /**
+     * Contribution: Natasha
      * Check whether the stack is empty
      *
      * @return True if there are no cards in the stack, False otherwise
@@ -64,6 +68,7 @@ public abstract class CardStack {
     }
 
     /**
+     * Contribution: Natasha
      * toString method, returning a string in an unsorted version of the assignment specification format
      * Decks need to produce sorted string codes, so they have a different version of this function
      *
