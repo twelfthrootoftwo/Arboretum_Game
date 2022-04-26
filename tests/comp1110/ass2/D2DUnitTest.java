@@ -57,6 +57,8 @@ public class D2DUnitTest {
         assertEquals(arbors[0].getScoringSteps(testPos[2][1]).size(),1);
         assertEquals(arbors[0].getScoringSteps(testPos[2][1]).get(0),testPos[3][1]);
         assertEquals(arbors[0].getScoringSteps(testPos[3][1]).size(),0);
+        assertEquals(arbors[0].getScoringSteps(testPos[2][0]).size(),0);
+        assertEquals(arbors[0].getScoringSteps(testPos[3][0]).size(),0);
 
         assertEquals(arbors[1].getScoringSteps(testPos[2][1]).size(),1);
         assertEquals(arbors[1].getScoringSteps(testPos[2][1]).get(0),testPos[3][1]);

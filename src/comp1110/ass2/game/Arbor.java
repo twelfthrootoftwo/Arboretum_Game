@@ -1,8 +1,6 @@
 package comp1110.ass2.game;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Arbor {
     private HashMap<Position, Card> arbor;
@@ -227,5 +225,66 @@ public class Arbor {
         }
 
         return scoringDirs;
+    }
+
+    /**
+     * Contribution: Natasha
+     * Generates the scoring map and then finds all possible scoring sequences.
+     * This considers both valid steps (low -> high number) and ends (start and end card must be same species)
+     * TODO: test this
+     *
+     * @return a HashSet of LinkedList<Card>s that form valid scoring sequences for this arboretum
+     */
+    public HashSet<LinkedList<Card>> findScoringPaths() {
+        HashSet<LinkedList<Card>> scoringSeqs=new HashSet<>();
+
+        //first generate the scoring map
+        this.findScoringMap();
+
+        //look over all positions in arbor
+        for (int i = -this.limit; i <= this.limit; i++) {
+            for (int j = -this.limit; j <= this.limit; j++) {
+                Position thisPos = new Position(i, j);
+                LinkedList<Card> sequence=new LinkedList<>();
+
+                //if there's a card here, look for scoring paths starting from it
+                if(this.arbor.get(thisPos)!=null) {
+                    sequence.add(this.arbor.get(thisPos));
+                    findPath(sequence,thisPos,scoringSeqs);
+                }
+            }
+        }
+
+        return scoringSeqs;
+    }
+
+    /**
+     * Contribution: Natasha
+     * Recursive function to propagate scoring paths from a given starting position
+     * TODO: test this
+     *
+     * @param sequence - a LinkedList<Card> for all cards in this scoring path
+     * @param thisPos - the position to be checked
+     * @param scoringSeqs - a HashSet<LinkedList<Card>> containing all valid scoring paths discovered so far
+     */
+    public void findPath(LinkedList<Card> sequence, Position thisPos, HashSet<LinkedList<Card>>scoringSeqs) {
+        ArrayList<Position> scoringSteps=this.scoringMap.get(thisPos);
+        if(scoringSteps.size()==0) return;//no scoring steps from this position
+        else {
+            for(Position nextPos:scoringSteps) {
+                //we already know there's a card here, since the step was included in the scoring map
+                Card nextCard=this.arbor.get(nextPos);
+                sequence.add(nextCard);
+
+                //only add to scoring sequences if the start and end are the same species
+                if(nextCard.getSpecies()==sequence.get(0).getSpecies()) scoringSeqs.add(sequence);
+
+                //recurse to find paths from this position
+                findPath(sequence,nextPos,scoringSeqs);
+
+                //clear the checked position from sequence (since the same instance of sequence is used for all recursive calls)
+                sequence.remove(nextCard);
+            }
+        }
     }
 }

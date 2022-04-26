@@ -56,6 +56,7 @@ public class Deck extends CardStack {
         return speciesNums * 8;
     }
 
+    //From Natasha: This returns the unsorted cards as a string - use the CardStack toString method instead?
     public String getDeckString() {
         String stack = "";
         List<String> sortedCodes = new ArrayList<>();
