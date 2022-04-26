@@ -74,4 +74,24 @@ public class Card {
 
         return result;
     }
+
+    /**
+     * Contribution: Natasha
+     * Override equals method to check if cards are equivalent (not same instance).
+     * TODO - replace instances of isEqual with this method
+     *
+     * @param any - object to compare
+     * @return True if the two cards have the same species and number, False otherwise
+     */
+    @Override
+    public boolean equals(Object any) {
+        if (this == any) return true;
+        if (!(any instanceof Card)) return false;
+
+        Card toCompare = (Card) any;
+        if (this.species != toCompare.getSpecies()) return false;
+        if (this.number != toCompare.getNumber()) return false;
+
+        return true;
+    }
 }
