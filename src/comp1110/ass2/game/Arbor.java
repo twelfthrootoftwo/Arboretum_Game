@@ -156,7 +156,7 @@ public class Arbor {
             adjacentPos[i] = new Position(startPos.getX(), startPos.getY() - 1);
             i++;
         }
-        if (startPos.getX() - 1 <= this.limit) {
+        if (startPos.getX() - 1 >= -this.limit) {
             adjacentPos[i] = new Position(startPos.getX() - 1, startPos.getY());
             i++;
         }
@@ -231,12 +231,11 @@ public class Arbor {
      * Contribution: Natasha
      * Generates the scoring map and then finds all possible scoring sequences.
      * This considers both valid steps (low -> high number) and ends (start and end card must be same species)
-     * TODO: test this
      *
      * @return a HashSet of LinkedList<Card>s that form valid scoring sequences for this arboretum
      */
-    public HashSet<LinkedList<Card>> findScoringPaths() {
-        HashSet<LinkedList<Card>> scoringSeqs=new HashSet<>();
+    public LinkedList<LinkedList<Card>> findScoringPaths() {
+        LinkedList<LinkedList<Card>> scoringSeqs=new LinkedList<>();
 
         //first generate the scoring map
         this.findScoringMap();
@@ -261,13 +260,12 @@ public class Arbor {
     /**
      * Contribution: Natasha
      * Recursive function to propagate scoring paths from a given starting position
-     * TODO: test this
      *
      * @param sequence - a LinkedList<Card> for all cards in this scoring path
      * @param thisPos - the position to be checked
      * @param scoringSeqs - a HashSet<LinkedList<Card>> containing all valid scoring paths discovered so far
      */
-    public void findPath(LinkedList<Card> sequence, Position thisPos, HashSet<LinkedList<Card>>scoringSeqs) {
+    public void findPath(LinkedList<Card> sequence, Position thisPos, LinkedList<LinkedList<Card>>scoringSeqs) {
         ArrayList<Position> scoringSteps=this.scoringMap.get(thisPos);
         if(scoringSteps.size()==0) return;//no scoring steps from this position
         else {
@@ -277,7 +275,9 @@ public class Arbor {
                 sequence.add(nextCard);
 
                 //only add to scoring sequences if the start and end are the same species
-                if(nextCard.getSpecies()==sequence.get(0).getSpecies()) scoringSeqs.add(sequence);
+                if(nextCard.getSpecies()==sequence.get(0).getSpecies()) {
+                    scoringSeqs.add((LinkedList<Card>) sequence.clone());
+                }
 
                 //recurse to find paths from this position
                 findPath(sequence,nextPos,scoringSeqs);

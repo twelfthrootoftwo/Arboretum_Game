@@ -24,8 +24,8 @@ public class D2DUnitTest {
             "Aa1C00C00a2C00E01a4N01E01c3C00E02a5S01E02b2S01C00a3S01W01b4S01W02a6N01E02",//multiple branching scoring routes including same-species, cross-species, overlapping cross-species
             };
 
-    public static HashSet<LinkedList<Card>> scoringPaths(int i) {
-        HashSet<LinkedList<Card>> allPaths=new HashSet<>();
+    public static LinkedList<LinkedList<Card>> scoringPaths(int i) {
+        LinkedList<LinkedList<Card>> allPaths=new LinkedList<>();
 
         switch(i) {
             case 0->{
@@ -111,6 +111,15 @@ public class D2DUnitTest {
                 LinkedList<Card> list10=new LinkedList<Card>();
                 list10.add(new Card(Species.a,4));
                 list10.add(new Card(Species.a,6));
+                LinkedList<Card> list11=new LinkedList<Card>();
+                list11.add(new Card(Species.a,2));
+                list11.add(new Card(Species.c,3));
+                list11.add(new Card(Species.a,6));
+                LinkedList<Card> list12=new LinkedList<Card>();
+                list12.add(new Card(Species.a,1));
+                list12.add(new Card(Species.a,2));
+                list12.add(new Card(Species.c,3));
+                list12.add(new Card(Species.a,6));
 
                 allPaths.add(list1);
                 allPaths.add(list2);
@@ -122,6 +131,8 @@ public class D2DUnitTest {
                 allPaths.add(list8);
                 allPaths.add(list9);
                 allPaths.add(list10);
+                allPaths.add(list11);
+                allPaths.add(list12);
             }
             default-> {return null;}
         }
@@ -205,12 +216,22 @@ public class D2DUnitTest {
         Arbor[] arbors=constructedMiniArbors();
 
         for(int i=0;i<arbors.length;i++) {
-            HashSet<LinkedList<Card>> identifiedPaths=arbors[i].findScoringPaths();
-            HashSet<LinkedList<Card>> expectedPaths=scoringPaths(i);
-            assertEquals(identifiedPaths.size(),expectedPaths.size());
-            for(LinkedList<Card> path : expectedPaths) {
-                if(!identifiedPaths.contains(path)) System.out.println("Did not find path "+path+" in scoring set for arbor "+i);
-                assertEquals(identifiedPaths.contains(path),true);
+            LinkedList<LinkedList<Card>> identifiedPaths=arbors[i].findScoringPaths();
+            LinkedList<LinkedList<Card>> expectedPaths=scoringPaths(i);
+
+            if(identifiedPaths.size()!=expectedPaths.size()) System.out.println("Different number of score paths for arbor "+i);
+            assertEquals(expectedPaths.size(),identifiedPaths.size());
+
+            for(int j=0;j<expectedPaths.size();j++) {
+                LinkedList<Card> testPath=expectedPaths.get(j);
+                boolean compare=false;
+
+                for(int k=0;k<expectedPaths.size();k++) {
+                    if(testPath.equals(identifiedPaths.get(k))) compare=true;
+                }
+
+                if(!compare) System.out.println("Did not find path "+testPath+" in scoring set for arbor "+i);
+                assertEquals(compare,true);
             }
         }
 
