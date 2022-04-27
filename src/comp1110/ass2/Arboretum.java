@@ -234,7 +234,7 @@ public class Arboretum {
      * sharedState[0] - a single character ID string, either "A" or "B" representing whose turn it is.
      * sharedState[1] - Player A's arboretum
      * 0th character is 'A'
-     * Followed by a number of 8-character _placement_ substrings as defined below that occur in
+     * Followed by++ a number of 8-character _placement_ substrings as defined below that occur in
      * the order they were played. Note: these are NOT sorted alphanumerically.
      * For example: "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01"
      * <p>
@@ -302,15 +302,23 @@ public class Arboretum {
         }
         if (sharedState[1].length() != 1) {
             // Check the species
-            for (int i = 1; i < sharedState[1].length() - 7; i += 8) {
+            // For the first card
+            if (!checkSpecies(sharedState, 1, 1)) return false;
+            if (sharedState[1].charAt(2) < '1' || sharedState[1].charAt(2) > '8') {
+                return false;
+            }
+            if (sharedState[1].charAt(4) != '0' || (sharedState[1].charAt(5) != '0')
+                    || (sharedState[1].charAt(7) != '0') || (sharedState[1].charAt(8) != '0')) return false;
+            if (checkDir1(sharedState, 3, 1) || checkDir2(sharedState, 6, 1)) return false;
+            // For the rest of the card
+            for (int i = 9; i < sharedState[1].length() - 7; i += 8) {
                 if (!checkSpecies(sharedState, i, 1)) return false;
                 // Check card number
                 if (sharedState[1].charAt(i + 1) < '1' || sharedState[1].charAt(i + 1) > '8') {
                     return false;
                 }
                 // Check directions
-                if (checkDir1(sharedState, i + 2, 1)) return false;
-                if (checkDir2(sharedState, i + 5, 1)) return false;
+                if (checkDir1(sharedState, i + 2, 1) || checkDir2(sharedState, i + 5, 1)) return false;
                 // Check distances
                 if (sharedState[1].charAt(i + 3) < '0' || sharedState[1].charAt(i + 3) > '9') {
                     return false;
@@ -336,16 +344,24 @@ public class Arboretum {
             return false;
         }
         // Check the species
-        if (sharedState[1].length() != 1) {
-            for (int i = 1; i < sharedState[3].length() - 7; i += 8) {
+        if (sharedState[3].length() != 1) {
+            // For the first card
+            if (!checkSpecies(sharedState, 1, 3)) return false;
+            if (sharedState[3].charAt(2) < '1' || sharedState[3].charAt(2) > '8') {
+                return false;
+            }
+            if (sharedState[3].charAt(4) != '0' || (sharedState[3].charAt(5) != '0')
+                    || (sharedState[3].charAt(7) != '0') || (sharedState[3].charAt(8) != '0')) return false;
+            if (checkDir1(sharedState, 3, 3) || checkDir2(sharedState, 6, 3)) return false;
+            // For the rest of the card
+            for (int i = 9; i < sharedState[3].length() - 7; i += 8) {
                 if (!checkSpecies(sharedState, i, 3)) return false;
                 // Check card number
                 if (sharedState[3].charAt(i + 1) < '1' || sharedState[3].charAt(i + 1) > '8') {
                     return false;
                 }
                 // Check directions
-                if (checkDir1(sharedState, i + 2, 3)) return false;
-                if (checkDir2(sharedState, i + 5, 3)) return false;
+                if (checkDir1(sharedState, i + 2, 3) || checkDir2(sharedState, i + 5, 3)) return false;
                 // Check distances
                 if (sharedState[3].charAt(i + 3) < '0' || sharedState[3].charAt(i + 3) > '9') {
                     return false;
@@ -888,7 +904,19 @@ public class Arboretum {
      * TASK 10
      */
     public static Set<String> getAllValidPlacements(String[][] gameState, String card) {
-        return null;
+        Set<String> output = new HashSet<>();
+        String playerArboretum;
+        if (gameState[0][0].equals('A')) playerArboretum = gameState[0][1];
+        else playerArboretum = gameState[0][3];
+        if (playerArboretum.length() == 1) output.add(card+"C00C00");
+        else{
+            String possiblePlacement = "";
+            output.add(card+possiblePlacement);
+        }
+
+
+
+        return output;
         //FIXME TASK 10
     }
 

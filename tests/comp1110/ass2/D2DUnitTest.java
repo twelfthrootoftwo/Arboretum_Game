@@ -368,9 +368,13 @@ public class D2DUnitTest {
         // Not existing card in arboretum B
         testShared(new String[]{"A", "Aa6C00C00d6S01C00", "Ab5m4j3", "Bc9C00C00b8C00E01", "Ba1b1c1"}, false);
         // Wrong direction in arboretum A
-        testShared(new String[]{"A", "Aa6X00C00d6S01C00", "Ab5m4j3", "Bc7C00C00b8C00E01", "Ba1b1c1"}, false);
+        testShared(new String[]{"A", "Aa6C00C00d6X01C00", "Ab5m4j3", "Bc7C00C00b8C00E01", "Ba1b1c1"}, false);
         // Wrong direction in arboretum B
-        testShared(new String[]{"A", "Aa6C00C00d6S01C00", "Ab5m4j3", "Bc7X00C00b8C00E01", "Ba1b1c1"}, false);
+        testShared(new String[]{"A", "Aa6C00C00d6S01C00", "Ab5m4j3", "Bc7C00C00b8C00X01", "Ba1b1c1"}, false);
+        // First card in arboretum A not C00C00
+        testShared(new String[]{"A", "Aa6C01C00d6S01C00", "Ab5m4j3", "Bc7C00C00b8C00E01", "Ba1b1c1"}, false);
+        // First card in arboretum B not C00C00
+        testShared(new String[]{"A", "Aa6C00C00d6S01C00", "Ab5m4j3", "Bc7C00C01b8C00E01", "Ba1b1c1"}, false);
     }
 
 
