@@ -906,18 +906,26 @@ public class Arboretum {
     public static Set<String> getAllValidPlacements(String[][] gameState, String card) {
         Set<String> output = new HashSet<>();
         String playerArboretum;
+        // Determine which player's turn
         if (gameState[0][0].equals('A')) playerArboretum = gameState[0][1];
         else playerArboretum = gameState[0][3];
+        // If empty arboretum, add to the middle
         if (playerArboretum.length() == 1) output.add(card+"C00C00");
         else{
+            // For loop and add all possibilities including overlap
             String possiblePlacement = "";
             output.add(card+possiblePlacement);
         }
-
+        // Check and remove all (removeAll())
 
 
         return output;
         //FIXME TASK 10
+    }
+
+
+    private static Set<String> separate(String arboretum) {
+        return null;
     }
 
     /**
