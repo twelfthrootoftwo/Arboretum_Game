@@ -829,7 +829,7 @@ public class Arboretum {
      * @param hand the cards in hand at the moment
      * @param amount8to0 whether consider the exception case
      * @param speciesIndex the first index that the specie occurs in hand
-     * @return true if the species is right, false if the specie does not exist.
+     * @return The sum of the given specie.
      * Helper Function for TASK 9
      */
     private static int amount(char species, String hand, boolean amount8to0, int speciesIndex) {
