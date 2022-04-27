@@ -22,8 +22,7 @@ declaration: >-
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 code:
-  - comment: using part of codes in IsHiddenStateWellFormedTest.java from tests file.
-  - comment: using part of codes in IsSharedStateWellFormedTest.java from tests file.
+  - comment: using part of codes in IsHiddenStateWellFormedTest.java and IsSharedStateWellFormedTest.java from tests file.
 
 
 # sign *your* name and uid here
