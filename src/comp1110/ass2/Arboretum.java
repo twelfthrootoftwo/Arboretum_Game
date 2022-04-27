@@ -86,13 +86,13 @@ public class Arboretum {
         }
         // Check alphabetic
         for (int i = 0; i < hiddenState[0].length(); i += 2) {
-            if (checkSpecies(hiddenState, i, 0)) return false;
+            if (!checkSpecies(hiddenState, i, 0)) return false;
         }
         for (int i = 1; i < hiddenState[1].length(); i += 2) {
-            if (checkSpecies(hiddenState, i, 1)) return false;
+            if (!checkSpecies(hiddenState, i, 1)) return false;
         }
         for (int i = 1; i < hiddenState[2].length(); i += 2) {
-            if (checkSpecies(hiddenState, i, 2)) return false;
+            if (!checkSpecies(hiddenState, i, 2)) return false;
         }
         // Check numeric
         for (int i = 1; i < hiddenState[0].length(); i += 2) {
@@ -185,7 +185,7 @@ public class Arboretum {
      * @param value the integer wanted to be checked if it is in the array
      * @return a boolean that identify if it contains in the array
      */
-    private static boolean contains(Integer[] array, Integer value) {
+    public static boolean contains(Integer[] array, Integer value) {
         return Arrays.asList(array).contains(value);
     }
 
@@ -198,7 +198,7 @@ public class Arboretum {
      * @return true if the hiddenState array is well-formed, false if it is not well-formed.
      * Helper Function for TASK 3
      */
-    private static int toNumber(int charA, int charB) {
+    public static int toNumber(int charA, int charB) {
         if (charA == 97) {
             return charB - 48;
         } else {
@@ -218,8 +218,8 @@ public class Arboretum {
      * @return true if the species is right, false if the specie does not exist.
      * Helper Function for TASK 3 and TASK 4
      */
-    private static boolean checkSpecies(String[] state, int i, int j) {
-        return !(state[j].charAt(i) == 'a'
+    static boolean checkSpecies(String[] state, int i, int j) {
+        return (state[j].charAt(i) == 'a'
                 || state[j].charAt(i) == 'b'
                 || state[j].charAt(i) == 'c'
                 || state[j].charAt(i) == 'd'
@@ -303,7 +303,7 @@ public class Arboretum {
         if (sharedState[1].length() != 1) {
             // Check the species
             for (int i = 1; i < sharedState[1].length() - 7; i += 8) {
-                if (checkSpecies(sharedState, i, 1)) return false;
+                if (!checkSpecies(sharedState, i, 1)) return false;
                 // Check card number
                 if (sharedState[1].charAt(i + 1) < '1' || sharedState[1].charAt(i + 1) > '8') {
                     return false;
@@ -338,7 +338,7 @@ public class Arboretum {
         // Check the species
         if (sharedState[1].length() != 1) {
             for (int i = 1; i < sharedState[3].length() - 7; i += 8) {
-                if (checkSpecies(sharedState, i, 3)) return false;
+                if (!checkSpecies(sharedState, i, 3)) return false;
                 // Check card number
                 if (sharedState[3].charAt(i + 1) < '1' || sharedState[3].charAt(i + 1) > '8') {
                     return false;
@@ -371,7 +371,7 @@ public class Arboretum {
         }
         if (sharedState[1].length() != 1) {
             for (int i = 1; i < sharedState[2].length(); i += 2) {
-                if (checkSpecies(sharedState, i, 2)) return false;
+                if (!checkSpecies(sharedState, i, 2)) return false;
             }
             // Check numeric
             for (int i = 2; i < sharedState[2].length(); i += 2) {
@@ -390,7 +390,7 @@ public class Arboretum {
         }
         if (sharedState[1].length() != 1) {
             for (int i = 1; i < sharedState[4].length(); i += 2) {
-                if (checkSpecies(sharedState, i, 4)) return false;
+                if (!checkSpecies(sharedState, i, 4)) return false;
             }
             // Check numeric
             for (int i = 2; i < sharedState[4].length(); i += 2) {

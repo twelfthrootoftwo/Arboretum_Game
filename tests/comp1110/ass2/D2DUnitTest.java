@@ -301,7 +301,15 @@ public class D2DUnitTest {
      */
     @Test
     public void checkSpeciesTest() {
-
+        String[] state1 = new String[]{"j1c2", "Aa7b5c7d3d5j1m5", "Ba2a6b5b7d6j2m2"};
+        boolean out1 = Arboretum.checkSpecies(state1, 1, 1);
+        assertEquals(true, out1, "Arboretum.checkSpecies(" + Arrays.toString(state1) + ")");
+        String[] state2 = new String[]{"j1c2z2", "Aa7b5c7d3d5j1m5", "Ba2a6b5b7d6j2m2"};
+        boolean out2 = Arboretum.checkSpecies(state2, 4, 0);
+        assertEquals(false, out2, "Arboretum.checkSpecies(" + Arrays.toString(state1) + ")");
+        String[] state3 = new String[]{"j1c2a2", "Aa7b5c7d3d5j1m5", "Ba2a6b5b7d6j2m2"};
+        boolean out3 = Arboretum.checkSpecies(state2, 0, 2);
+        assertEquals(false, out3, "Arboretum.checkSpecies(" + Arrays.toString(state1) + ")");
     }
 
     /**
@@ -310,7 +318,27 @@ public class D2DUnitTest {
      */
     @Test
     public void toNumberTest() {
+        int charA = 'a';
+        int charB = '8';
+        int out1 = Arboretum.toNumber(charA, charB);
+        assertEquals(charB-48, out1, "Arboretum.toNumber");
+        charA = 'd';
+        charB = '0';
+        int out2 = Arboretum.toNumber(charA, charB);
+        assertEquals(charB-18, out2, "Arboretum.toNumber");
+    }
 
+    /**
+     * Contribution: Hongzhe
+     * Test helper function contains() for isHiddenStateWellFormed() and isSharedStateWellFormed()
+     */
+    @Test
+    public void containsTest() {
+        Integer [] array= new Integer[] {1,2,3,4,99,101};
+        boolean out1 = Arboretum.contains(array, 28);
+        assertEquals(false, out1, "Arboretum.contains(" + Arrays.toString(array) + ")");
+        boolean out2 = Arboretum.contains(array, 99);;
+        assertEquals(true, out2, "Arboretum.contains(" + Arrays.toString(array) + ")");
     }
 
     /**
@@ -319,59 +347,44 @@ public class D2DUnitTest {
      */
     @Test
     public void edgeCasesShared() {
-        // Wrong size
-        testShared(new String[]{"", "AB", "BA"}, false);
         // Wrong format
-        testShared(new String[]{"C", "A", "B"}, false);
+        testShared(new String[]{"", "A", "A", "B", "B"}, false);
         // Wrong player
-        testShared(new String[]{"", "B", "A"}, false);
-        // Length larger than 9
-        testShared(new String[]{"", "Aa7c5c7d3d5j1m5c2", "Ba1a6b5b7d6j2m2"}, false);
-        // Not existing species
-        testShared(new String[]{"", "Aa7c5c7d3d5j1m5", "Ba1a6b5b7d6j2e2"}, false);
-        // Not existing value
-        testShared(new String[]{"", "Aa7c5c7d3d5j1m5", "Ba1a6b5b7d6j2m9"}, false);
-        // Two value
-        testShared(new String[]{"", "Aa7c547d3d5j1m5", "Ba1a6b5b7d6j2m2"}, false);
-        // Repeat cards in same place
-        testShared(new String[]{"", "Aa7c5c7d3d5j1m5", "Ba1a6b5b7d6j2j2"}, false);
-        // Repeat cards in different places
-        testShared(new String[]{"", "Aa7c5c7d3d5j1m5", "Ba7a6b5b7d6j2m2"}, false);
-        testShared(new String[]{"a7", "Aa7c5c7d3d5j1m5", "Ba2a6b5b7d6j2m2"}, false);
-        testShared(new String[]{"j2", "Aa7c5c7d3d5j1m5", "Ba2a6b5b7d6j2m2"}, false);
-        testShared(new String[]{"j1c2b5", "Aa7b5c7d3d5j1m5", "Ba2a6b5b7d6j2m2"}, false);
+        testShared(new String[]{"A", "B", "B", "A", "A"}, false);
+        // A discard more than B
+        testShared(new String[]{"A", "Aa6C00C00d6S01C00", "Ab5m4j3", "Bc7C00C00b8C00E01", "B"}, false);
+        // B discard more than A
+        testShared(new String[]{"A", "Aa6C00C00d6S01C00", "A", "Bc7C00C00b8C00E01", "Bb5m4j3"}, false);
+        // Not existing species in A discard
+        testShared(new String[]{"A", "Aa6C00C00d6S01C00", "Az5m4j3", "Bc7C00C00b8C00E01", "Ba1b1c1"}, false);
+        // Not existing species in B discard
+        testShared(new String[]{"A", "Aa6C00C00d6S01C00", "Aa5m4j3", "Bc7C00C00b8C00E01", "Bz1b1c1"}, false);
+        // Not existing species in arboretum A
+        testShared(new String[]{"A", "Ax6C00C00d6S01C00", "Ab5m4j3", "Bc7C00C00b8C00E01", "Ba1b1c1"}, false);
+        // Not existing species in arboretum B
+        testShared(new String[]{"A", "Aa6C00C00d6S01C00", "Ab5m4j3", "Bx7C00C00b8C00E01", "Ba1b1c1"}, false);
+        // Not existing card in arboretum A
+        testShared(new String[]{"A", "Aa0C00C00d6S01C00", "Ab5m4j3", "Bc7C00C00b8C00E01", "Ba1b1c1"}, false);
+        // Not existing card in arboretum B
+        testShared(new String[]{"A", "Aa6C00C00d6S01C00", "Ab5m4j3", "Bc9C00C00b8C00E01", "Ba1b1c1"}, false);
+        // Wrong direction in arboretum A
+        testShared(new String[]{"A", "Aa6X00C00d6S01C00", "Ab5m4j3", "Bc7C00C00b8C00E01", "Ba1b1c1"}, false);
+        // Wrong direction in arboretum B
+        testShared(new String[]{"A", "Aa6C00C00d6S01C00", "Ab5m4j3", "Bc7X00C00b8C00E01", "Ba1b1c1"}, false);
     }
+
 
     /**
      * Contribution: Hongzhe
-     * Test helper function checkDir1() for isSharedStateWellFormed()
-     */
-    @Test
-    public void checkDir1Test() {
-
-    }
-
-    /**
-     * Contribution: Hongzhe
-     * Test helper function checkDir2() for isSharedStateWellFormed()
-     */
-    @Test
-    public void checkDir2Test() {
-
-    }
-
-    /**
-     * Contribution: Hongzhe
-     * Test helper function checkDir2() for isSharedStateWellFormed()
+     * Test all necessary functions in task 3 and task 4
      */
     @Test
     public void checkStatesWellFormedTest(){
         edgeCasesHidden();
         checkSpeciesTest();
+        containsTest();
         toNumberTest();
         edgeCasesShared();
-        checkDir1Test();
-        checkDir2Test();
     }
 }
 
