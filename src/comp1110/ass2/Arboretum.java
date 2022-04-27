@@ -769,6 +769,7 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Hongzhe
      * Determine whether the given player has the right to score the given species. Note: This does not check whether
      * a viable path exists. You may gain the right to score a species that you do not have a viable scoring path for.
      * See "Gaining the Right to Score" in `README.md`.
@@ -783,8 +784,67 @@ public class Arboretum {
      * TASK 9
      */
     public static boolean canScore(String[][] gameState, char player, char species) {
-        return false;
+        // Initially determine which is the player we are determining
+        String playerHand;
+        String opponentHand;
+        if (player == 'A'){
+            playerHand = gameState[1][1];
+            opponentHand = gameState[1][2];
+        }
+        else{
+            playerHand = gameState[1][2];
+            opponentHand = gameState[1][1];
+        }
+        // Handle exception
+        boolean player8to0 = false;
+        boolean opponent8to0 = false;
+        for (int i = 1; i < opponentHand.length()-1; i+=2){
+            if (opponentHand.charAt(i) == species && opponentHand.charAt(i+1) == '1'){
+                player8to0 = true;
+            }
+        }
+        for (int i = 1; i < playerHand.length()-1; i+=2){
+            if (playerHand.charAt(i) == species && playerHand.charAt(i+1) == '1'){
+                opponent8to0 = true;
+            }
+        }
+        // Jump to the index of that species, and also check if that species exist
+        var playerSpecies = playerHand.indexOf(species);
+        var opponentSpecies = opponentHand.indexOf(species);
+        if (playerSpecies == -1 && opponentSpecies == -1) return true;
+        else if (playerSpecies == -1 && opponentSpecies >= 0) return false;
+        else if (playerSpecies >= 0 && opponentSpecies == -1) return true;
+        else{
+            return amount(species, playerHand, player8to0, playerSpecies)
+                    >= amount(species, opponentHand, opponent8to0, opponentSpecies);
+        }
         // FIXME TASK 9
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * Calculate the sum of the given specie
+     *
+     * @param species specie to check with
+     * @param hand the cards in hand at the moment
+     * @param amount8to0 whether consider the exception case
+     * @param speciesIndex the first index that the specie occurs in hand
+     * @return true if the species is right, false if the specie does not exist.
+     * Helper Function for TASK 9
+     */
+    private static int amount(char species, String hand, boolean amount8to0, int speciesIndex) {
+        int amount = 0;
+        for (int i = speciesIndex; i < hand.length()-1; i+=2){
+            if (hand.charAt(i) == species){
+                if (hand.charAt(i+1) == '8' && amount8to0){
+                    continue;
+                }
+                else if(hand.charAt(i+1) > '0' && hand.charAt(i+1) < '9') {
+                    amount += hand.charAt(i+1) - '0';
+                }
+            }
+        }
+        return amount;
     }
 
     /**
