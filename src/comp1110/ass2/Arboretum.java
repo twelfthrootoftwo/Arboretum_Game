@@ -112,6 +112,7 @@ public class Arboretum {
         }
         // Check if it is sorted correctly
         // For deck
+        Integer[] deck = new Integer[hiddenState[0].length()];
         if (!hiddenState[0].isEmpty()) {
             int[] listSorted = new int[hiddenState[0].length() / 2];
             int j = 0;
@@ -119,6 +120,10 @@ public class Arboretum {
                 int x = hiddenState[0].charAt(i);
                 int y = hiddenState[0].charAt(i + 1);
                 listSorted[j] = toNumber(x, y);
+                if (contains(deck, toNumber(x, y))){
+                    return false;
+                }
+                deck[j] = toNumber(x, y);
                 j += 1;
             }
             int[] list = listSorted.clone();
@@ -127,6 +132,8 @@ public class Arboretum {
                 return false;
             }
         }
+        Integer[] listA = new Integer[hiddenState[1].length() - 1];
+        Integer[] listB = new Integer[hiddenState[2].length() - 1];
         // For Player A
         if (hiddenState[1].length() != 1) {
             int[] listSorted2 = new int[(hiddenState[1].length() - 1) / 2];
@@ -135,6 +142,11 @@ public class Arboretum {
                 int x = hiddenState[1].charAt(i);
                 int y = hiddenState[1].charAt(i + 1);
                 listSorted2[j] = toNumber(x, y);
+
+                if (contains(listA, toNumber(x, y)) || contains(deck, toNumber(x, y))){
+                    return false;
+                }
+                listA[j] = toNumber(x, y);
                 j += 1;
             }
             int[] list2 = listSorted2.clone();
@@ -151,6 +163,10 @@ public class Arboretum {
                 int x = hiddenState[2].charAt(i);
                 int y = hiddenState[2].charAt(i + 1);
                 listSorted3[j] = toNumber(x, y);
+                if (contains(listA, toNumber(x, y)) || contains(listB, toNumber(x, y)) || contains(deck, toNumber(x, y))){
+                    return false;
+                }
+                listB[j] = toNumber(x, y);
                 j += 1;
             }
             int[] list3 = listSorted3.clone();
@@ -160,6 +176,17 @@ public class Arboretum {
         // Else return true
         return true;
         //FIXME TASK 3
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * Check if there is repeated cards in deck, playerA's hand or playerB's hand
+     * @param array the array needed to be checked
+     * @param value the integer wanted to be checked if it is in the array
+     * @return a boolean that identify if it contains in the array
+     */
+    private static boolean contains(Integer[] array, Integer value) {
+        return Arrays.asList(array).contains(value);
     }
 
     /**

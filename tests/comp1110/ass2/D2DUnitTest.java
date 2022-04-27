@@ -8,6 +8,7 @@ import comp1110.ass2.game.Species;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -237,4 +238,141 @@ public class D2DUnitTest {
 
     }
 
+    /**
+     * Contribution: Hongzhe
+     * Reformed functions from given tests in IsHiddenStateWellFormedTest.java
+     */
+    private String errorPrefixHidden(String[] state) {
+        return "Arboretum.isHiddenStateWellFormed(" + Arrays.toString(state) + ")";
+    }
+
+    private void testHidden(String[] actual, boolean expected) {
+        String errorPrefix = errorPrefixHidden(actual);
+        boolean out = Arboretum.isHiddenStateWellFormed(actual);
+        assertEquals(expected, out, errorPrefix);
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * Reformed functions from given tests in IsSharedStateWellFormedTest.java
+     */
+    private String errorPrefixShared(String[] state) {
+        return "Arboretum.isHiddenStateWellFormed(" + Arrays.toString(state) + ")";
+    }
+
+    private void testShared(String[] actual, boolean expected) {
+        String errorPrefix = errorPrefixShared(actual);
+        boolean out = Arboretum.isHiddenStateWellFormed(actual);
+        assertEquals(expected, out, errorPrefix);
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * Test edge cases for isHiddenStateWellFormed()
+     */
+    @Test
+    public void edgeCasesHidden() {
+        // Wrong size
+        testHidden(new String[]{"", "AB", "BA"}, false);
+        // Wrong format
+        testHidden(new String[]{"C", "A", "B"}, false);
+        // Wrong player
+        testHidden(new String[]{"", "B", "A"}, false);
+        // Length larger than 9
+        testHidden(new String[]{"", "Aa7c5c7d3d5j1m5c2", "Ba1a6b5b7d6j2m2"}, false);
+        // Not existing species
+        testHidden(new String[]{"", "Aa7c5c7d3d5j1m5", "Ba1a6b5b7d6j2e2"}, false);
+        // Not existing value
+        testHidden(new String[]{"", "Aa7c5c7d3d5j1m5", "Ba1a6b5b7d6j2m9"}, false);
+        // Two value
+        testHidden(new String[]{"", "Aa7c547d3d5j1m5", "Ba1a6b5b7d6j2m2"}, false);
+        // Repeat cards in same place
+        testHidden(new String[]{"", "Aa7c5c7d3d5j1m5", "Ba1a6b5b7d6j2j2"}, false);
+        // Repeat cards in different places
+        testHidden(new String[]{"", "Aa7c5c7d3d5j1m5", "Ba7a6b5b7d6j2m2"}, false);
+        testHidden(new String[]{"a7", "Aa7c5c7d3d5j1m5", "Ba2a6b5b7d6j2m2"}, false);
+        testHidden(new String[]{"j2", "Aa7c5c7d3d5j1m5", "Ba2a6b5b7d6j2m2"}, false);
+        testHidden(new String[]{"j1c2b5", "Aa7b5c7d3d5j1m5", "Ba2a6b5b7d6j2m2"}, false);
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * Test helper function checkSpecies() for isHiddenStateWellFormed()
+     */
+    @Test
+    public void checkSpeciesTest() {
+
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * Test helper function toNumber() for isHiddenStateWellFormed() and isSharedStateWellFormed()
+     */
+    @Test
+    public void toNumberTest() {
+
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * Test edge cases for isSharedStateWellFormed()
+     */
+    @Test
+    public void edgeCasesShared() {
+        // Wrong size
+        testShared(new String[]{"", "AB", "BA"}, false);
+        // Wrong format
+        testShared(new String[]{"C", "A", "B"}, false);
+        // Wrong player
+        testShared(new String[]{"", "B", "A"}, false);
+        // Length larger than 9
+        testShared(new String[]{"", "Aa7c5c7d3d5j1m5c2", "Ba1a6b5b7d6j2m2"}, false);
+        // Not existing species
+        testShared(new String[]{"", "Aa7c5c7d3d5j1m5", "Ba1a6b5b7d6j2e2"}, false);
+        // Not existing value
+        testShared(new String[]{"", "Aa7c5c7d3d5j1m5", "Ba1a6b5b7d6j2m9"}, false);
+        // Two value
+        testShared(new String[]{"", "Aa7c547d3d5j1m5", "Ba1a6b5b7d6j2m2"}, false);
+        // Repeat cards in same place
+        testShared(new String[]{"", "Aa7c5c7d3d5j1m5", "Ba1a6b5b7d6j2j2"}, false);
+        // Repeat cards in different places
+        testShared(new String[]{"", "Aa7c5c7d3d5j1m5", "Ba7a6b5b7d6j2m2"}, false);
+        testShared(new String[]{"a7", "Aa7c5c7d3d5j1m5", "Ba2a6b5b7d6j2m2"}, false);
+        testShared(new String[]{"j2", "Aa7c5c7d3d5j1m5", "Ba2a6b5b7d6j2m2"}, false);
+        testShared(new String[]{"j1c2b5", "Aa7b5c7d3d5j1m5", "Ba2a6b5b7d6j2m2"}, false);
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * Test helper function checkDir1() for isSharedStateWellFormed()
+     */
+    @Test
+    public void checkDir1Test() {
+
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * Test helper function checkDir2() for isSharedStateWellFormed()
+     */
+    @Test
+    public void checkDir2Test() {
+
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * Test helper function checkDir2() for isSharedStateWellFormed()
+     */
+    @Test
+    public void checkStatesWellFormedTest(){
+        edgeCasesHidden();
+        checkSpeciesTest();
+        toNumberTest();
+        edgeCasesShared();
+        checkDir1Test();
+        checkDir2Test();
+    }
 }
+
+
