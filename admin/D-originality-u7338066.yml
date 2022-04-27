@@ -14,17 +14,6 @@ declaration: >-
   and all stages before it is entirely my own work, with the following
   exceptions:
 
-# Use this to list any code that you used that you did not write,
-# aside from code provided by the lecturer.  Provide a comment
-# explaining your use and the URL to that code and the licence for
-# that code
-#
-# Add as many "url+licence+comment" entries as necessary
-# (or remove it altogether if you haven't used any external code)
-code:
-  - comment: using part of codes in IsHiddenStateWellFormedTest.java and IsSharedStateWellFormedTest.java from tests file.
-
-
 # sign *your* name and uid here
 name: Hongzhe Zhu
 uid: u7338066
