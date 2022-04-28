@@ -891,6 +891,7 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Hongzhe
      * Find all the valid placements for the given card for the player whose turn it is.
      * A placement is valid if it satisfies the following conditions:
      * 1. The card is horizontally or vertically adjacent to at least one other placed card.
@@ -907,25 +908,221 @@ public class Arboretum {
         Set<String> output = new HashSet<>();
         String playerArboretum;
         // Determine which player's turn
-        if (gameState[0][0].equals('A')) playerArboretum = gameState[0][1];
+        if (gameState[0][0].equals("A")) playerArboretum = gameState[0][1];
         else playerArboretum = gameState[0][3];
-        // If empty arboretum, add to the middle
-        if (playerArboretum.length() == 1) output.add(card+"C00C00");
+        // If empty arboretum, the only placement is middle
+        if (playerArboretum.length() == 1) {
+            output.add(card+"C00C00");
+            return output;
+        }
         else{
             // For loop and add all possibilities including overlap
-            String possiblePlacement = "";
-            output.add(card+possiblePlacement);
+            for (String i : separate(playerArboretum)){
+                output.addAll(allPossiblePlacement(i));
+            }
         }
-        // Check and remove all (removeAll())
-
-
-        return output;
+        // Check and remove all existing placements
+        output.removeAll(separate(playerArboretum));
+        // Add card to every placement
+        Set<String> outputWithCard = new HashSet<>();
+        for (var i : output){
+            outputWithCard.add(card+i);
+        }
+        return outputWithCard;
         //FIXME TASK 10
     }
 
-
+    /**
+     * Contribution: Hongzhe
+     * List all the existing placements without the card specie and value.
+     *
+     * @param arboretum string of the arboretum of the player
+     * @return a set that separates all the exists placements
+     */
     private static Set<String> separate(String arboretum) {
-        return null;
+        Set<String> output = new HashSet<>();
+        for (int i = 3; i < arboretum.length() - 5; i += 8) {
+            output.add(Character.toString(arboretum.charAt(i)) + arboretum.charAt(i + 1) + arboretum.charAt(i + 2)
+                    + arboretum.charAt(i + 3) + arboretum.charAt(i + 4) + arboretum.charAt(i + 5));
+        }
+        return output;
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * Find all the possible placements beside a given existing placement
+     *
+     * @param existPlacement string of a current existing placement
+     * @return a set including all the possible next placement
+     */
+    private static Set<String> allPossiblePlacement(String existPlacement) {
+        Set<String> output = new HashSet<>();
+        // Move to the North
+        String newPlacement;
+        // Origin placement
+        if (existPlacement.charAt(0) == 'C'){
+            newPlacement = "N01" + existPlacement.charAt(3) + existPlacement.charAt(4) + existPlacement.charAt(5);
+        }
+        // Same direction move
+        else if (existPlacement.charAt(0) == 'N'){
+            // Determine if the number is 9
+            if (existPlacement.charAt(2) == '9'){
+                char newP2 = (char)(existPlacement.charAt(2) - 9);
+                char newP1 = (char)(existPlacement.charAt(1) + 1);
+                newPlacement = "N" + newP1 + newP2 + existPlacement.charAt(3)
+                        + existPlacement.charAt(4) + existPlacement.charAt(5);
+            }
+            else{
+                char newP = (char)(existPlacement.charAt(2) + 1);
+                newPlacement = "N" + existPlacement.charAt(1) + newP + existPlacement.charAt(3)
+                        + existPlacement.charAt(4) + existPlacement.charAt(5);
+            }
+        }
+        // If the card is 01 and with the opposite move
+        else if (existPlacement.charAt(0) == 'S' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1'){
+            newPlacement = "C00" + existPlacement.charAt(3) + existPlacement.charAt(4) + existPlacement.charAt(5);
+        }
+        // Opposite move minus 1
+        else{
+            // Determine if the number is 0
+            if (existPlacement.charAt(2) == '0'){
+                char newP2 = (char)(existPlacement.charAt(2) + 9);
+                char newP1 = (char)(existPlacement.charAt(1) - 1);
+                newPlacement = "S" + newP1 + newP2 + existPlacement.charAt(3)
+                        + existPlacement.charAt(4) + existPlacement.charAt(5);
+            }
+            else{
+                char newP = (char)(existPlacement.charAt(2) - 1);
+                newPlacement = "S" + existPlacement.charAt(1) + newP + existPlacement.charAt(3)
+                        + existPlacement.charAt(4) + existPlacement.charAt(5);
+            }
+        }
+        output.add(newPlacement);
+        // Move to the South
+        // Origin placement
+        if (existPlacement.charAt(0) == 'C'){
+            newPlacement = "S01" + existPlacement.charAt(3) + existPlacement.charAt(4) + existPlacement.charAt(5);
+        }
+        // Same direction move
+        else if (existPlacement.charAt(0) == 'S'){
+            // Determine if the number is 9
+            if (existPlacement.charAt(2) == '9'){
+                char newP2 = (char)(existPlacement.charAt(2) - 9);
+                char newP1 = (char)(existPlacement.charAt(1) + 1);
+                newPlacement = "S" + newP1 + newP2 + existPlacement.charAt(3)
+                        + existPlacement.charAt(4) + existPlacement.charAt(5);
+            }
+            else{
+                char newP = (char)(existPlacement.charAt(2) + 1);
+                newPlacement = "S" + existPlacement.charAt(1) + newP + existPlacement.charAt(3)
+                        + existPlacement.charAt(4) + existPlacement.charAt(5);
+            }
+        }
+        // If the card is 01 and with the opposite move
+        else if (existPlacement.charAt(0) == 'N' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1'){
+            newPlacement = "C00" + existPlacement.charAt(3) + existPlacement.charAt(4) + existPlacement.charAt(5);
+        }
+        // Opposite move minus 1
+        else{
+            // Determine if the number is 0
+            if (existPlacement.charAt(2) == '0'){
+                char newP2 = (char)(existPlacement.charAt(2) + 9);
+                char newP1 = (char)(existPlacement.charAt(1) - 1);
+                newPlacement = "N" + newP1 + newP2 + existPlacement.charAt(3)
+                        + existPlacement.charAt(4) + existPlacement.charAt(5);
+            }
+            else{
+                char newP = (char)(existPlacement.charAt(2) - 1);
+                newPlacement = "N" + existPlacement.charAt(1) + newP + existPlacement.charAt(3)
+                        + existPlacement.charAt(4) + existPlacement.charAt(5);
+            }
+        }
+        output.add(newPlacement);
+        // Move to the East
+        // Origin placement
+        if (existPlacement.charAt(3) == 'C'){
+            newPlacement = Character.toString(existPlacement.charAt(0))
+                    + existPlacement.charAt(1) + existPlacement.charAt(2) + "E01";
+        }
+        // Same direction move
+        else if (existPlacement.charAt(3) == 'E'){
+            // Determine if the number is 9
+            if (existPlacement.charAt(5) == '9'){
+                char newP2 = (char)(existPlacement.charAt(5) - 9);
+                char newP1 = (char)(existPlacement.charAt(4) + 1);
+                newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
+                        + existPlacement.charAt(2) + "E" + newP1 + newP2;
+            }
+            else{
+                char newP = (char)(existPlacement.charAt(5) + 1);
+                newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
+                        + existPlacement.charAt(2) + "E" + existPlacement.charAt(4) + newP;
+            }
+        }
+        // If the card is 01 and with the opposite move
+        else if (existPlacement.charAt(3) == 'W' && existPlacement.charAt(4) == '0' && existPlacement.charAt(5) == '1'){
+            newPlacement = Character.toString(existPlacement.charAt(0))
+                    + existPlacement.charAt(1) + existPlacement.charAt(2) + "C00";
+        }
+        // Opposite move minus 1
+        else{
+            // Determine if the number is 0
+            if (existPlacement.charAt(5) == '0'){
+                char newP2 = (char)(existPlacement.charAt(5) + 9);
+                char newP1 = (char)(existPlacement.charAt(4) - 1);
+                newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
+                        + existPlacement.charAt(2) + "W" + newP1 + newP2;
+            }
+            else{
+                char newP = (char)(existPlacement.charAt(5) - 1);
+                newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
+                        + existPlacement.charAt(2) + "W" + existPlacement.charAt(4) + newP;
+            }
+        }
+        output.add(newPlacement);
+        // Move to the West
+        // Origin placement
+        if (existPlacement.charAt(3) == 'C'){
+            newPlacement = Character.toString(existPlacement.charAt(0))
+                    + existPlacement.charAt(1) + existPlacement.charAt(2) + "W01";
+        }
+        // Same direction move
+        else if (existPlacement.charAt(3) == 'W'){
+            // Determine if the number is 9
+            if (existPlacement.charAt(5) == '9'){
+                char newP2 = (char)(existPlacement.charAt(5) - 9);
+                char newP1 = (char)(existPlacement.charAt(4) + 1);
+                newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
+                        + existPlacement.charAt(2) + "W" + newP1 + newP2;
+            }
+            else{
+                char newP = (char)(existPlacement.charAt(5) + 1);
+                newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
+                        + existPlacement.charAt(2) + "W" + existPlacement.charAt(4) + newP;
+            }
+        }
+        // If the card is 01 and with the opposite move
+        else if (existPlacement.charAt(3) == 'E' && existPlacement.charAt(5) == '1'){
+            newPlacement = Character.toString(existPlacement.charAt(0))
+                    + existPlacement.charAt(1) + existPlacement.charAt(2) + "C00";
+        }
+        // Opposite move minus 1
+        else{
+            // Determine if the number is 0
+            if (existPlacement.charAt(5) == '0'){
+                char newP2 = (char)(existPlacement.charAt(5) + 9);
+                char newP1 = (char)(existPlacement.charAt(4) - 1);
+                newPlacement = Character.toString(existPlacement.charAt(0))
+                        + existPlacement.charAt(1) + existPlacement.charAt(2) + "E" + newP1 + newP2;
+            }
+            else{
+                char newP = (char)(existPlacement.charAt(5) - 1);
+                newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
+                        + existPlacement.charAt(2) + "E" + existPlacement.charAt(4) + newP;
+            }
+        }
+        output.add(newPlacement);
+        return output;
     }
 
     /**
