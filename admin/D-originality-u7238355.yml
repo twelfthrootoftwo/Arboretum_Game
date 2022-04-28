@@ -21,8 +21,8 @@ declaration: >-
 #
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
-code:
-  - comment: using part of codes in IsStateValidTest.java from tests file.
+#code:
+#  - comment: using part of codes in IsStateValidTest.java from tests file.
 
 
 # sign *your* name and uid here
