@@ -4,11 +4,11 @@
 
 For Deliverable D2D, I contributed the following new statements of original code:
 
-- Fixed task 9 [canScore()](https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/Arboretum.java#L814-865) function in Arboretum class.
+- Fixed task 9 [canScore()](https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/Arboretum.java#L814-865) function in Arboretum class
 - Helper function [amount()](https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/Arboretum.java#L867-891) for task 9
 - Optimised task 3 [isHiddenStateWellFormed()](https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/Arboretum.java#L52-179) function in Arboretum class
 - Helper function [contains()](https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/Arboretum.java#L181-190) for task 3
-- Fixed task 9 [getAllValidPlacements()](https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/Arboretum.java#L893-920) function in Arboretum class.
+- Fixed task 10 [getAllValidPlacements()](https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/Arboretum.java#L893-1126) function in Arboretum class
 - Optimised task 4 [isSharedStateWellFormed()](https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/Arboretum.java#L230-420) function in Arboretum class
 
 (Follow the example give above to list at least 20 lines of original code contributions made by you, but not substantially more; choose your best. Notice that the example above links directly to the code as well as providing a brief description.   Please follow that example to link to your code.  You can create the link by browsing your code in gitlab, and then clicking on the line number of the first line, and then shift-clicking on the line number of the last line in the region you want to select.  If you do that correctly, the URL for that selection will be in the navigation bar of your browser.  After you commit and push your statement, you should check that all of the links are correctly working.)
