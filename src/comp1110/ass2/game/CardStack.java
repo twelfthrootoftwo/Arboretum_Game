@@ -1,5 +1,7 @@
 package comp1110.ass2.game;
 
+import comp1110.ass2.Arboretum;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -76,10 +78,11 @@ public abstract class CardStack {
      */
     @Override
     public String toString() {
-        String stack = "";
-        for (int i = 0; i < this.cards.size(); i++) {
-            stack += this.cards.get(i).toString();
-        }
-        return stack;
+//        String stack = "";
+//        for (int i = 0; i < this.cards.size(); i++) {
+//            stack += this.cards.get(i).toString();
+//        }
+//        return stack;
+        return Arboretum.cardListToString(cards);
     }
 }

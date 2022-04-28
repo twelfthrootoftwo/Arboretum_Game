@@ -1,9 +1,6 @@
 package comp1110.ass2;
 
-import comp1110.ass2.game.Card;
-import comp1110.ass2.game.Deck;
-import comp1110.ass2.game.Player;
-import comp1110.ass2.game.Position;
+import comp1110.ass2.game.*;
 import javafx.scene.image.ImageView;
 
 import java.io.FileNotFoundException;
@@ -929,6 +926,7 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Natasha
      * Find all viable scoring paths for the given player and the given species if this player has the right to
      * score this species.
      * <p>
@@ -953,8 +951,51 @@ public class Arboretum {
      * TASK 12
      */
     public static Set<String> getAllViablePaths(String[][] gameState, char player, char species) {
-        return null;
+        if(canScore(gameState,player,species)) {
+            Set<String> output=new HashSet<String>();
+
+            //get correct arbor code from gameState
+            String arborCode="";
+            if(player=='A') arborCode=gameState[0][1];
+            else arborCode=gameState[0][3];
+
+            //build Arbor object and find all scoring paths
+            Arbor arbor=new Arbor(arborCode);
+            LinkedList<LinkedList<Card>> allPaths=arbor.findScoringPaths();
+
+            Species toScore=Species.valueOf(String.valueOf(species));
+
+            //check each path and add to output set if it's the desired species
+            for(LinkedList<Card> path : allPaths) {
+                if(path.get(0).getSpecies()==toScore) {
+
+                    //construct string of cards in order
+                    String pathString=cardListToString(path);
+                    output.add(pathString);
+                }
+            }
+
+            return output;
+
+        } else return null;
+
         // FIXME TASK 12
+    }
+
+    /**
+     * Contribution: Natasha
+     * Converts List<Card> objects to strings in assignment specification format
+     * @param cardList - any List<Card></Card>
+     * @return a String of card codes for the cards in order
+     */
+    public static String cardListToString(List<Card> cardList) {
+        String outString="";
+
+        //add all cards in list to outString
+        for(Card card:cardList) {
+            outString+=card.toString();
+        }
+        return outString;
     }
 
     /**
