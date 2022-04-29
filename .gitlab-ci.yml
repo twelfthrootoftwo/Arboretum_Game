@@ -113,7 +113,7 @@ task13:
     - comp1110
   stage: test
   script:
-    - $JUNIT -c=comp1110.ass2.GetHighestViablePathTest
+    - $JUNIT -c=comp1110.ass2.GetHighestViablePathScoreTest
   allow_failure: true
 
 task14:
