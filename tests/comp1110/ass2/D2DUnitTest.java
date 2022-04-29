@@ -140,6 +140,70 @@ public class D2DUnitTest {
         return allPaths;
     }
 
+    public static LinkedList<Integer> scoreValues(int i){
+        LinkedList<Integer> scores=new LinkedList<>();
+
+        switch(i) {
+            case 0->{
+                //a1a8 - length 2, +1 start 1, +2 end 8
+                scores.add(5);
+            }
+            case 1->{
+                //a1a2 - length 2, +1 start 1
+                scores.add(3);
+                //b1b2 - length 2, +1 start 1
+                scores.add(3);
+            }
+            case 2->{
+                //a1a8 - length 2, +1 start 1, +2 end 8
+                scores.add(5);
+                //a1a7 - length 2, +1 start 1
+                scores.add(3);
+                //a1a6 - length 2, +1 start 1
+                scores.add(3);
+                //a1a5 - length 2, +1 start 1
+                scores.add(3);
+            }
+            case 3->{
+                //a1b3c5a7 - length 4, +1 start 1
+                scores.add(5);
+            }
+            case 4->{
+                //no scoring paths
+            }
+            case 5->{
+                //this is in the order they'll be determiend by the finder
+                //b2a3b4 - length 3
+                scores.add(3);
+                //a1a2 - length 2, +1 start
+                scores.add(3);
+                //a1a2a4 - length 3, +1 start
+                scores.add(4);
+                //a1a2a4a6 - length 4, +1 start, +4 species bonus
+                scores.add(9);
+                //a1a2c3a6 - length 4, +1 start
+                scores.add(5);
+                //a1a2c3a5 - length 4, +1 start
+                scores.add(5);
+                //a1b2a3 - length 3, +1 start
+                scores.add(4);
+                //a2a4 - length 2
+                scores.add(2);
+                //a2a4a6 - length 3
+                scores.add(3);
+                //a2c3a6 - length 3
+                scores.add(3);
+                //a2c3a5 - length 3
+                scores.add(3);
+                //a4a6 - length 2
+                scores.add(2);
+            }
+            default-> {return null;}
+        }
+
+        return scores;
+    }
+
     public static Arbor[] constructedMiniArbors() {
         Arbor[] arbors=new Arbor[miniArbors.length];
         int i=0;
@@ -213,7 +277,7 @@ public class D2DUnitTest {
      * Tests identification of scoring paths for mini arbors
      */
     @Test
-    public void scoringPaths() {
+    public void scorePaths() {
         Arbor[] arbors=constructedMiniArbors();
 
         for(int i=0;i<arbors.length;i++) {
@@ -236,6 +300,27 @@ public class D2DUnitTest {
             }
         }
 
+    }
+
+    /**
+     * Contribution: Natasha
+     * Tests correct scoring
+     */
+    @Test
+    public void scoreIdentification() {
+        Arbor[] arbors=constructedMiniArbors();
+
+        for(int i=0;i<arbors.length;i++) {
+            LinkedList<LinkedList<Card>> identifiedPaths = arbors[i].findScoringPaths();
+            LinkedList<Integer> scores=scoreValues(i);
+            if(scores.size()!=identifiedPaths.size()) System.out.println("Different size for arbor "+i);
+            assertEquals(scores.size(),identifiedPaths.size());
+            for(int j=0;j<scores.size();j++) {
+                int calcScore=Arbor.findScore(identifiedPaths.get(j));
+                if(scores.get(j)!=calcScore) System.out.println("Different score for arbor "+i+", path "+identifiedPaths.get(j));
+                assertEquals(scores.get(j),Arbor.findScore(identifiedPaths.get(j)));
+            }
+        }
     }
 
     /**

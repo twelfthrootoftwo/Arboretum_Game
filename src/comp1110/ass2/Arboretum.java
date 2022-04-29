@@ -491,7 +491,7 @@ public class Arboretum {
      * TASK 7
      */
     public static boolean isPlacementValid(String[][] gameState, String placement) {
-        Player player = new Player("player", 48);
+        Player player = new Player("player", 6);
 
         //initialise with appropriate player's information
         if (gameState[0][0] == "A") {
@@ -1196,6 +1196,7 @@ public class Arboretum {
     }
 
     /**
+     * Contribution: Natasha
      * Find the highest score of the viable paths for the given player and species.
      * <p>
      * You may assume that the inputs to this method are valid and/or well-formed.
@@ -1209,7 +1210,22 @@ public class Arboretum {
      * TASK 13
      */
     public static int getHighestViablePathScore(String[][] gameState, char player, char species) {
-        return Integer.MIN_VALUE;
+        if(!canScore(gameState,player,species)) return -1;
+
+        Set<String> output=new HashSet<String>();
+
+        //get correct arbor code from gameState
+        String arborCode="";
+        if(player=='A') arborCode=gameState[0][1];
+        else arborCode=gameState[0][3];
+
+        //build Arbor object and find all scoring paths
+        Arbor arbor=new Arbor(arborCode);
+        HashMap<Species,Integer> scores=arbor.score();
+
+        //get score for target species
+        Species toScore=Species.valueOf(String.valueOf(species));
+        return scores.get(toScore);
         // FIXME TASK 13
     }
 

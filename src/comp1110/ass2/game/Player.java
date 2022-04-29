@@ -12,9 +12,9 @@ public class Player {
     CardStack discardPile;
     List<Card> hand;
 
-    public Player(String name, int size) {
+    public Player(String name, int numSpecies) {
         this.name = name;
-        this.arboretum = new Arbor(size);
+        this.arboretum = new Arbor(numSpecies);
         this.discardPile = new DiscardPile();
         this.hand = new ArrayList<>();
     }

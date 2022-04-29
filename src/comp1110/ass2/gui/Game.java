@@ -173,8 +173,8 @@ public class Game extends Application {
 
         //setup
         Deck deck = new Deck(6);
-        Player playerA = new Player("A",48);
-        Player playerB = new Player("B",48);
+        Player playerA = new Player("A",6);
+        Player playerB = new Player("B",6);
 
         for (int i = 0; i < 7; i++) {
             playerA.draw(deck);

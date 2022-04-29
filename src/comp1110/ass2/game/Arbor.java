@@ -7,27 +7,28 @@ public class Arbor {
     private List<String> arboretumList;
     private HashMap<Position, ArrayList<Position>> scoringMap;
     private int numCards;
-    private int limit;
+    private final int limit;
+    private final int numSpecies;
 
 
     /**
      * Contribution: Natasha
      * Initialisation constructor, starting off empty
      *
-     * @param size - the maximum number of cards a player can play
+     * @param numSpecies - the number of species in play
      */
-    public Arbor(int size) {
+    public Arbor(int numSpecies) {
         this.arbor = new HashMap<Position, Card>();
         this.arboretumList = new ArrayList<>();
         this.numCards = 0;
-        this.limit = size - 1;
+        this.limit = 8*numSpecies - 1;//8 card values per species
         this.scoringMap = new HashMap<Position, ArrayList<Position>>();
+        this.numSpecies=numSpecies;
 
-        for (int i = -size + 1; i < size; i++) {
-            for (int j = -size + 1; j < size; j++) {
+        for (int i = -this.limit; i <= this.limit; i++) {
+            for (int j = -this.limit + 1; j <= this.limit; j++) {
                 Position newPos = new Position(i, j);
                 this.arbor.put(newPos, null);
-
             }
         }
     }
@@ -42,8 +43,8 @@ public class Arbor {
         this.arbor = new HashMap<Position, Card>();
 
         //assume we're working with the 2-player variant
-        //TODO -  allow this to be variable if there are more suits in play?
-        this.limit = 8 * 6 - 1;
+        this.numSpecies=6;
+        this.limit = 8 * this.numSpecies - 1;
 
         //truncate first character, since this is to represent the player
         arborCode = arborCode.substring(1);
@@ -179,6 +180,34 @@ public class Arbor {
 
     /**
      * Contribution: Natasha
+     * Determines the scores from this Arboretum for each species
+     * @return a HashMap containing scores for all species, using Species enum as keys
+     */
+    public HashMap<Species,Integer> score() {
+        HashMap<Species,Integer> finalScores=new HashMap<Species,Integer>();
+
+        //initialise scores for all species to 0
+        for(Species species:Species.values()) {
+            finalScores.put(species,0);
+        }
+
+        //get scoring paths
+        LinkedList<LinkedList<Card>> scorePaths=this.findScoringPaths();
+
+        //go through each path
+        for(LinkedList<Card> path:scorePaths) {
+            int score=findScore(path);
+            Species species=path.get(0).getSpecies();
+
+            //compare to existing score for this species, and replace if it's higher
+            if(score>finalScores.get(species)) finalScores.put(species,score);
+        }
+
+        return finalScores;
+    }
+
+    /**
+     * Contribution: Natasha
      * Fills in the HashMap of all scoring steps on this arbor.
      * Resets the scoring map to null first, so any existing map will be overwritten.
      * This assumes that the arbor can't be modified, only expanded (in which case all the old information will be recalculated).
@@ -286,5 +315,43 @@ public class Arbor {
                 sequence.remove(nextCard);
             }
         }
+    }
+
+    /**
+     * Contribution: Natasha
+     * Given a List<Card> that forms a valid scoring path, determines the score of the path
+     * Does not check for scoring validity
+     * @param path - a List<Card> of the scoring path, in order from first (lowest) to last (highest)
+     * @return the score of this path
+     */
+    public static int findScore(List<Card> path) {
+        //one point per card in path
+        int sizeBonus=path.size();
+
+        //if all cards are the same species, and path is 4 or more cards, score a bonus point for each card
+        int speciesBonus=0;
+        if(path.size()>3) {
+            Boolean sameSpecies=true;
+            int i=1;
+            while(sameSpecies&&i<path.size()) {
+                Species species1=path.get(i-1).getSpecies();
+                Species species2=path.get(i).getSpecies();
+                if(species1!=species2)sameSpecies=false;
+                i++;
+            }
+            if(sameSpecies) speciesBonus=path.size();
+        }
+
+        //if first card is 1, bonus 1 point
+        int startBonus=0;
+        if(path.get(0).getNumber()==1) startBonus=1;
+
+        //if last card is 8, bonus 2 points
+        int endBonus=0;
+        if(path.get(path.size()-1).getNumber()==8) endBonus=2;
+
+        //add all score elements
+        int finalScore=sizeBonus+speciesBonus+startBonus+endBonus;
+        return finalScore;
     }
 }
