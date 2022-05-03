@@ -99,6 +99,10 @@ public class Game extends Application {
     Image m7 = new Image(new FileInputStream("assets/cards/m_07.png"), 112, 112, true, true);
     Image m8 = new Image(new FileInputStream("assets/cards/m_08.png"), 112, 112, true, true);
 
+    Player playerA;
+    Player playerB;
+    Deck deck;
+
     public Game() throws FileNotFoundException {
     }
 
@@ -172,9 +176,9 @@ public class Game extends Application {
 
 
         //setup
-        Deck deck = new Deck(6);
-        Player playerA = new Player("A",6);
-        Player playerB = new Player("B",6);
+        this.deck = new Deck(6);
+        this.playerA = new Player("A",6);
+        this.playerB = new Player("B",6);
 
         for (int i = 0; i < 7; i++) {
             playerA.draw(deck);
@@ -288,7 +292,6 @@ public class Game extends Application {
             discardABox.getChildren().addAll(discard_A, gridPaneDA, hiddenA);
 
             sharedA.getChildren().addAll(arboretumABox, discardABox);
-
 
             //Player B part
             //player B share area
