@@ -42,6 +42,16 @@ class GUICard extends ImageView {
     Position loc;
     Group root;
 
+    //TODO - store images as static in Card instead of game?
+
+    /**
+     * Contribution: Junxian, Natasha
+     * Builds a GUICard using strings
+     * Currently not compatible with GUIArbor and GUIPosition since it doesn't store backend info
+     * @param name - String code for this card
+     * @param image - Image to use
+     * @throws FileNotFoundException - if the image couldn't be found
+     */
     public GUICard(String name, Image image) throws FileNotFoundException {
         this.name = name;
         this.draggable=true;
@@ -66,6 +76,13 @@ class GUICard extends ImageView {
         });
     }
 
+    /**
+     * Contribution: Natasha
+     * Alternate constructor using backend structure
+     * @param card - the card to associate
+     * @param root - the base display group
+     * @param image - image for this card
+     */
     public GUICard(Card card, Group root, Image image) {
         this.name=card.toString();
         this.card=card;
@@ -94,10 +111,19 @@ class GUICard extends ImageView {
         this.setImage(image);
     }
 
+    /**
+     * Contribution: Natasha
+     * Finds the GUIArbor the card is currently over
+     * This is used when this GUICard is being dragged by the mouse, as part of identifying places to play
+     * @return the GUIArbor if the card is currently over one and it's currently the turn of that arbor's player, Null otherwise
+     */
     private GUIArbor findArbor() {
+        //look through all nodes on root plane to find GUIArbors
         ObservableList<Node> nodes=root.getChildren();
         for(Node node:nodes) {
             if(node instanceof GUIArbor) {
+
+                //check if this card id over the arbor & it's that arbor's turn
                 GUIArbor gArb=(GUIArbor) node;
                 if(gArb.isTurn()&&gArb.contains(mouseX,mouseY)) {
                     return gArb;
@@ -107,7 +133,13 @@ class GUICard extends ImageView {
         return null;
     }
 
+    /**
+     * Contribution: Junxian, Natasha
+     * Updates the display position of this GUICard as the mouse is dragged
+     * @param event - mouse drag
+     */
     private void mouseDrag(MouseEvent event) {
+        //update the card's display coordinates
         double diffX = event.getSceneX() - mouseX;
         double diffY = event.getSceneY() - mouseY;
         this.setLayoutX(this.getLayoutX() + diffX);
@@ -115,32 +147,47 @@ class GUICard extends ImageView {
         mouseX = event.getSceneX();
         mouseY = event.getSceneY();
 
+        //highlight slots below if they're valid places to play
         GUIArbor localArbor=findArbor();
         if(localArbor!=null) {
             localArbor.highlightSlot(mouseX,mouseY);
         }
     }
 
+    /**
+     * Contribution: Junxian, Natasha
+     * When the card is dropped, play it to the position it's over; otherwise return it to the starting position
+     * @param event - mouse release
+     */
     private void mouseRelease(MouseEvent event) {
         GUIArbor localArbor=findArbor();
         mouseX = event.getSceneX();
         mouseY = event.getSceneY();
         boolean played=false;
+
+        //if the card was dropped onto a valid place to play, play it there
         if(localArbor!=null) {
             GUIPosition localPos=localArbor.findNearestSlot(mouseX,mouseY);
             if(localPos.canPlay()) {
                 localPos.playHere(this);
-                //this.removeFromHand();
+                //this.removeFromHand(); TODO - implement
                 played=true;
-                this.draggable=false;
+                this.draggable=false;//lock this card so it can't be moved again
             }
         }
+
+        //if the card wasn't played, return it to where it was
         if(!played) {
             this.setLayoutX(this.homeX);
             this.setLayoutY(this.homeY);
         }
     }
 
+    /**
+     * Cotnribtuion: Natasha
+     * Stores information when the card is initially clocked
+     * @param event - mouse press
+     */
     private void mousePress(MouseEvent event) {
         this.homeX=this.getLayoutX();
         this.homeY=this.getLayoutY();
@@ -149,11 +196,23 @@ class GUICard extends ImageView {
         this.toFront();
     }
 
+    /**
+     * Cotnribtuion: Natasha
+     * As the Arbor expands and position slots get smaller, update the card's scale to match
+     * @param width - the new width to fill
+     * @param height - the new height to fill
+     */
     public void updateScale(double width,double height) {
         this.setFitHeight(height);
         this.setFitWidth(width);
     }
 
+    /**
+     * Contribution: Natasha
+     * as the Arbor expands and GUIPositions mvoe around, update the card's display position to map
+     * @param x - the new x coord
+     * @param y - the new y coord
+     */
     public void updateCoord(double x, double y) {
         this.setLayoutX(x);
         this.setLayoutY(y);
