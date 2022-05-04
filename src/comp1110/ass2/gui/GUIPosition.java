@@ -12,6 +12,8 @@ public class GUIPosition extends Rectangle {
     Position position;
     GUICard playedCard;
 
+    private final double ARBOR_X;
+    private final double ARBOR_Y;
     double xCoord;
     double yCoord;
 
@@ -25,6 +27,9 @@ public class GUIPosition extends Rectangle {
         this.setFill(Color.LIGHTGREY);
         this.guiArbor=gui;
         this.playedCard=null;
+
+        this.ARBOR_X=gui.getLayoutX();
+        this.ARBOR_Y=gui.getLayoutY();
 
         //initialise starting positions - these will be overridden before display
         this.updateCoord(0,0);
@@ -44,8 +49,8 @@ public class GUIPosition extends Rectangle {
 
         //set the stored coordinates for this position to the centre (rather than the top left)
         //this is so that the formula for finding nearby positions calculates distance the centre
-        this.xCoord=x+(this.getWidth()/2);
-        this.yCoord=y+(this.getHeight()/2);
+        this.xCoord=x+(this.getWidth()/2)+this.ARBOR_X;
+        this.yCoord=y+(this.getHeight()/2)+this.ARBOR_Y;
 
         //if there's a card here, also move the card
         if(this.playedCard!=null) this.playedCard.updateCoord(x+margin,y+margin);

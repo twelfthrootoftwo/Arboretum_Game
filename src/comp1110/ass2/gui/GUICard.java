@@ -122,10 +122,9 @@ class GUICard extends ImageView {
         ObservableList<Node> nodes=root.getChildren();
         for(Node node:nodes) {
             if(node instanceof GUIArbor) {
-
-                //check if this card id over the arbor & it's that arbor's turn
+                //check if this card is over the arbor & it's that arbor's turn
                 GUIArbor gArb=(GUIArbor) node;
-                if(gArb.isTurn()&&gArb.contains(mouseX,mouseY)) {
+                if(gArb.isTurn()&&gArb.coordsInside(mouseX,mouseY)) {
                     return gArb;
                 }
             }

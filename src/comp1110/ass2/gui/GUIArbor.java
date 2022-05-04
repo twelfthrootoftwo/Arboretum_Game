@@ -263,5 +263,25 @@ public class GUIArbor extends Group {
         }
     }
 
+    /**
+     * Contribution: Natasha
+     * Checks if a given coordinate is inside this GUIArbor
+     * @param x - the x coordinate to check
+     * @param y - the y coordinate to check
+     * @return True if the coord is inside this Arbor, false otherwise
+     */
+    public Boolean coordsInside(double x, double y) {
+        Boolean result=true;
+
+        //check x
+        if(this.getLayoutX()>x) result=false;
+        else if(this.getLayoutX()+this.ARBOR_X_SIZE<x) result=false;
+
+        //check y
+        if(this.getLayoutY()>y) result=false;
+        else if(this.getLayoutY()+this.ARBOR_Y_SIZE<y) result=false;
+
+        return result;
+    }
 
 }
