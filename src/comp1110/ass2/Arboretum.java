@@ -835,7 +835,7 @@ public class Arboretum {
             playerHand = gameState[1][2];
             opponentHand = gameState[1][1];
         }
-        // Handle exception
+        // Handle exceptions
         boolean player8to0 = false;
         boolean opponent8to0 = false;
         for (int i = 1; i < opponentHand.length()-1; i+=2){
