@@ -61,12 +61,10 @@ public class GUIArbor extends Group {
 
         //establish a starting position at (0,0) - this will be expanded into a 3x3 grid before initial display
         this.positions=new LinkedList<LinkedList<GUIPosition>>();
-        GUIPosition origin=new GUIPosition(this.arbor,new Position(0,0),this);
+        GUIPosition origin=addNewPosition(0,0);
         LinkedList<GUIPosition> start=new LinkedList<>();
         start.add(origin);
-        this.getChildren().add(origin);
         this.positions.add(start);
-        origin.toFront();
 
         //prepare display
         this.update();
@@ -74,7 +72,6 @@ public class GUIArbor extends Group {
 
     /**
      * Contribution: Natasha
-     * Not sure if this is actually useful - seems to be working as intended without calling this repeatedly?
      * Updates the position display for the new game state
      */
     public void update() {
@@ -126,9 +123,7 @@ public class GUIArbor extends Group {
                 this.firstColX--;
                 int rowInd=this.firstRowY;
                 for(LinkedList<GUIPosition> row:this.positions) {
-                    GUIPosition pos=new GUIPosition(this.arbor,new Position(this.firstColX,rowInd),this);
-                    this.getChildren().add(pos);
-                    pos.toFront();
+                    GUIPosition pos=addNewPosition(this.firstColX,rowInd);
                     rowInd++;
                     row.add(0,pos);
                 }
@@ -141,9 +136,7 @@ public class GUIArbor extends Group {
                 this.lastColX++;
                 int rowInd=this.firstRowY;
                 for(LinkedList<GUIPosition> row:this.positions) {
-                    GUIPosition pos=new GUIPosition(this.arbor,new Position(this.lastColX,rowInd),this);
-                    this.getChildren().add(pos);
-                    pos.toFront();
+                    GUIPosition pos=addNewPosition(this.lastColX,rowInd);
                     rowInd++;
                     row.add(pos);
                 }
@@ -155,9 +148,7 @@ public class GUIArbor extends Group {
             this.firstRowY--;
             LinkedList<GUIPosition> newRow=new LinkedList<>();
             for(int colInd=this.firstColX;colInd<=this.lastColX;colInd++) {
-                GUIPosition pos=new GUIPosition(this.arbor,new Position(colInd,this.firstRowY),this);
-                this.getChildren().add(pos);
-                pos.toFront();
+                GUIPosition pos=addNewPosition(colInd,this.firstRowY);
                 newRow.add(pos);
             }
             this.positions.add(0,newRow);
@@ -169,9 +160,7 @@ public class GUIArbor extends Group {
             this.lastRowY++;
             LinkedList<GUIPosition> newRow=new LinkedList<>();
             for(int colInd=this.firstColX;colInd<=this.lastColX;colInd++) {
-                GUIPosition pos=new GUIPosition(this.arbor,new Position(colInd,this.lastRowY),this);
-                this.getChildren().add(pos);
-                pos.toFront();
+                GUIPosition pos=addNewPosition(colInd,this.lastRowY);
                 newRow.add(pos);
             }
             this.positions.add(newRow);
@@ -282,6 +271,21 @@ public class GUIArbor extends Group {
         else if(this.getLayoutY()+this.ARBOR_Y_SIZE<y) result=false;
 
         return result;
+    }
+
+    /**
+     * Contribution: Natasha
+     * Creates a new GUIPosition with the specified position coordinates
+     * Does not add to this.positions! (yet) TODO-move this.positions logic in here
+     * @param xInd - the x coord of the associated Position
+     * @param yInd - the y coord of the associated Position
+     * @return a reference to the new GUIPosition
+     */
+    private GUIPosition addNewPosition(int xInd, int yInd) {
+        GUIPosition pos=new GUIPosition(this.arbor,new Position(xInd,yInd),this);
+        this.getChildren().add(pos);
+        pos.toFront();
+        return pos;
     }
 
 }
