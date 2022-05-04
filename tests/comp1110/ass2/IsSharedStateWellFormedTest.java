@@ -44,8 +44,6 @@ public class IsSharedStateWellFormedTest {
 
     @Test
     public void testNotWellFormed() {
-//        System.out.println(isSharedStateWellFormed(new String[]{"A", "Ac6C00C00", "Aj1a2", "Bd2C00C00d3C00E01", "Bd1b5"}));
-        System.out.println(isHiddenStateWellFormed(new String[]{"", "", "B"}));
         trivialTrue();
         for (String[] state : NOT_WELLFORMED_PUBLIC) {
             test(state, false);
