@@ -53,7 +53,7 @@ public class GUIPosition extends Rectangle {
         this.yCoord=y+(this.getHeight()/2)+this.ARBOR_Y;
 
         //if there's a card here, also move the card
-        if(this.playedCard!=null) this.playedCard.updateCoord(x+margin,y+margin);
+        if(this.playedCard!=null) this.playedCard.updateCoord(x+ARBOR_X+margin,y+ARBOR_Y+margin);
     }
 
     /**
