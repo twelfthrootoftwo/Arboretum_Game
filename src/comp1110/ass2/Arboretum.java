@@ -281,6 +281,7 @@ public class Arboretum {
      * TASK 4
      */
     public static boolean isSharedStateWellFormed(String[] sharedState) {
+
         // Check turn in the right format
         if (sharedState.length != 5) {
             return false;
@@ -625,7 +626,7 @@ public class Arboretum {
         }
 
 
-        //handB a string shows cards in player B's hand. e.g. "Aa8b3c2d6d8j5m2"
+        //handB a string shows cards in player B's hand. e.g. "Ba8b3c2d6d8j5m2"
         String handB = hiddenState[2];
         String handBCards = handB.substring(1);
         int numCardInHandB = 0;

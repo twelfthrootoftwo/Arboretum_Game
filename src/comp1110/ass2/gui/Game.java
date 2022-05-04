@@ -335,7 +335,8 @@ public class Game extends Application {
 
             scrollPane.setContent(all);
             scrollPane.setPrefSize(1200, 700);
-            this.root.getChildren().addAll(new GUICard("a1",addImage("a1")));
+            this.root.getChildren().addAll(scrollPane);
+//            this.root.getChildren().addAll(new GUICard("a1",addImage("a1")));
 
 
         }

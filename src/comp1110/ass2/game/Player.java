@@ -45,8 +45,7 @@ public class Player {
     }
 
     public String getArboretumString() {
-        String output = this.getName() + this.getArboretum().toString();
-        return output;
+        return this.getName() + this.getArboretum().toString();
     }
 
     public CardStack getDiscardPile() {
@@ -54,12 +53,7 @@ public class Player {
     }
 
     public String getDiscardPileString() {
-//        StringBuilder output = new StringBuilder(this.getName());
-//        for (Card card : this.getDiscardPile().cards) {
-//            output.append(card.toString());
-//        }
-//        return output.toString();
-        return this.discardPile.toString();
+        return this.getName() + this.discardPile.toString();
     }
 
     public List<Card> getHand() {
@@ -67,12 +61,7 @@ public class Player {
     }
 
     public String getHandString() {
-//        StringBuilder output = new StringBuilder(this.getName());
-//        for (Card card : this.hand) {
-//            output.append(card.toString());
-//        }
-//        return output.toString();
-        return Arboretum.cardListToString(this.hand);
+        return this.getName() + Arboretum.cardListToString(this.hand);
     }
 
 

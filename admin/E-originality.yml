@@ -4,7 +4,7 @@
 # This is your statement of your submitted work being your own.
 # Incorrectly filling out this statement could lead to charges
 # of academic misconduct.
-# 
+#
 # For information on how to fill this out correctly, see
 # https://cs.anu.edu.au/courses/comp1110/help/faq/09-originality/
 #
@@ -50,9 +50,9 @@ assets:
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
 signatures:
-  - name:
-    uid:
-  - name:
-    uid:
-  - name:
-    uid:
+  - name: Natasha Pegler
+    uid: u7447030
+  - name: Hongzhe Zhu
+    uid: u7338066
+  - name: Junxian Chen
+    uid: u7238355

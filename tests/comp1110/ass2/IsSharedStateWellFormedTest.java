@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
+import static comp1110.ass2.Arboretum.isHiddenStateWellFormed;
+import static comp1110.ass2.Arboretum.isSharedStateWellFormed;
 import static comp1110.ass2.ExampleGames.NOT_WELLFORMED_PUBLIC;
 import static comp1110.ass2.ExampleGames.VALID_STATES;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -19,7 +21,7 @@ public class IsSharedStateWellFormedTest {
 
     private void test(String[] in, boolean expected) {
         String errorPrefix = errorPrefix(in);
-        boolean out = Arboretum.isSharedStateWellFormed(in);
+        boolean out = isSharedStateWellFormed(in);
         assertEquals(expected, out, errorPrefix);
     }
 
@@ -42,6 +44,8 @@ public class IsSharedStateWellFormedTest {
 
     @Test
     public void testNotWellFormed() {
+//        System.out.println(isSharedStateWellFormed(new String[]{"A", "Ac6C00C00", "Aj1a2", "Bd2C00C00d3C00E01", "Bd1b5"}));
+        System.out.println(isHiddenStateWellFormed(new String[]{"", "", "B"}));
         trivialTrue();
         for (String[] state : NOT_WELLFORMED_PUBLIC) {
             test(state, false);
