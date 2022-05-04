@@ -117,7 +117,7 @@ public class GUIArbor extends Group {
             if(pos.getX()>xMax) xMax=pos.getX();
             if(pos.getY()>yMax) yMax=pos.getY();
             if(pos.getX()<xMin) xMin=pos.getX();
-            if(pos.getX()<yMin) yMax=pos.getY();
+            if(pos.getY()<yMin) yMin=pos.getY();
         }
 
         //update left column/s
