@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static comp1110.ass2.Arboretum.isSharedStateWellFormed;
 import static comp1110.ass2.ExampleGames.NOT_WELLFORMED_PUBLIC;
 import static comp1110.ass2.ExampleGames.VALID_STATES;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -20,7 +19,7 @@ public class IsSharedStateWellFormedTest {
 
     private void test(String[] in, boolean expected) {
         String errorPrefix = errorPrefix(in);
-        boolean out = isSharedStateWellFormed(in);
+        boolean out = Arboretum.isSharedStateWellFormed(in);
         assertEquals(expected, out, errorPrefix);
     }
 
