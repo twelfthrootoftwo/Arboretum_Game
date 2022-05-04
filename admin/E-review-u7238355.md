@@ -4,6 +4,7 @@ Reviewed by: Junxian Chen, u7238355
 
 Reviewing code written by: Hongzhe Zhu, u7338066
 
+<<<<<<< HEAD
 Component: 
 
 -    TASK_3: isHiddenStateWellFormed()
@@ -104,4 +105,12 @@ Component:
   int step = Integer.parseInt(sharedState[1].substring(3, 5));
 
   to get the int number of distance, then just apply 0 < step < 99.
+=======
+Component: <the component being reviewed>
+
+### Comments 
+
+<write your comments here>
+
+>>>>>>> fea4485e6a047c1bb209e0e26f9af0fee59190ee
 
