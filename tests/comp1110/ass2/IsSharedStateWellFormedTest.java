@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static comp1110.ass2.Arboretum.isHiddenStateWellFormed;
 import static comp1110.ass2.Arboretum.isSharedStateWellFormed;
 import static comp1110.ass2.ExampleGames.NOT_WELLFORMED_PUBLIC;
 import static comp1110.ass2.ExampleGames.VALID_STATES;
