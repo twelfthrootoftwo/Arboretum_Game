@@ -117,7 +117,7 @@ public class Arboretum {
                 int x = hiddenState[0].charAt(i);
                 int y = hiddenState[0].charAt(i + 1);
                 listSorted[j] = toNumber(x, y);
-                if (contains(deck, toNumber(x, y))){
+                if (contains(deck, toNumber(x, y))) {
                     return false;
                 }
                 deck[j] = toNumber(x, y);
@@ -140,7 +140,7 @@ public class Arboretum {
                 int y = hiddenState[1].charAt(i + 1);
                 listSorted2[j] = toNumber(x, y);
 
-                if (contains(listA, toNumber(x, y)) || contains(deck, toNumber(x, y))){
+                if (contains(listA, toNumber(x, y)) || contains(deck, toNumber(x, y))) {
                     return false;
                 }
                 listA[j] = toNumber(x, y);
@@ -160,7 +160,7 @@ public class Arboretum {
                 int x = hiddenState[2].charAt(i);
                 int y = hiddenState[2].charAt(i + 1);
                 listSorted3[j] = toNumber(x, y);
-                if (contains(listA, toNumber(x, y)) || contains(listB, toNumber(x, y)) || contains(deck, toNumber(x, y))){
+                if (contains(listA, toNumber(x, y)) || contains(listB, toNumber(x, y)) || contains(deck, toNumber(x, y))) {
                     return false;
                 }
                 listB[j] = toNumber(x, y);
@@ -178,6 +178,7 @@ public class Arboretum {
     /**
      * Contribution: Hongzhe
      * Check if there is repeated cards in deck, playerA's hand or playerB's hand
+     *
      * @param array the array needed to be checked
      * @param value the integer wanted to be checked if it is in the array
      * @return a boolean that identify if it contains in the array
@@ -828,24 +829,23 @@ public class Arboretum {
         // Initially determine which is the player we are determining
         String playerHand;
         String opponentHand;
-        if (player == 'A'){
+        if (player == 'A') {
             playerHand = gameState[1][1];
             opponentHand = gameState[1][2];
-        }
-        else{
+        } else {
             playerHand = gameState[1][2];
             opponentHand = gameState[1][1];
         }
         // Handle exceptions
         boolean player8to0 = false;
         boolean opponent8to0 = false;
-        for (int i = 1; i < opponentHand.length()-1; i+=2){
-            if (opponentHand.charAt(i) == species && opponentHand.charAt(i+1) == '1'){
+        for (int i = 1; i < opponentHand.length() - 1; i += 2) {
+            if (opponentHand.charAt(i) == species && opponentHand.charAt(i + 1) == '1') {
                 player8to0 = true;
             }
         }
-        for (int i = 1; i < playerHand.length()-1; i+=2){
-            if (playerHand.charAt(i) == species && playerHand.charAt(i+1) == '1'){
+        for (int i = 1; i < playerHand.length() - 1; i += 2) {
+            if (playerHand.charAt(i) == species && playerHand.charAt(i + 1) == '1') {
                 opponent8to0 = true;
             }
         }
@@ -855,7 +855,7 @@ public class Arboretum {
         if (playerSpecies == -1 && opponentSpecies == -1) return true;
         else if (playerSpecies == -1 && opponentSpecies >= 0) return false;
         else if (playerSpecies >= 0 && opponentSpecies == -1) return true;
-        else{
+        else {
             return amount(species, playerHand, player8to0, playerSpecies)
                     >= amount(species, opponentHand, opponent8to0, opponentSpecies);
         }
@@ -866,22 +866,21 @@ public class Arboretum {
      * Contribution: Hongzhe
      * Calculate the sum of the given specie
      *
-     * @param species specie to check with
-     * @param hand the cards in hand at the moment
-     * @param amount8to0 whether consider the exception case
+     * @param species      specie to check with
+     * @param hand         the cards in hand at the moment
+     * @param amount8to0   whether consider the exception case
      * @param speciesIndex the first index that the specie occurs in hand
      * @return The sum of the given specie.
      * Helper Function for TASK 9
      */
     private static int amount(char species, String hand, boolean amount8to0, int speciesIndex) {
         int amount = 0;
-        for (int i = speciesIndex; i < hand.length()-1; i+=2){
-            if (hand.charAt(i) == species){
-                if (hand.charAt(i+1) == '8' && amount8to0){
+        for (int i = speciesIndex; i < hand.length() - 1; i += 2) {
+            if (hand.charAt(i) == species) {
+                if (hand.charAt(i + 1) == '8' && amount8to0) {
                     continue;
-                }
-                else if(hand.charAt(i+1) > '0' && hand.charAt(i+1) < '9') {
-                    amount += hand.charAt(i+1) - '0';
+                } else if (hand.charAt(i + 1) > '0' && hand.charAt(i + 1) < '9') {
+                    amount += hand.charAt(i + 1) - '0';
                 }
             }
         }
@@ -910,12 +909,11 @@ public class Arboretum {
         else playerArboretum = gameState[0][3];
         // If empty arboretum, the only placement is middle
         if (playerArboretum.length() == 1) {
-            output.add(card+"C00C00");
+            output.add(card + "C00C00");
             return output;
-        }
-        else{
+        } else {
             // For loop and add all possibilities including overlap
-            for (String i : separate(playerArboretum)){
+            for (String i : separate(playerArboretum)) {
                 output.addAll(allPossiblePlacement(i));
             }
         }
@@ -923,8 +921,8 @@ public class Arboretum {
         output.removeAll(separate(playerArboretum));
         // Add card to every placement
         Set<String> outputWithCard = new HashSet<>();
-        for (var i : output){
-            outputWithCard.add(card+i);
+        for (var i : output) {
+            outputWithCard.add(card + i);
         }
         return outputWithCard;
         //FIXME TASK 10
@@ -958,39 +956,37 @@ public class Arboretum {
         // Move to the North
         String newPlacement;
         // Origin placement
-        if (existPlacement.charAt(0) == 'C'){
+        if (existPlacement.charAt(0) == 'C') {
             newPlacement = "N01" + existPlacement.charAt(3) + existPlacement.charAt(4) + existPlacement.charAt(5);
         }
         // Same direction move
-        else if (existPlacement.charAt(0) == 'N'){
+        else if (existPlacement.charAt(0) == 'N') {
             // Determine if the number is 9
-            if (existPlacement.charAt(2) == '9'){
-                char newP2 = (char)(existPlacement.charAt(2) - 9);
-                char newP1 = (char)(existPlacement.charAt(1) + 1);
+            if (existPlacement.charAt(2) == '9') {
+                char newP2 = (char) (existPlacement.charAt(2) - 9);
+                char newP1 = (char) (existPlacement.charAt(1) + 1);
                 newPlacement = "N" + newP1 + newP2 + existPlacement.charAt(3)
                         + existPlacement.charAt(4) + existPlacement.charAt(5);
-            }
-            else{
-                char newP = (char)(existPlacement.charAt(2) + 1);
+            } else {
+                char newP = (char) (existPlacement.charAt(2) + 1);
                 newPlacement = "N" + existPlacement.charAt(1) + newP + existPlacement.charAt(3)
                         + existPlacement.charAt(4) + existPlacement.charAt(5);
             }
         }
         // If the card is 01 and with the opposite move
-        else if (existPlacement.charAt(0) == 'S' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1'){
+        else if (existPlacement.charAt(0) == 'S' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1') {
             newPlacement = "C00" + existPlacement.charAt(3) + existPlacement.charAt(4) + existPlacement.charAt(5);
         }
         // Opposite move minus 1
-        else{
+        else {
             // Determine if the number is 0
-            if (existPlacement.charAt(2) == '0'){
-                char newP2 = (char)(existPlacement.charAt(2) + 9);
-                char newP1 = (char)(existPlacement.charAt(1) - 1);
+            if (existPlacement.charAt(2) == '0') {
+                char newP2 = (char) (existPlacement.charAt(2) + 9);
+                char newP1 = (char) (existPlacement.charAt(1) - 1);
                 newPlacement = "S" + newP1 + newP2 + existPlacement.charAt(3)
                         + existPlacement.charAt(4) + existPlacement.charAt(5);
-            }
-            else{
-                char newP = (char)(existPlacement.charAt(2) - 1);
+            } else {
+                char newP = (char) (existPlacement.charAt(2) - 1);
                 newPlacement = "S" + existPlacement.charAt(1) + newP + existPlacement.charAt(3)
                         + existPlacement.charAt(4) + existPlacement.charAt(5);
             }
@@ -998,39 +994,37 @@ public class Arboretum {
         output.add(newPlacement);
         // Move to the South
         // Origin placement
-        if (existPlacement.charAt(0) == 'C'){
+        if (existPlacement.charAt(0) == 'C') {
             newPlacement = "S01" + existPlacement.charAt(3) + existPlacement.charAt(4) + existPlacement.charAt(5);
         }
         // Same direction move
-        else if (existPlacement.charAt(0) == 'S'){
+        else if (existPlacement.charAt(0) == 'S') {
             // Determine if the number is 9
-            if (existPlacement.charAt(2) == '9'){
-                char newP2 = (char)(existPlacement.charAt(2) - 9);
-                char newP1 = (char)(existPlacement.charAt(1) + 1);
+            if (existPlacement.charAt(2) == '9') {
+                char newP2 = (char) (existPlacement.charAt(2) - 9);
+                char newP1 = (char) (existPlacement.charAt(1) + 1);
                 newPlacement = "S" + newP1 + newP2 + existPlacement.charAt(3)
                         + existPlacement.charAt(4) + existPlacement.charAt(5);
-            }
-            else{
-                char newP = (char)(existPlacement.charAt(2) + 1);
+            } else {
+                char newP = (char) (existPlacement.charAt(2) + 1);
                 newPlacement = "S" + existPlacement.charAt(1) + newP + existPlacement.charAt(3)
                         + existPlacement.charAt(4) + existPlacement.charAt(5);
             }
         }
         // If the card is 01 and with the opposite move
-        else if (existPlacement.charAt(0) == 'N' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1'){
+        else if (existPlacement.charAt(0) == 'N' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1') {
             newPlacement = "C00" + existPlacement.charAt(3) + existPlacement.charAt(4) + existPlacement.charAt(5);
         }
         // Opposite move minus 1
-        else{
+        else {
             // Determine if the number is 0
-            if (existPlacement.charAt(2) == '0'){
-                char newP2 = (char)(existPlacement.charAt(2) + 9);
-                char newP1 = (char)(existPlacement.charAt(1) - 1);
+            if (existPlacement.charAt(2) == '0') {
+                char newP2 = (char) (existPlacement.charAt(2) + 9);
+                char newP1 = (char) (existPlacement.charAt(1) - 1);
                 newPlacement = "N" + newP1 + newP2 + existPlacement.charAt(3)
                         + existPlacement.charAt(4) + existPlacement.charAt(5);
-            }
-            else{
-                char newP = (char)(existPlacement.charAt(2) - 1);
+            } else {
+                char newP = (char) (existPlacement.charAt(2) - 1);
                 newPlacement = "N" + existPlacement.charAt(1) + newP + existPlacement.charAt(3)
                         + existPlacement.charAt(4) + existPlacement.charAt(5);
             }
@@ -1038,41 +1032,39 @@ public class Arboretum {
         output.add(newPlacement);
         // Move to the East
         // Origin placement
-        if (existPlacement.charAt(3) == 'C'){
+        if (existPlacement.charAt(3) == 'C') {
             newPlacement = Character.toString(existPlacement.charAt(0))
                     + existPlacement.charAt(1) + existPlacement.charAt(2) + "E01";
         }
         // Same direction move
-        else if (existPlacement.charAt(3) == 'E'){
+        else if (existPlacement.charAt(3) == 'E') {
             // Determine if the number is 9
-            if (existPlacement.charAt(5) == '9'){
-                char newP2 = (char)(existPlacement.charAt(5) - 9);
-                char newP1 = (char)(existPlacement.charAt(4) + 1);
+            if (existPlacement.charAt(5) == '9') {
+                char newP2 = (char) (existPlacement.charAt(5) - 9);
+                char newP1 = (char) (existPlacement.charAt(4) + 1);
                 newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
                         + existPlacement.charAt(2) + "E" + newP1 + newP2;
-            }
-            else{
-                char newP = (char)(existPlacement.charAt(5) + 1);
+            } else {
+                char newP = (char) (existPlacement.charAt(5) + 1);
                 newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
                         + existPlacement.charAt(2) + "E" + existPlacement.charAt(4) + newP;
             }
         }
         // If the card is 01 and with the opposite move
-        else if (existPlacement.charAt(3) == 'W' && existPlacement.charAt(4) == '0' && existPlacement.charAt(5) == '1'){
+        else if (existPlacement.charAt(3) == 'W' && existPlacement.charAt(4) == '0' && existPlacement.charAt(5) == '1') {
             newPlacement = Character.toString(existPlacement.charAt(0))
                     + existPlacement.charAt(1) + existPlacement.charAt(2) + "C00";
         }
         // Opposite move minus 1
-        else{
+        else {
             // Determine if the number is 0
-            if (existPlacement.charAt(5) == '0'){
-                char newP2 = (char)(existPlacement.charAt(5) + 9);
-                char newP1 = (char)(existPlacement.charAt(4) - 1);
+            if (existPlacement.charAt(5) == '0') {
+                char newP2 = (char) (existPlacement.charAt(5) + 9);
+                char newP1 = (char) (existPlacement.charAt(4) - 1);
                 newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
                         + existPlacement.charAt(2) + "W" + newP1 + newP2;
-            }
-            else{
-                char newP = (char)(existPlacement.charAt(5) - 1);
+            } else {
+                char newP = (char) (existPlacement.charAt(5) - 1);
                 newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
                         + existPlacement.charAt(2) + "W" + existPlacement.charAt(4) + newP;
             }
@@ -1080,41 +1072,39 @@ public class Arboretum {
         output.add(newPlacement);
         // Move to the West
         // Origin placement
-        if (existPlacement.charAt(3) == 'C'){
+        if (existPlacement.charAt(3) == 'C') {
             newPlacement = Character.toString(existPlacement.charAt(0))
                     + existPlacement.charAt(1) + existPlacement.charAt(2) + "W01";
         }
         // Same direction move
-        else if (existPlacement.charAt(3) == 'W'){
+        else if (existPlacement.charAt(3) == 'W') {
             // Determine if the number is 9
-            if (existPlacement.charAt(5) == '9'){
-                char newP2 = (char)(existPlacement.charAt(5) - 9);
-                char newP1 = (char)(existPlacement.charAt(4) + 1);
+            if (existPlacement.charAt(5) == '9') {
+                char newP2 = (char) (existPlacement.charAt(5) - 9);
+                char newP1 = (char) (existPlacement.charAt(4) + 1);
                 newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
                         + existPlacement.charAt(2) + "W" + newP1 + newP2;
-            }
-            else{
-                char newP = (char)(existPlacement.charAt(5) + 1);
+            } else {
+                char newP = (char) (existPlacement.charAt(5) + 1);
                 newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
                         + existPlacement.charAt(2) + "W" + existPlacement.charAt(4) + newP;
             }
         }
         // If the card is 01 and with the opposite move
-        else if (existPlacement.charAt(3) == 'E' && existPlacement.charAt(5) == '1'){
+        else if (existPlacement.charAt(3) == 'E' && existPlacement.charAt(5) == '1') {
             newPlacement = Character.toString(existPlacement.charAt(0))
                     + existPlacement.charAt(1) + existPlacement.charAt(2) + "C00";
         }
         // Opposite move minus 1
-        else{
+        else {
             // Determine if the number is 0
-            if (existPlacement.charAt(5) == '0'){
-                char newP2 = (char)(existPlacement.charAt(5) + 9);
-                char newP1 = (char)(existPlacement.charAt(4) - 1);
+            if (existPlacement.charAt(5) == '0') {
+                char newP2 = (char) (existPlacement.charAt(5) + 9);
+                char newP1 = (char) (existPlacement.charAt(4) - 1);
                 newPlacement = Character.toString(existPlacement.charAt(0))
                         + existPlacement.charAt(1) + existPlacement.charAt(2) + "E" + newP1 + newP2;
-            }
-            else{
-                char newP = (char)(existPlacement.charAt(5) - 1);
+            } else {
+                char newP = (char) (existPlacement.charAt(5) - 1);
                 newPlacement = Character.toString(existPlacement.charAt(0)) + existPlacement.charAt(1)
                         + existPlacement.charAt(2) + "E" + existPlacement.charAt(4) + newP;
             }
@@ -1149,26 +1139,26 @@ public class Arboretum {
      * TASK 12
      */
     public static Set<String> getAllViablePaths(String[][] gameState, char player, char species) {
-        if(canScore(gameState,player,species)) {
-            Set<String> output=new HashSet<String>();
+        if (canScore(gameState, player, species)) {
+            Set<String> output = new HashSet<String>();
 
             //get correct arbor code from gameState
-            String arborCode="";
-            if(player=='A') arborCode=gameState[0][1];
-            else arborCode=gameState[0][3];
+            String arborCode = "";
+            if (player == 'A') arborCode = gameState[0][1];
+            else arborCode = gameState[0][3];
 
             //build Arbor object and find all scoring paths
-            Arbor arbor=new Arbor(arborCode);
-            LinkedList<LinkedList<Card>> allPaths=arbor.findScoringPaths();
+            Arbor arbor = new Arbor(arborCode);
+            LinkedList<LinkedList<Card>> allPaths = arbor.findScoringPaths();
 
-            Species toScore=Species.valueOf(String.valueOf(species));
+            Species toScore = Species.valueOf(String.valueOf(species));
 
             //check each path and add to output set if it's the desired species
-            for(LinkedList<Card> path : allPaths) {
-                if(path.get(0).getSpecies()==toScore) {
+            for (LinkedList<Card> path : allPaths) {
+                if (path.get(0).getSpecies() == toScore) {
 
                     //construct string of cards in order
-                    String pathString=cardListToString(path);
+                    String pathString = cardListToString(path);
                     output.add(pathString);
                 }
             }
@@ -1183,15 +1173,16 @@ public class Arboretum {
     /**
      * Contribution: Natasha
      * Converts List<Card> objects to strings in assignment specification format
+     *
      * @param cardList - any List<Card></Card>
      * @return a String of card codes for the cards in order
      */
     public static String cardListToString(List<Card> cardList) {
-        String outString="";
+        String outString = "";
 
         //add all cards in list to outString
-        for(Card card:cardList) {
-            outString+=card.toString();
+        for (Card card : cardList) {
+            outString += card.toString();
         }
         return outString;
     }
@@ -1211,21 +1202,21 @@ public class Arboretum {
      * TASK 13
      */
     public static int getHighestViablePathScore(String[][] gameState, char player, char species) {
-        if(!canScore(gameState,player,species)) return -1;
+        if (!canScore(gameState, player, species)) return -1;
 
-        Set<String> output=new HashSet<String>();
+        Set<String> output = new HashSet<String>();
 
         //get correct arbor code from gameState
-        String arborCode="";
-        if(player=='A') arborCode=gameState[0][1];
-        else arborCode=gameState[0][3];
+        String arborCode = "";
+        if (player == 'A') arborCode = gameState[0][1];
+        else arborCode = gameState[0][3];
 
         //build Arbor object and find all scoring paths
-        Arbor arbor=new Arbor(arborCode);
-        HashMap<Species,Integer> scores=arbor.score();
+        Arbor arbor = new Arbor(arborCode);
+        HashMap<Species, Integer> scores = arbor.score();
 
         //get score for target species
-        Species toScore=Species.valueOf(String.valueOf(species));
+        Species toScore = Species.valueOf(String.valueOf(species));
         return scores.get(toScore);
         // FIXME TASK 13
     }
