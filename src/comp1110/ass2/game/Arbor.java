@@ -73,6 +73,12 @@ public class Arbor {
             this.arbor.put(playedPosition, playedCard);
         }
 
+        //set starting range to (0,0)
+        this.nBound=new Position(0,0);
+        this.eBound=this.nBound;
+        this.sBound=this.nBound;
+        this.wBound=this.nBound;
+
         //update bounds
         this.findRange();
     }
