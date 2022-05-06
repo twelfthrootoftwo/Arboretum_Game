@@ -183,311 +183,311 @@ public class Game extends Application {
 
         return gameState;
     }
-
-    private void update(String[][] gameState) throws FileNotFoundException {
-
-        String[] sharedState = gameState[0];
-        String[] hiddenState = gameState[1];
-
-        //put all gameState to tree strings
-        String turn = sharedState[0];
-        String arboretumA = sharedState[1];
-        String discardA = sharedState[2];
-        String arboretumB = sharedState[3];
-        String discardB = sharedState[4];
-        String deck = hiddenState[0];
-        String handA = hiddenState[1];
-        String handB = hiddenState[2];
-
-        if (!Objects.equals(turn, "") && !Objects.equals(arboretumA, "") && !Objects.equals(discardA, "") && !Objects.equals(arboretumB, "") && !Objects.equals(discardB, "") && !Objects.equals(deck, "") && !Objects.equals(handA, "") && !Objects.equals(handB, "")) {
-            ScrollPane scrollPane = new ScrollPane();
-            Label arboretum_A = new Label("Player A arboretum: " + arboretumA);
-            Label discard_A = new Label("Player A discard: " + discardA);
-            Label hand_A = new Label("Player A hand(hidden): " + handA);
-            Label arboretum_B = new Label("Player B arboretum: " + arboretumB);
-            Label discard_B = new Label("Player B discard: " + discardB);
-            Label hand_B = new Label("Player B hand(hidden): " + handB);
-            Label deckC = new Label("Deck(hidden): " + deck);
-            Label turnP = new Label("turn: " + turn);
-
-            //Player A part
-            //player A share area
-            HBox sharedA = new HBox();
-            sharedA.setBackground(new Background(new BackgroundFill(Color.rgb(185, 230, 160), CornerRadii.EMPTY, Insets.EMPTY)));
-
-            //player A arboretum (left part)
-            VBox arboretumABox = new VBox();
-            GridPane gridPaneSA = addArboretum(arboretumA);
-            arboretumABox.getChildren().addAll(arboretum_A, gridPaneSA);
-
-            //player A discard + hand (right part)
-            VBox discardABox = new VBox();
-
-            //player A hand
-            VBox hiddenA = new VBox();
-            hiddenA.setBackground(new Background(new BackgroundFill(Color.rgb(189, 189, 189), CornerRadii.EMPTY, Insets.EMPTY)));
-            GridPane gridPaneHA = addHand(handA);
-            hiddenA.getChildren().addAll(hand_A, gridPaneHA);
-
-            //player A discard
-            GridPane gridPaneDA = addDiscard(discardA);
-            discardABox.getChildren().addAll(discard_A, gridPaneDA, hiddenA);
-
-            sharedA.getChildren().addAll(arboretumABox, discardABox);
-
-
-            //Player B part
-            //player B share area
-            HBox sharedB = new HBox();
-            sharedB.setBackground(new Background(new BackgroundFill(Color.rgb(185, 230, 160), CornerRadii.EMPTY, Insets.EMPTY)));
-
-            //player B arboretum (left part)
-            VBox arboretumBBox = new VBox();
-            GridPane gridPaneSB = addArboretum(arboretumB);
-            arboretumBBox.getChildren().addAll(arboretum_B, gridPaneSB);
-
-            //player B discard + hand (right part)
-            VBox discardBBox = new VBox();
-
-            //player B hand
-            VBox hiddenB = new VBox();
-            hiddenB.setBackground(new Background(new BackgroundFill(Color.rgb(189, 189, 189), CornerRadii.EMPTY, Insets.EMPTY)));
-            GridPane gridPaneHB = addHand(handB);
-            hiddenB.getChildren().addAll(hand_B, gridPaneHB);
-
-            //player B discard
-            GridPane gridPaneDB = addDiscard(discardB);
-            discardBBox.getChildren().addAll(discard_B, gridPaneDB, hiddenB);
-
-            sharedB.getChildren().addAll(arboretumBBox, discardBBox);
-
-
-            //deck and turn part
-            VBox vboxD = new VBox();
-            vboxD.setBackground(new Background(new BackgroundFill(Color.rgb(230, 90, 90), CornerRadii.EMPTY, Insets.EMPTY)));
-            VBox discardDBox = new VBox();
-            discardDBox.setBackground(new Background(new BackgroundFill(Color.rgb(189, 189, 189), CornerRadii.EMPTY, Insets.EMPTY)));
-            GridPane gridPaneDD = addDeck(deck);
-            discardDBox.getChildren().addAll(deckC, gridPaneDD);
-
-            vboxD.getChildren().addAll(discardDBox, turnP);
-
-
-            //add scroll
-            VBox vboxS = new VBox();
-            vboxS.getChildren().addAll(sharedA, sharedB);
-            HBox all = new HBox();
-            all.getChildren().addAll(vboxS, vboxD);
-
-            scrollPane.setContent(all);
-            scrollPane.setPrefSize(1200, 700);
-            this.root.getChildren().addAll(scrollPane);
-//            this.root.getChildren().addAll(new GUICard("a1",addImage("a1")));
-
-
-        }
-    }
-
-
-    private GridPane addHand(String hand) {
-        String newArboretum = hand.substring(1);
-
-        //Creating a Grid Pane
-        GridPane gridPane = new GridPane();
-        if (!newArboretum.equals("")) {
-            String[] trees = newArboretum.split("(?<=\\G.{" + 2 + "})");
-
-            //Setting size for the pane
-            gridPane.setMinSize(100, 50);
-
-            //Setting the padding
-            gridPane.setPadding(new Insets(10, 10, 10, 10));
-
-            gridPane.setVgap(5);
-            gridPane.setHgap(5);
-
-            //Setting the Grid alignment
-            gridPane.setAlignment(Pos.CENTER);
-            for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
-                String tree = trees[i];
-                try {
-//                    gridPane.add(new ImageView(addImage(tree)), i, 0);
-                    gridPane.add(new GUICard(tree,addImage(tree)), i, 0);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-
-        }
-        return gridPane;
-    }
-
-    private GridPane addDeck(String discard) {
-        String[] trees = discard.split("(?<=\\G.{" + 2 + "})");
-
-        //Creating a Grid Pane
-        GridPane gridPane = new GridPane();
-
-        //Setting size for the pane
-        gridPane.setMinSize(100, 50);
-
-        //Setting the padding
-        gridPane.setPadding(new Insets(10, 10, 10, 10));
-
-        gridPane.setVgap(5);
-        gridPane.setHgap(5);
-
-        //Setting the Grid alignment
-        gridPane.setAlignment(Pos.CENTER);
-        for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
-            String tree = trees[i];
-            try {
-                if (i < 8) {
-//                    gridPane.add(new ImageView(addImage(tree)), 0, i);
-                    gridPane.add(new GUICard(tree,addImage(tree)), 0, i);
-                } else if (i < 16) {
-//                    gridPane.add(new ImageView(addImage(tree)), 1, i - 8);
-                    gridPane.add(new GUICard(tree,addImage(tree)), 1, i - 8);
-                }else if (i < 24) {
-//                    gridPane.add(new ImageView(addImage(tree)), 2, i - 16);
-                    gridPane.add(new GUICard(tree,addImage(tree)), 2, i - 16);
-                }else if (i < 32) {
-//                    gridPane.add(new ImageView(addImage(tree)), 3, i - 24);
-                    gridPane.add(new GUICard(tree,addImage(tree)), 3, i - 24);
-                }else if (i < 40) {
-//                    gridPane.add(new ImageView(addImage(tree)), 4, i - 32);
-                    gridPane.add(new GUICard(tree,addImage(tree)), 4, i - 32);
-                }else if (i < 48){
-//                    gridPane.add(new ImageView(addImage(tree)), 5, i - 40);
-                    gridPane.add(new GUICard(tree,addImage(tree)), 5, i - 40);
-                }
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        return gridPane;
-    }
-
-    private GridPane addDiscard(String discard) {
-        String newArboretum = discard.substring(1);
-
-        //Creating a Grid Pane
-        GridPane gridPane = new GridPane();
-
-        if (!newArboretum.equals("")) {
-            String[] trees = newArboretum.split("(?<=\\G.{" + 2 + "})");
-
-            //Setting size for the pane
-            gridPane.setMinSize(100, 50);
-
-            //Setting the padding
-            gridPane.setPadding(new Insets(10, 10, 10, 10));
-
-            gridPane.setVgap(5);
-            gridPane.setHgap(5);
-
-            //Setting the Grid alignment
-            gridPane.setAlignment(Pos.CENTER);
-            for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
-                String tree = trees[i];
-                try {
-                    gridPane.add(new GUICard(tree,addImage(tree)), i, 0);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-            }
-            System.out.println(Math.pow(30, 35) % 29);
-
-        }
-        return gridPane;
-    }
-
-
-    private GridPane addArboretum(String arboretum) {
-        String newArboretum = arboretum.substring(1);
-
-        //Creating a Grid Pane
-        GridPane gridPane = new GridPane();
-        if (!newArboretum.equals("")) {
-            String[] trees = newArboretum.split("(?<=\\G.{" + 8 + "})");
-
-            //Setting size for the pane
-            gridPane.setMinSize(100, 50);
-
-            //Setting the padding
-            gridPane.setPadding(new Insets(10, 10, 10, 10));
-
-            gridPane.setVgap(5);
-            gridPane.setHgap(5);
-
-            //Setting the Grid alignment
-            gridPane.setAlignment(Pos.CENTER);
-            HashMap<String, int[]> map = new HashMap<>();
-            int[] startPos = {0, 0};
-            int northest = 0;
-            int westest = 0;
-            for (String tree : trees) {
-                String name = tree.substring(0, 2);
-                String directionV = tree.substring(2, 3);
-                int stepV = Integer.parseInt(tree.substring(3, 5));
-                String directionH = tree.substring(5, 6);
-                int stepH = Integer.parseInt(tree.substring(6));
-
-                int newPosV = 0;
-                int newPosH = 0;
-                if (directionV.equals("C")) {
-                    newPosV = startPos[0];
-                }
-                if (directionV.equals("N")) {
-                    newPosV = startPos[0] - stepV;
-                    if (northest > newPosV) {
-                        northest = newPosV;
-                    }
-                }
-                if (directionV.equals("S")) {
-                    newPosV = startPos[0] + stepV;
-                }
-                if (directionH.equals("C")) {
-                    newPosH = startPos[0];
-                }
-                if (directionH.equals("W")) {
-                    newPosH = startPos[0] - stepH;
-                    if (westest > newPosH) {
-                        westest = newPosH;
-                    }
-                }
-                if (directionH.equals("E")) {
-                    newPosH = startPos[0] + stepH;
-                }
-                int[] newPos = {newPosV, newPosH};
-                map.put(name, newPos);
-
-                if (directionV.equals("C") && directionH.equals("C")) {
-                    startPos = new int[]{0, 0};
-                    map.put(name, startPos);
-                }
-
-            }
-
-            for (String key : map.keySet()) {
-                int[] value = map.get(key);
-                value[0] = value[0] + Math.abs(northest);
-                value[1] = value[1] + Math.abs(westest);
-                try {
-                    gridPane.add(new GUICard(key,addImage(key)), value[1], value[0]);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-        }
-        return gridPane;
-    }
+//
+//    private void update(String[][] gameState) throws FileNotFoundException {
+//
+//        String[] sharedState = gameState[0];
+//        String[] hiddenState = gameState[1];
+//
+//        //put all gameState to tree strings
+//        String turn = sharedState[0];
+//        String arboretumA = sharedState[1];
+//        String discardA = sharedState[2];
+//        String arboretumB = sharedState[3];
+//        String discardB = sharedState[4];
+//        String deck = hiddenState[0];
+//        String handA = hiddenState[1];
+//        String handB = hiddenState[2];
+//
+//        if (!Objects.equals(turn, "") && !Objects.equals(arboretumA, "") && !Objects.equals(discardA, "") && !Objects.equals(arboretumB, "") && !Objects.equals(discardB, "") && !Objects.equals(deck, "") && !Objects.equals(handA, "") && !Objects.equals(handB, "")) {
+//            ScrollPane scrollPane = new ScrollPane();
+//            Label arboretum_A = new Label("Player A arboretum: " + arboretumA);
+//            Label discard_A = new Label("Player A discard: " + discardA);
+//            Label hand_A = new Label("Player A hand(hidden): " + handA);
+//            Label arboretum_B = new Label("Player B arboretum: " + arboretumB);
+//            Label discard_B = new Label("Player B discard: " + discardB);
+//            Label hand_B = new Label("Player B hand(hidden): " + handB);
+//            Label deckC = new Label("Deck(hidden): " + deck);
+//            Label turnP = new Label("turn: " + turn);
+//
+//            //Player A part
+//            //player A share area
+//            HBox sharedA = new HBox();
+//            sharedA.setBackground(new Background(new BackgroundFill(Color.rgb(185, 230, 160), CornerRadii.EMPTY, Insets.EMPTY)));
+//
+//            //player A arboretum (left part)
+//            VBox arboretumABox = new VBox();
+//            GridPane gridPaneSA = addArboretum(arboretumA);
+//            arboretumABox.getChildren().addAll(arboretum_A, gridPaneSA);
+//
+//            //player A discard + hand (right part)
+//            VBox discardABox = new VBox();
+//
+//            //player A hand
+//            VBox hiddenA = new VBox();
+//            hiddenA.setBackground(new Background(new BackgroundFill(Color.rgb(189, 189, 189), CornerRadii.EMPTY, Insets.EMPTY)));
+//            GridPane gridPaneHA = addHand(handA);
+//            hiddenA.getChildren().addAll(hand_A, gridPaneHA);
+//
+//            //player A discard
+//            GridPane gridPaneDA = addDiscard(discardA);
+//            discardABox.getChildren().addAll(discard_A, gridPaneDA, hiddenA);
+//
+//            sharedA.getChildren().addAll(arboretumABox, discardABox);
+//
+//
+//            //Player B part
+//            //player B share area
+//            HBox sharedB = new HBox();
+//            sharedB.setBackground(new Background(new BackgroundFill(Color.rgb(185, 230, 160), CornerRadii.EMPTY, Insets.EMPTY)));
+//
+//            //player B arboretum (left part)
+//            VBox arboretumBBox = new VBox();
+//            GridPane gridPaneSB = addArboretum(arboretumB);
+//            arboretumBBox.getChildren().addAll(arboretum_B, gridPaneSB);
+//
+//            //player B discard + hand (right part)
+//            VBox discardBBox = new VBox();
+//
+//            //player B hand
+//            VBox hiddenB = new VBox();
+//            hiddenB.setBackground(new Background(new BackgroundFill(Color.rgb(189, 189, 189), CornerRadii.EMPTY, Insets.EMPTY)));
+//            GridPane gridPaneHB = addHand(handB);
+//            hiddenB.getChildren().addAll(hand_B, gridPaneHB);
+//
+//            //player B discard
+//            GridPane gridPaneDB = addDiscard(discardB);
+//            discardBBox.getChildren().addAll(discard_B, gridPaneDB, hiddenB);
+//
+//            sharedB.getChildren().addAll(arboretumBBox, discardBBox);
+//
+//
+//            //deck and turn part
+//            VBox vboxD = new VBox();
+//            vboxD.setBackground(new Background(new BackgroundFill(Color.rgb(230, 90, 90), CornerRadii.EMPTY, Insets.EMPTY)));
+//            VBox discardDBox = new VBox();
+//            discardDBox.setBackground(new Background(new BackgroundFill(Color.rgb(189, 189, 189), CornerRadii.EMPTY, Insets.EMPTY)));
+//            GridPane gridPaneDD = addDeck(deck);
+//            discardDBox.getChildren().addAll(deckC, gridPaneDD);
+//
+//            vboxD.getChildren().addAll(discardDBox, turnP);
+//
+//
+//            //add scroll
+//            VBox vboxS = new VBox();
+//            vboxS.getChildren().addAll(sharedA, sharedB);
+//            HBox all = new HBox();
+//            all.getChildren().addAll(vboxS, vboxD);
+//
+//            scrollPane.setContent(all);
+//            scrollPane.setPrefSize(1200, 700);
+//            this.root.getChildren().addAll(scrollPane);
+////            this.root.getChildren().addAll(new GUICard("a1",addImage("a1")));
+//
+//
+//        }
+//    }
+//
+//
+//    private GridPane addHand(String hand) {
+//        String newArboretum = hand.substring(1);
+//
+//        //Creating a Grid Pane
+//        GridPane gridPane = new GridPane();
+//        if (!newArboretum.equals("")) {
+//            String[] trees = newArboretum.split("(?<=\\G.{" + 2 + "})");
+//
+//            //Setting size for the pane
+//            gridPane.setMinSize(100, 50);
+//
+//            //Setting the padding
+//            gridPane.setPadding(new Insets(10, 10, 10, 10));
+//
+//            gridPane.setVgap(5);
+//            gridPane.setHgap(5);
+//
+//            //Setting the Grid alignment
+//            gridPane.setAlignment(Pos.CENTER);
+//            for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
+//                String tree = trees[i];
+//                try {
+////                    gridPane.add(new ImageView(addImage(tree)), i, 0);
+//                    gridPane.add(new GUICard(tree,addImage(tree)), i, 0);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//
+//
+//        }
+//        return gridPane;
+//    }
+//
+//    private GridPane addDeck(String discard) {
+//        String[] trees = discard.split("(?<=\\G.{" + 2 + "})");
+//
+//        //Creating a Grid Pane
+//        GridPane gridPane = new GridPane();
+//
+//        //Setting size for the pane
+//        gridPane.setMinSize(100, 50);
+//
+//        //Setting the padding
+//        gridPane.setPadding(new Insets(10, 10, 10, 10));
+//
+//        gridPane.setVgap(5);
+//        gridPane.setHgap(5);
+//
+//        //Setting the Grid alignment
+//        gridPane.setAlignment(Pos.CENTER);
+//        for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
+//            String tree = trees[i];
+//            try {
+//                if (i < 8) {
+////                    gridPane.add(new ImageView(addImage(tree)), 0, i);
+//                    gridPane.add(new GUICard(tree,addImage(tree)), 0, i);
+//                } else if (i < 16) {
+////                    gridPane.add(new ImageView(addImage(tree)), 1, i - 8);
+//                    gridPane.add(new GUICard(tree,addImage(tree)), 1, i - 8);
+//                }else if (i < 24) {
+////                    gridPane.add(new ImageView(addImage(tree)), 2, i - 16);
+//                    gridPane.add(new GUICard(tree,addImage(tree)), 2, i - 16);
+//                }else if (i < 32) {
+////                    gridPane.add(new ImageView(addImage(tree)), 3, i - 24);
+//                    gridPane.add(new GUICard(tree,addImage(tree)), 3, i - 24);
+//                }else if (i < 40) {
+////                    gridPane.add(new ImageView(addImage(tree)), 4, i - 32);
+//                    gridPane.add(new GUICard(tree,addImage(tree)), 4, i - 32);
+//                }else if (i < 48){
+////                    gridPane.add(new ImageView(addImage(tree)), 5, i - 40);
+//                    gridPane.add(new GUICard(tree,addImage(tree)), 5, i - 40);
+//                }
+//
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//
+//        return gridPane;
+//    }
+//
+//    private GridPane addDiscard(String discard) {
+//        String newArboretum = discard.substring(1);
+//
+//        //Creating a Grid Pane
+//        GridPane gridPane = new GridPane();
+//
+//        if (!newArboretum.equals("")) {
+//            String[] trees = newArboretum.split("(?<=\\G.{" + 2 + "})");
+//
+//            //Setting size for the pane
+//            gridPane.setMinSize(100, 50);
+//
+//            //Setting the padding
+//            gridPane.setPadding(new Insets(10, 10, 10, 10));
+//
+//            gridPane.setVgap(5);
+//            gridPane.setHgap(5);
+//
+//            //Setting the Grid alignment
+//            gridPane.setAlignment(Pos.CENTER);
+//            for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
+//                String tree = trees[i];
+//                try {
+//                    gridPane.add(new GUICard(tree,addImage(tree)), i, 0);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//            System.out.println(Math.pow(30, 35) % 29);
+//
+//        }
+//        return gridPane;
+//    }
+//
+//
+//    private GridPane addArboretum(String arboretum) {
+//        String newArboretum = arboretum.substring(1);
+//
+//        //Creating a Grid Pane
+//        GridPane gridPane = new GridPane();
+//        if (!newArboretum.equals("")) {
+//            String[] trees = newArboretum.split("(?<=\\G.{" + 8 + "})");
+//
+//            //Setting size for the pane
+//            gridPane.setMinSize(100, 50);
+//
+//            //Setting the padding
+//            gridPane.setPadding(new Insets(10, 10, 10, 10));
+//
+//            gridPane.setVgap(5);
+//            gridPane.setHgap(5);
+//
+//            //Setting the Grid alignment
+//            gridPane.setAlignment(Pos.CENTER);
+//            HashMap<String, int[]> map = new HashMap<>();
+//            int[] startPos = {0, 0};
+//            int northest = 0;
+//            int westest = 0;
+//            for (String tree : trees) {
+//                String name = tree.substring(0, 2);
+//                String directionV = tree.substring(2, 3);
+//                int stepV = Integer.parseInt(tree.substring(3, 5));
+//                String directionH = tree.substring(5, 6);
+//                int stepH = Integer.parseInt(tree.substring(6));
+//
+//                int newPosV = 0;
+//                int newPosH = 0;
+//                if (directionV.equals("C")) {
+//                    newPosV = startPos[0];
+//                }
+//                if (directionV.equals("N")) {
+//                    newPosV = startPos[0] - stepV;
+//                    if (northest > newPosV) {
+//                        northest = newPosV;
+//                    }
+//                }
+//                if (directionV.equals("S")) {
+//                    newPosV = startPos[0] + stepV;
+//                }
+//                if (directionH.equals("C")) {
+//                    newPosH = startPos[0];
+//                }
+//                if (directionH.equals("W")) {
+//                    newPosH = startPos[0] - stepH;
+//                    if (westest > newPosH) {
+//                        westest = newPosH;
+//                    }
+//                }
+//                if (directionH.equals("E")) {
+//                    newPosH = startPos[0] + stepH;
+//                }
+//                int[] newPos = {newPosV, newPosH};
+//                map.put(name, newPos);
+//
+//                if (directionV.equals("C") && directionH.equals("C")) {
+//                    startPos = new int[]{0, 0};
+//                    map.put(name, startPos);
+//                }
+//
+//            }
+//
+//            for (String key : map.keySet()) {
+//                int[] value = map.get(key);
+//                value[0] = value[0] + Math.abs(northest);
+//                value[1] = value[1] + Math.abs(westest);
+//                try {
+//                    gridPane.add(new GUICard(key,addImage(key)), value[1], value[0]);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//
+//        }
+//        return gridPane;
+//    }
 }
