@@ -39,6 +39,10 @@ public class GUIArbor extends Group {
     private int margin;//width of border
     private final double CARD_RATIO=1.4;//height to width ratio of cards and position slots
 
+    //display elements
+    Rectangle borderOutside;
+    Rectangle borderInside;
+
     public GUIArbor(Player player, int xSize,int ySize, int xPos, int yPos,int margin) {
         this.player=player;
         this.arbor=player.getArboretum();
@@ -49,10 +53,13 @@ public class GUIArbor extends Group {
         this.setLayoutX(xPos);
         this.setLayoutY(yPos);
 
+        //link player to this display
+        player.setDisplayArbor(this);
+
         //create a border to mark the visual bounds of the arbor
         //TODO - make the border colour/width change to indicate whether the turn is active
-        Rectangle borderOutside=new Rectangle(xSize,ySize);
-        Rectangle borderInside=new Rectangle(xSize-margin*2,ySize-margin*2);
+        borderOutside=new Rectangle(xSize,ySize);
+        borderInside=new Rectangle(xSize-margin*2,ySize-margin*2);
         borderOutside.setFill(Color.LIGHTGREY);
         borderInside.setFill(Color.WHITE);
         borderInside.setLayoutX(margin);
@@ -92,8 +99,24 @@ public class GUIArbor extends Group {
 
     //Turn boolean handlers
     public Boolean isTurn() {return this.thisTurn;}
-    public void startTurn() {this.thisTurn=true;}
-    public void endTurn() {this.thisTurn=false;}
+    public void endTurn() {
+        this.thisTurn=false;
+        this.borderOutside.setFill(Color.LIGHTGREY);
+        this.borderInside.setLayoutX(margin);
+        this.borderInside.setLayoutY(margin);
+        this.borderInside.setWidth(ARBOR_X_SIZE-margin*2);
+        this.borderInside.setHeight(ARBOR_Y_SIZE-margin*2);
+        update();
+    }
+    public void startTurn() {
+        this.thisTurn=true;
+        this.borderOutside.setFill(Color.AQUAMARINE);
+        this.borderInside.setLayoutX(margin+1);
+        this.borderInside.setLayoutY(margin+1);
+        this.borderInside.setWidth(ARBOR_X_SIZE-margin*2-2);
+        this.borderInside.setHeight(ARBOR_Y_SIZE-margin*2-2);
+        update();
+    }
 
     /**
      * Contribution: Natasha

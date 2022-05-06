@@ -17,78 +17,95 @@ import java.io.FileNotFoundException;
 
 class GUICard extends ImageView {
 
-
-    private static final int SQUARE_SIZE = 80;
-    private static final int MARGIN_X = 60;
-    private static final int MARGIN_Y = 30;
-    private static final int BOARD_WIDTH = 450;
-    private static final int BOARD_HEIGHT = 450;
-    private static final int BOARD_MARGIN = 25;
-    private static final int BOARD_Y = MARGIN_Y;
-    private static final int BOARD_X = MARGIN_X;
-    private static final int PLAY_AREA_Y = BOARD_Y + BOARD_MARGIN;
-    private static final int PLAY_AREA_X = BOARD_X + BOARD_MARGIN;
-    private static final int GAME_WIDTH = BOARD_X + BOARD_WIDTH + MARGIN_X + 280;
-    private static final int GAME_HEIGHT = BOARD_Y + BOARD_HEIGHT + MARGIN_Y + 100;
-    private final Group selectionPieces = new Group();
-    private final Position[] highlightedPositions = new Position[4];
-    private boolean draggable;
-
-
     Card card;
     String name;
     double homeX, homeY;
     double mouseX, mouseY;
-    Position loc;
     Group root;
-
-    //TODO - store images as static in Card instead of game?
+    private boolean draggable;
 
     /**
      * Contribution: Junxian, Natasha
-     * Builds a GUICard using strings
-     * Currently not compatible with GUIArbor and GUIPosition since it doesn't store backend info
-     * @param name - String code for this card
-     * @param image - Image to use
-     * @throws FileNotFoundException - if the image couldn't be found
+     * Gets the image associated with a card
+     * @param card - the card to find
+     * @return an Image of the card with bounding size 112,112
+     * @throws FileNotFoundException if the image could not be found (eg if the cardCode is not one with a recognised image)
      */
-    public GUICard(String name, Image image) throws FileNotFoundException {
-        this.name = name;
-        this.draggable=true;
-        setImage(image);
-//        setFitHeight(SQUARE_SIZE - 4);
-//        setFitWidth(SQUARE_SIZE - 4);
-//        this.homeX = (loc.getX()) * SQUARE_SIZE + PLAY_AREA_X;
-//        this.homeY = (loc.getY()) * SQUARE_SIZE + PLAY_AREA_Y;
-//        setLayoutX(this.homeX);
-//        setLayoutY(this.homeY);
-
-        setOnMousePressed(event -> {
-            if(draggable) mousePress(event);
-        });
-
-        setOnMouseReleased(event -> {
-            if(draggable) mouseRelease(event);
-        });
-
-        setOnMouseDragged(event -> {
-            if(draggable) mouseDrag(event);
-        });
+    private static Image getImage(Card card) throws FileNotFoundException {
+        String cardCode=card.toString();
+        String fileAddress="";
+        switch(cardCode) {
+            case "a1" -> fileAddress="assets/cards/a_01.png";
+            case "a2" -> fileAddress="assets/cards/a_02.png";
+            case "a3" -> fileAddress="assets/cards/a_03.png";
+            case "a4" -> fileAddress="assets/cards/a_04.png";
+            case "a5" -> fileAddress="assets/cards/a_05.png";
+            case "a6" -> fileAddress="assets/cards/a_06.png";
+            case "a7" -> fileAddress="assets/cards/a_07.png";
+            case "a8" -> fileAddress="assets/cards/a_08.png";
+            case "b1" -> fileAddress="assets/cards/b_01.png";
+            case "b2" -> fileAddress="assets/cards/b_02.png";
+            case "b3" -> fileAddress="assets/cards/b_03.png";
+            case "b4" -> fileAddress="assets/cards/b_04.png";
+            case "b5" -> fileAddress="assets/cards/b_05.png";
+            case "b6" -> fileAddress="assets/cards/b_06.png";
+            case "b7" -> fileAddress="assets/cards/b_07.png";
+            case "b8" -> fileAddress="assets/cards/b_08.png";
+            case "c1" -> fileAddress="assets/cards/c_01.png";
+            case "c2" -> fileAddress="assets/cards/c_02.png";
+            case "c3" -> fileAddress="assets/cards/c_03.png";
+            case "c4" -> fileAddress="assets/cards/c_04.png";
+            case "c5" -> fileAddress="assets/cards/c_05.png";
+            case "c6" -> fileAddress="assets/cards/c_06.png";
+            case "c7" -> fileAddress="assets/cards/c_07.png";
+            case "c8" -> fileAddress="assets/cards/c_08.png";
+            case "d1" -> fileAddress="assets/cards/d_01.png";
+            case "d2" -> fileAddress="assets/cards/d_02.png";
+            case "d3" -> fileAddress="assets/cards/d_03.png";
+            case "d4" -> fileAddress="assets/cards/d_04.png";
+            case "d5" -> fileAddress="assets/cards/d_05.png";
+            case "d6" -> fileAddress="assets/cards/d_06.png";
+            case "d7" -> fileAddress="assets/cards/d_07.png";
+            case "d8" -> fileAddress="assets/cards/d_08.png";
+            case "j1" -> fileAddress="assets/cards/j_01.png";
+            case "j2" -> fileAddress="assets/cards/j_02.png";
+            case "j3" -> fileAddress="assets/cards/j_03.png";
+            case "j4" -> fileAddress="assets/cards/j_04.png";
+            case "j5" -> fileAddress="assets/cards/j_05.png";
+            case "j6" -> fileAddress="assets/cards/j_06.png";
+            case "j7" -> fileAddress="assets/cards/j_07.png";
+            case "j8" -> fileAddress="assets/cards/j_08.png";
+            case "m1" -> fileAddress="assets/cards/m_01.png";
+            case "m2" -> fileAddress="assets/cards/m_02.png";
+            case "m3" -> fileAddress="assets/cards/m_03.png";
+            case "m4" -> fileAddress="assets/cards/m_04.png";
+            case "m5" -> fileAddress="assets/cards/m_05.png";
+            case "m6" -> fileAddress="assets/cards/m_06.png";
+            case "m7" -> fileAddress="assets/cards/m_07.png";
+            case "m8" -> fileAddress="assets/cards/m_08.png";
+            default -> {}
+        }
+        Image image=new Image(new FileInputStream(fileAddress), 112, 112, true, true);
+        return image;
     }
+
 
     /**
      * Contribution: Natasha
      * Alternate constructor using backend structure
      * @param card - the card to associate
      * @param root - the base display group
-     * @param image - image for this card
      */
-    public GUICard(Card card, Group root, Image image) {
+    public GUICard(Card card, Group root) {
         this.name=card.toString();
         this.card=card;
         this.root=root;
         this.draggable=true;
-        setImage(image);
+        try {
+            setImage(getImage(card));
+        } catch (FileNotFoundException e) {
+            System.out.println("Image not found for card "+card);
+        }
 
 
         setOnMousePressed(event -> {

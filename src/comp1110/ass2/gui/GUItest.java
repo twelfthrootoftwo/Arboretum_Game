@@ -151,14 +151,10 @@ public class GUItest extends Application {
 
 
         GUICard[] cards=new GUICard[4];
-        try {
-            cards[0]=new GUICard(new Card("a1"), this.root, addImage("a1"));
-            cards[1]=new GUICard(new Card("b1"), this.root, addImage("b1"));
-            cards[2]=new GUICard(new Card("c1"), this.root, addImage("c1"));
-            cards[3]=new GUICard(new Card("d1"), this.root, addImage("d1"));
-        } catch(Exception e) {
-            ;
-        }
+        cards[0]=new GUICard(new Card("a1"), this.root);
+        cards[1]=new GUICard(new Card("b1"), this.root);
+        cards[2]=new GUICard(new Card("c1"), this.root);
+        cards[3]=new GUICard(new Card("d1"), this.root);
         int[] xCoords=new int[]{100,300,500,700};
         int yCoord=550;
         for(int i=0;i<cards.length;i++) {

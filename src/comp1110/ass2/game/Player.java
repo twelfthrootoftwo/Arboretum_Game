@@ -1,6 +1,7 @@
 package comp1110.ass2.game;
 
 import comp1110.ass2.Arboretum;
+import comp1110.ass2.gui.GUIArbor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ public class Player {
     Arbor arboretum;
     CardStack discardPile;
     List<Card> hand;
+    GUIArbor displayArbor;
 
     public Player(String name, int numSpecies) {
         this.name = name;
@@ -54,11 +56,6 @@ public class Player {
     }
 
     public String getDiscardPileString() {
-//        StringBuilder output = new StringBuilder(this.getName());
-//        for (Card card : this.getDiscardPile().cards) {
-//            output.append(card.toString());
-//        }
-//        return output.toString();
         return this.discardPile.toString();
     }
 
@@ -67,18 +64,16 @@ public class Player {
     }
 
     public String getHandString() {
-//        StringBuilder output = new StringBuilder(this.getName());
-//        for (Card card : this.hand) {
-//            output.append(card.toString());
-//        }
-//        return output.toString();
         return Arboretum.cardListToString(this.hand);
     }
-
 
     public void discard(Card card) {
         this.discardPile.addTopCard(card);
     }
+
+    public void setDisplayArbor(GUIArbor gArb) {this.displayArbor=gArb;}
+
+    public GUIArbor getDisplayArbor() { return displayArbor; }
 
     /**
      * Contribution: Natasha
