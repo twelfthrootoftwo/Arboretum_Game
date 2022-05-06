@@ -9,6 +9,10 @@ public class Arbor {
     private int numCards;
     private final int limit;
     private final int numSpecies;
+    private Position nBound;
+    private Position eBound;
+    private Position sBound;
+    private Position wBound;
 
 
     /**
@@ -31,6 +35,12 @@ public class Arbor {
                 this.arbor.put(newPos, null);
             }
         }
+
+        //set starting range to (0,0)
+        this.nBound=new Position(0,0);
+        this.eBound=this.nBound;
+        this.sBound=this.nBound;
+        this.wBound=this.nBound;
     }
 
     /**
@@ -62,6 +72,9 @@ public class Arbor {
             Position playedPosition = new Position(posCode);
             this.arbor.put(playedPosition, playedCard);
         }
+
+        //update bounds
+        this.findRange();
     }
 
     /**
@@ -77,7 +90,10 @@ public class Arbor {
         this.arboretumList.add(cardName);
 
         this.arbor.put(pos, card);
+
+        //update range & card count
         this.numCards++;
+        this.checkRange(pos);
     }
 
     /**
@@ -353,5 +369,43 @@ public class Arbor {
         //add all score elements
         int finalScore=sizeBonus+speciesBonus+startBonus+endBonus;
         return finalScore;
+    }
+
+    /**
+     * Contribution: Natasha
+     * Determines the occupied positions at the furthest extremes of the Arbor
+     * For use with prebuilt arbors (eg assignment spec strings)
+     */
+    private void findRange() {
+        //check each occupied position
+        for(Position pos:this.arbor.keySet()) {
+            this.checkRange(pos);
+        }
+    }
+
+    /**
+     * Contribution: Natasha
+     * Updates the recorded range bounds if the input position is outside the range
+     * Checks if the position contains a card first
+     *
+     * @param pos
+     */
+    private void checkRange(Position pos) {
+        if(this.arbor.get(pos)!=null) {
+            if (pos.getY() > this.nBound.getY()) this.nBound = pos;
+            if (pos.getX() > this.eBound.getX()) this.eBound = pos;
+            if (pos.getY() < this.sBound.getY()) this.sBound = pos;
+            if (pos.getX() < this.wBound.getX()) this.wBound = pos;
+        }
+    }
+
+    /**
+     * Contribution: Natasha
+     * Gets the bounding positions of this Arbor
+     * @return a Position[] of the most extreme occupied positions, in [N,E,S,W] order
+     */
+    public Position[] getBounds() {
+        Position[] bounds=new Position[]{this.nBound,this.eBound,this.sBound,this.wBound};
+        return bounds;
     }
 }
