@@ -187,7 +187,7 @@ public class Game extends Application {
         playerA.play(card1,new Position(10,0));
         playerA.draw(deck);
         Card card2 = playerA.getHand().get(0);
-        playerA.play(card2,new Position(0,1));
+        playerA.play(card2,new Position(1,0));
 
         System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, "A")));
         update(generateGameState(playerA,playerB,deck,"A"));
