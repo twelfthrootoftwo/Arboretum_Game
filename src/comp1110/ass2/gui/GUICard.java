@@ -113,7 +113,14 @@ class GUICard extends ImageView {
         });
 
         setOnMouseReleased(event -> {
-            if(draggable) mouseRelease(event);
+
+            if(draggable) {
+                Card newCard = mouseRelease(event);
+                if (newCard != null){
+                    System.out.println(newCard.toString());
+                }
+
+            }
         });
 
         setOnMouseDragged(event -> {
@@ -175,7 +182,7 @@ class GUICard extends ImageView {
      * When the card is dropped, play it to the position it's over; otherwise return it to the starting position
      * @param event - mouse release
      */
-    private void mouseRelease(MouseEvent event) {
+    private Card mouseRelease(MouseEvent event) {
         GUIArbor localArbor=findArbor();
         mouseX = event.getSceneX();
         mouseY = event.getSceneY();
@@ -187,8 +194,9 @@ class GUICard extends ImageView {
             if(localPos.canPlay()) {
                 localPos.playHere(this);
                 //this.removeFromHand(); TODO - implement
-                played=true;
+//                played=true;
                 this.draggable=false;//lock this card so it can't be moved again
+                return this.getCard();
             }
         }
 
@@ -197,6 +205,7 @@ class GUICard extends ImageView {
             this.setLayoutX(this.homeX);
             this.setLayoutY(this.homeY);
         }
+        return null;
     }
 
     /**
@@ -232,5 +241,12 @@ class GUICard extends ImageView {
     public void updateCoord(double x, double y) {
         this.setLayoutX(x);
         this.setLayoutY(y);
+    }
+
+    @Override
+    public String toString() {
+        return "GUICard{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

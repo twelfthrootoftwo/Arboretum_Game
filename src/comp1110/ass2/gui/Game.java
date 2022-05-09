@@ -6,15 +6,18 @@ import comp1110.ass2.game.Deck;
 import comp1110.ass2.game.Player;
 import comp1110.ass2.game.Position;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -39,19 +42,28 @@ public class Game extends Application {
     private static final int BASE_CARD_HEIGHT=112;
 
 
-    private TextField turnIDTextField;
-    private TextField aArboretumTextField;
-    private TextField bArboretumTextField;
-    private TextField aDiscardTextField;
-    private TextField bDiscardTextField;
-    private TextField deckTextField;
-    private TextField aHandTextField;
-    private TextField bHandTextField;
+    private static final int ARBOR_X=550;
+    private static final int ARBOR_Y=500;
+    private static final int leftArborX=10;
+    private static final int leftArborY=10;
+    private static final int rightArborX=641;
+    private static final int rightArborY=10;
+    private static final int arborMargin=5;
 
-    Player playerA;
-    Player playerB;
-    Deck deck;
-    Player activeTurn;
+
+//    private TextField turnIDTextField;
+//    private TextField aArboretumTextField;
+//    private TextField bArboretumTextField;
+//    private TextField aDiscardTextField;
+//    private TextField bDiscardTextField;
+//    private TextField deckTextField;
+//    private TextField aHandTextField;
+//    private TextField bHandTextField;
+
+    private Player playerA;
+    private Player playerB;
+    private Deck deck;
+    private String activeTurn;
 
     public Game() throws FileNotFoundException {
     }
@@ -79,39 +91,66 @@ public class Game extends Application {
             playerA.draw(deck);
             playerB.draw(deck);
         }
+        this.activeTurn = "A";
 
         //add arbor, cards, decks to display
-        int ARBOR_X=550;
-        int ARBOR_Y=500;
-        int leftArborX=10;
-        int leftArborY=10;
-        int rightArborX=590;
-        int rightArborY=10;
-        int arborMargin=5;
-
         GUIArbor displayArborA=new GUIArbor(playerA,ARBOR_X,ARBOR_Y,leftArborX,leftArborY,arborMargin);
         GUIArbor displayArborB=new GUIArbor(playerB,ARBOR_X,ARBOR_Y,rightArborX,rightArborY,arborMargin);
-        root.getChildren().addAll(displayArborA,displayArborB);
+        Button playButton = new Button("Next");
+        playButton.setLayoutX(500);
+        playButton.setLayoutY(200);
+        root.getChildren().addAll(displayArborA,displayArborB,playButton);
 
         //TODO - add deck & discard display
 
         //turns
         //TODO - actually cycle turns
-        startTurn(playerA);
 
-        System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, "A")));
-        stage.setScene(scene);
-        stage.show();
+//        startTurn(playerB);
+        playButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+//                System.out.println(activeTurn);
+//                System.out.println(activeTurn.equals("A"));
+//                System.out.println(activeTurn.equals("B"));
+                if (activeTurn.equals("A")) {
+                    playerB.getDisplayArbor().endTurn();
+                    startTurn(playerA);
+                    System.out.println("A");
+                    System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
+                    activeTurn = "B";
+                }else if (activeTurn.equals("B")) {
+                    playerA.getDisplayArbor().endTurn();
+                    startTurn(playerB);
+                    System.out.println("B");
+                    System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
+                    activeTurn = "A";
 
+                }
+            }
+        }));
 //        while (!isGameEnd()){
-//            new Turn(playerA,deck);
-//            new Turn(playerB,deck);
+//            if (isGameEnd()){
+//                getWinner();
+//                break;
+//            }
+////            if(this.activeTurn == playerA){
+////                startTurn(playerA);
+////                this.activeTurn = playerB;
+////            }
+////            if(this.activeTurn == playerB){
+////                startTurn(playerB);
+////                this.activeTurn = playerA;
+////            }
+////            startTurn(playerA);
 //        }
 
 
-        if (isGameEnd()){
-            getWinner();
-        }
+//        System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, "A")));
+        stage.setScene(scene);
+        stage.show();
+
+
+
 
     }
 
@@ -121,7 +160,7 @@ public class Game extends Application {
      * @param player - start the turn of this player
      */
     private void startTurn(Player player) {
-        this.activeTurn=player;
+//        this.activeTurn=player;
         player.getDisplayArbor().startTurn();
 
         //TODO - accept draw input somehow
@@ -165,9 +204,9 @@ public class Game extends Application {
         //put all gameState to tree strings
 //        String nextTurn = turn; //sharedState[0];
         String arboretumA =  playerA.getArboretumString();//sharedState[1];
-        System.out.println("arboretumA: " + arboretumA);
+//        System.out.println("arboretumA: " + arboretumA);
         String discardA = playerA.getDiscardPileString();//sharedState[2];
-        System.out.println("discardA: " + discardA);
+//        System.out.println("discardA: " + discardA);
         String arboretumB = playerB.getArboretumString();//sharedState[3];
 //        System.out.println("arboretumB" + arboretumB);
         String discardB = playerB.getDiscardPileString();//sharedState[4];
