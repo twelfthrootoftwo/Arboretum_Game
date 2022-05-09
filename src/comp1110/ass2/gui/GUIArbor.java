@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class GUIArbor extends Group {
-    private Player player;
+    public Player player;
     private Arbor arbor;
     Group root;
     private boolean thisTurn;//whether it's the turn of this arbor's player
@@ -269,7 +269,7 @@ public class GUIArbor extends Group {
         GUIPosition closest=this.findNearestSlot(x,y);
 
         //if this is a valid place to play - i.e. a legal position and this arbor belongs to the current player - highlight the nearest slot
-        if(closest.canPlay()&&this.thisTurn) {
+        if(closest.canPlayArbor()&&this.thisTurn) {
             this.highlighted=closest;
             closest.setFill(Color.GREY);
         }

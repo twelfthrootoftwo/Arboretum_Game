@@ -92,7 +92,7 @@ public class GUIPosition extends Rectangle {
      * Checks if the Position associated with this slot can be played to
      * @return True if this is a legal play position, False otherwise
      */
-    public boolean canPlay() {
+    public boolean canPlayArbor() {
         return this.arbor.isPosCanPlace(this.position);
     }
 
@@ -105,7 +105,7 @@ public class GUIPosition extends Rectangle {
      */
     public boolean playHere(GUICard card) {
         //first check the play is legal
-        if(this.canPlay()) {
+        if(this.canPlayArbor()) {
             //register the played card to the arbor
             this.arbor.addCard(card.getCard(),this.position);
 

@@ -110,7 +110,16 @@ public class Player {
         }
         return false;
     }
-
+    /**
+     * Contribution: Junxian
+     * Checks if the chosen card can be played a the chosen position; if it can, play it there
+     *
+     * @param card     - card to play
+     * @return True if the move was legal and has been processed, False otherwise
+     */
+    public void play(Card card) {
+        this.hand.remove(card);
+    }
     /**
      * Contribution: Natasha
      * Checks whether a play is legal

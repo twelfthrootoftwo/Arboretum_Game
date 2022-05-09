@@ -116,7 +116,9 @@ class GUICard extends ImageView {
 
             if(draggable) {
                 Card newCard = mouseRelease(event);
-                if (newCard != null){
+                if (newCard != null && this.findArbor() != null){
+                    this.findArbor().player.play(newCard);
+//                    System.out.println(findArbor().player.getName());
                     System.out.println(newCard.toString());
                 }
 
@@ -134,6 +136,7 @@ class GUICard extends ImageView {
     public void updateImage(Image image) {
         this.setImage(image);
     }
+
 
     /**
      * Contribution: Natasha
@@ -191,7 +194,7 @@ class GUICard extends ImageView {
         //if the card was dropped onto a valid place to play, play it there
         if(localArbor!=null) {
             GUIPosition localPos=localArbor.findNearestSlot(mouseX,mouseY);
-            if(localPos.canPlay()) {
+            if(localPos.canPlayArbor()) {
                 localPos.playHere(this);
                 //this.removeFromHand(); TODO - implement
 //                played=true;
