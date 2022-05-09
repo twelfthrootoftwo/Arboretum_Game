@@ -93,7 +93,7 @@ public class Game extends Application {
         }
         this.activeTurn = "A";
 
-        //add arbor, cards, decks to display
+        //add arbor, current score, cards, decks to display
         GUIArbor displayArborA=new GUIArbor(playerA,ARBOR_X,ARBOR_Y,leftArborX,leftArborY,arborMargin);
         GUIArbor displayArborB=new GUIArbor(playerB,ARBOR_X,ARBOR_Y,rightArborX,rightArborY,arborMargin);
         Button playButton = new Button("Next");

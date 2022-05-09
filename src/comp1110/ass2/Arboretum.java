@@ -1286,7 +1286,10 @@ public class Arboretum {
         for (String species : speciesList){
             // Check if the species do exist in the arboretum
             if (playerArboretum.indexOf(species) != -1){
-                output.put(speciesFullName(species), getHighestViablePathScore(gameState, player, species.charAt(0)));
+                if (getHighestViablePathScore(gameState, player, species.charAt(0)) == -1){
+                    output.put(speciesFullName(species), 0);
+                }
+                else output.put(speciesFullName(species), getHighestViablePathScore(gameState, player, species.charAt(0)));
             }
         }
         return output;

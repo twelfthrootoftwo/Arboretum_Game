@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.Arrays;
@@ -42,6 +43,8 @@ public class GUIArbor extends Group {
     //display elements
     Rectangle borderOutside;
     Rectangle borderInside;
+    Rectangle scoreBox;
+    Text scoreText;
 
     public GUIArbor(Player player, int xSize,int ySize, int xPos, int yPos,int margin) {
         this.player=player;
@@ -64,8 +67,14 @@ public class GUIArbor extends Group {
         borderInside.setFill(Color.WHITE);
         borderInside.setLayoutX(margin);
         borderInside.setLayoutY(margin);
+        //create a text box to record the score
+//        scoreBox = new Rectangle(500,500);
+//        scoreBox.setX(100);
+//        scoreBox.setY(100);
+//        scoreBox.setFill(Color.WHITE);
+//        scoreText = new Text(100,100,"NoYet");
+//        this.getChildren().addAll(borderOutside,borderInside, scoreBox, scoreText);
         this.getChildren().addAll(borderOutside,borderInside);
-
         //establish a starting position at (0,0) - this will be expanded into a 3x3 grid before initial display
         this.positions=new LinkedList<LinkedList<GUIPosition>>();
         GUIPosition origin=addNewPosition(0,0);
