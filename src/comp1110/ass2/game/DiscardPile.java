@@ -42,6 +42,7 @@ public class DiscardPile extends CardStack {
      * @return the top (last) card in this.cards;
      */
     public Card peekTopCard() {
-        return this.cards.get(this.cards.size() - 1);
+        if(this.cards.size()>0) return this.cards.get(this.cards.size() - 1);
+        else return new Card();
     }
 }

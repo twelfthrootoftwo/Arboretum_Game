@@ -64,6 +64,7 @@ public class Game extends Application {
     private Player playerB;
     private Deck deck;
     private String activeTurn;
+    private boolean drawPhase;
 
     public Game() throws FileNotFoundException {
     }
@@ -92,6 +93,7 @@ public class Game extends Application {
             playerB.draw(deck);
         }
         this.activeTurn = "A";
+        this.drawPhase=false;
 
         //add arbor, current score, cards, decks to display
         GUIArbor displayArborA=new GUIArbor(playerA,ARBOR_X,ARBOR_Y,leftArborX,leftArborY,arborMargin);
@@ -103,6 +105,9 @@ public class Game extends Application {
         root.getChildren().addAll(displayArborA,displayArborB,playButton);
 
         //TODO - add deck & discard display
+        GUICardStack displayDeck=new GUICardStack(this.deck,this,this.root,550,10);
+        GUICardStack discardA=new GUICardStack(this.playerA.getDiscardPile(),this,this.root,10,BOARD_HEIGHT-BASE_CARD_HEIGHT*2);
+        GUICardStack discardB=new GUICardStack(this.playerB.getDiscardPile(),this,this.root,BOARD_WIDTH-BASE_CARD_WIDTH-10,BOARD_HEIGHT-BASE_CARD_HEIGHT*2);
 
         //turns
         //TODO - actually cycle turns
@@ -162,8 +167,10 @@ public class Game extends Application {
         player.getDisplayArbor().startTurn();
 
         //TODO - accept draw input somehow
+        this.drawPhase=true;
         player.draw(deck);
         player.draw(deck);
+        this.drawPhase=false;
 
         displayHand(player);
     }
@@ -175,7 +182,7 @@ public class Game extends Application {
      */
     private void displayHand(Player player) {
         //set up a backing rectangle for visual niceness
-        Rectangle handBacking=new Rectangle(BASE_CARD_WIDTH*10,BASE_CARD_HEIGHT*1.5);
+        Rectangle handBacking=new Rectangle(BASE_CARD_WIDTH*8,BASE_CARD_HEIGHT*1.2);
         handBacking.setLayoutX((BOARD_WIDTH-handBacking.getWidth())/2);
         handBacking.setLayoutY(BOARD_HEIGHT-handBacking.getHeight());
         handBacking.setFill(Color.LIGHTGREY);
@@ -190,6 +197,20 @@ public class Game extends Application {
             guiCard.toFront();
             i++;
         }
+    }
+
+    /**
+     * Contribution: Natasha
+     * @return the Player object that is currently taking their turn
+     */
+    public Player getActivePlayer() {
+        if(this.activeTurn.equals("A")) return playerA;
+        else if(this.activeTurn.equals("B")) return playerB;
+        else return null;
+    }
+
+    public boolean isDrawPhase() {
+        return drawPhase;
     }
 
     private Player getWinner(){
