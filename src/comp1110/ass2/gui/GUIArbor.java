@@ -64,7 +64,7 @@ public class GUIArbor extends Group {
         borderInside.setFill(Color.WHITE);
         borderInside.setLayoutX(margin);
         borderInside.setLayoutY(margin);
-        this.getChildren().addAll(borderOutside,borderInside);
+        this.getChildren().addAll(borderOutside,borderInside,scorebox);
 
         //establish a starting position at (0,0) - this will be expanded into a 3x3 grid before initial display
         this.positions=new LinkedList<LinkedList<GUIPosition>>();
