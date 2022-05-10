@@ -96,6 +96,7 @@ public class Game extends Application {
         //add arbor, current score, cards, decks to display
         GUIArbor displayArborA=new GUIArbor(playerA,ARBOR_X,ARBOR_Y,leftArborX,leftArborY,arborMargin);
         GUIArbor displayArborB=new GUIArbor(playerB,ARBOR_X,ARBOR_Y,rightArborX,rightArborY,arborMargin);
+        Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn));
         Button playButton = new Button("Next");
         playButton.setLayoutX(500);
         playButton.setLayoutY(200);

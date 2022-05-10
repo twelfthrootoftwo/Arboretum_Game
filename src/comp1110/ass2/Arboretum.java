@@ -160,7 +160,9 @@ public class Arboretum {
                 int x = hiddenState[2].charAt(i);
                 int y = hiddenState[2].charAt(i + 1);
                 listSorted3[j] = toNumber(x, y);
-                if (contains(listA, toNumber(x, y)) || contains(listB, toNumber(x, y)) || contains(deck, toNumber(x, y))) {
+                if (contains(listA, toNumber(x, y))
+                        || contains(listB, toNumber(x, y))
+                        || contains(deck, toNumber(x, y))){
                     return false;
                 }
                 listB[j] = toNumber(x, y);
@@ -959,7 +961,7 @@ public class Arboretum {
             }
         }
         // If the card is 01 and with the opposite move
-        else if (existPlacement.charAt(0) == 'S' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1') {
+        else if (existPlacement.charAt(0) == 'S' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1'){
             newPlacement = "C00" + existPlacement.charAt(3) + existPlacement.charAt(4) + existPlacement.charAt(5);
         }
         // Opposite move minus 1
@@ -997,7 +999,7 @@ public class Arboretum {
             }
         }
         // If the card is 01 and with the opposite move
-        else if (existPlacement.charAt(0) == 'N' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1') {
+        else if (existPlacement.charAt(0) == 'N' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1'){
             newPlacement = "C00" + existPlacement.charAt(3) + existPlacement.charAt(4) + existPlacement.charAt(5);
         }
         // Opposite move minus 1
@@ -1036,7 +1038,7 @@ public class Arboretum {
             }
         }
         // If the card is 01 and with the opposite move
-        else if (existPlacement.charAt(3) == 'W' && existPlacement.charAt(4) == '0' && existPlacement.charAt(5) == '1') {
+        else if (existPlacement.charAt(3) == 'W' && existPlacement.charAt(4) == '0' && existPlacement.charAt(5) == '1'){
             newPlacement = Character.toString(existPlacement.charAt(0))
                     + existPlacement.charAt(1) + existPlacement.charAt(2) + "C00";
         }
@@ -1256,44 +1258,6 @@ public class Arboretum {
         // FIXME TASK 15
     }
 
-    /** Contribution: Hongzhe
-     * Generate a hashmap containing the current score of existing species of the arboretum for each player.
-     * @param gameState the game state array
-     * @param player    the given player
-     * @return a hashmap with its key of species and the current score of the species.
-     */
-    public static HashMap<String, Integer> currentScore(String[][] gameState, char player) {
-        HashMap<String, Integer> output = new HashMap<>();
-        String playerArboretum;
-        if (player == 'A') playerArboretum = gameState[0][1];
-        else playerArboretum = gameState[0][3];
-        String[] speciesList = new String[]{"a", "b", "c", "d", "j", "m"};
-        for (String species : speciesList){
-            // Check if the species do exist in the arboretum
-            if (playerArboretum.indexOf(species) != -1){
-                if (getHighestViablePathScore(gameState, player, species.charAt(0)) == -1){
-                    output.put(speciesFullName(species), 0);
-                }
-                else output.put(speciesFullName(species), getHighestViablePathScore(gameState, player, species.charAt(0)));
-            }
-        }
-        return output;
-    }
-
-    /** Contribution: Hongzhe
-     * Convert the short name to the full name of a species.
-     * @param shortName the short name of the species
-     * @return the full name of the species
-     */
-    public static String speciesFullName(String shortName){
-        if (shortName == "a") return "Cassia";
-        else if (shortName == "b") return "Blue Spruce";
-        else if (shortName == "c") return "Cherry blossom";
-        else if (shortName == "d") return "Dogwood";
-        else if (shortName == "j") return "Jacaranda";
-        else return "Maple";
-    }
-
     /**
      * Main method for testing purposes
      */
@@ -1312,13 +1276,15 @@ public class Arboretum {
                 isPlacementValid(validState, placementString);
             }
         }
-
         Position test1 = new Position("C00C00");
         Position test2 = new Position(0, 0);
         System.out.println(test1.hashCode());
         System.out.println(test2.hashCode());
-
-        System.out.println(currentScore(validState, 'A'));
-        System.out.println(currentScore(validState, 'B'));
+        String outputString = new String("abc\nc");
+        System.out.println(outputString);
+        Arbor aArbor = new Arbor(validState[0][1]);
+        Arbor bArbor = new Arbor(validState[0][3]);
+        System.out.println(aArbor.currentScore(validState, 'A'));
+        System.out.println(bArbor.currentScore(validState, 'B'));
     }
 }

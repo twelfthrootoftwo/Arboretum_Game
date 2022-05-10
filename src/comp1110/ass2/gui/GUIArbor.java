@@ -46,6 +46,9 @@ public class GUIArbor extends Group {
     Rectangle scoreBox;
     Text scoreText;
 
+    //constant used
+    String newLine = "\n";
+
     public GUIArbor(Player player, int xSize,int ySize, int xPos, int yPos,int margin) {
         this.player=player;
         this.arbor=player.getArboretum();
@@ -72,7 +75,8 @@ public class GUIArbor extends Group {
 //        scoreBox.setX(100);
 //        scoreBox.setY(100);
 //        scoreBox.setFill(Color.WHITE);
-//        scoreText = new Text(100,100,"NoYet");
+//        scoreText = new Text();
+//        scoreText.setText();
 //        this.getChildren().addAll(borderOutside,borderInside, scoreBox, scoreText);
         this.getChildren().addAll(borderOutside,borderInside);
         //establish a starting position at (0,0) - this will be expanded into a 3x3 grid before initial display
