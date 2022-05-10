@@ -160,7 +160,9 @@ public class Arboretum {
                 int x = hiddenState[2].charAt(i);
                 int y = hiddenState[2].charAt(i + 1);
                 listSorted3[j] = toNumber(x, y);
-                if (contains(listA, toNumber(x, y)) || contains(listB, toNumber(x, y)) || contains(deck, toNumber(x, y))) {
+                if (contains(listA, toNumber(x, y))
+                        || contains(listB, toNumber(x, y))
+                        || contains(deck, toNumber(x, y))){
                     return false;
                 }
                 listB[j] = toNumber(x, y);
@@ -850,14 +852,14 @@ public class Arboretum {
             }
         }
         // Jump to the index of that species, and also check if that species exist
-        var playerSpecies = playerHand.indexOf(species);
-        var opponentSpecies = opponentHand.indexOf(species);
-        if (playerSpecies == -1 && opponentSpecies == -1) return true;
-        else if (playerSpecies == -1 && opponentSpecies >= 0) return false;
-        else if (playerSpecies >= 0 && opponentSpecies == -1) return true;
+        var playerSpeciesIndex = playerHand.indexOf(species);
+        var opponentSpeciesIndex = opponentHand.indexOf(species);
+        if (playerSpeciesIndex == -1 && opponentSpeciesIndex == -1) return true;
+        else if (playerSpeciesIndex == -1 && opponentSpeciesIndex >= 0) return false;
+        else if (playerSpeciesIndex >= 0 && opponentSpeciesIndex == -1) return true;
         else {
-            return amount(species, playerHand, player8to0, playerSpecies)
-                    >= amount(species, opponentHand, opponent8to0, opponentSpecies);
+            return amount(species, playerHand, player8to0, playerSpeciesIndex)
+                    >= amount(species, opponentHand, opponent8to0, opponentSpeciesIndex);
         }
         // FIXME TASK 9
     }
@@ -907,42 +909,28 @@ public class Arboretum {
         // Determine which player's turn
         if (gameState[0][0].equals("A")) playerArboretum = gameState[0][1];
         else playerArboretum = gameState[0][3];
+        Arbor arbor = new Arbor(playerArboretum);
         // If empty arboretum, the only placement is middle
-        if (playerArboretum.length() == 1) {
+        if (arbor.getNumCards() == 0) {
             output.add(card + "C00C00");
             return output;
         } else {
             // For loop and add all possibilities including overlap
-            for (String i : separate(playerArboretum)) {
-                output.addAll(allPossiblePlacement(i));
+            for (String placement : arbor.separateCards()) {
+                output.addAll(allPossiblePlacement(placement));
             }
         }
         // Check and remove all existing placements
-        output.removeAll(separate(playerArboretum));
+        output.removeAll(arbor.separateCards());
         // Add card to every placement
         Set<String> outputWithCard = new HashSet<>();
-        for (var i : output) {
-            outputWithCard.add(card + i);
+        for (String placement : output) {
+            outputWithCard.add(card + placement);
         }
         return outputWithCard;
         //FIXME TASK 10
     }
 
-    /**
-     * Contribution: Hongzhe
-     * List all the existing placements without the card specie and value.
-     *
-     * @param arboretum string of the arboretum of the player
-     * @return a set that separates all the exists placements
-     */
-    private static Set<String> separate(String arboretum) {
-        Set<String> output = new HashSet<>();
-        for (int i = 3; i < arboretum.length() - 5; i += 8) {
-            output.add(Character.toString(arboretum.charAt(i)) + arboretum.charAt(i + 1) + arboretum.charAt(i + 2)
-                    + arboretum.charAt(i + 3) + arboretum.charAt(i + 4) + arboretum.charAt(i + 5));
-        }
-        return output;
-    }
 
     /**
      * Contribution: Hongzhe
@@ -953,7 +941,6 @@ public class Arboretum {
      */
     private static Set<String> allPossiblePlacement(String existPlacement) {
         Set<String> output = new HashSet<>();
-        // Move to the North
         String newPlacement;
         // Origin placement
         if (existPlacement.charAt(0) == 'C') {
@@ -974,7 +961,7 @@ public class Arboretum {
             }
         }
         // If the card is 01 and with the opposite move
-        else if (existPlacement.charAt(0) == 'S' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1') {
+        else if (existPlacement.charAt(0) == 'S' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1'){
             newPlacement = "C00" + existPlacement.charAt(3) + existPlacement.charAt(4) + existPlacement.charAt(5);
         }
         // Opposite move minus 1
@@ -1012,7 +999,7 @@ public class Arboretum {
             }
         }
         // If the card is 01 and with the opposite move
-        else if (existPlacement.charAt(0) == 'N' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1') {
+        else if (existPlacement.charAt(0) == 'N' && existPlacement.charAt(1) == '0' && existPlacement.charAt(2) == '1'){
             newPlacement = "C00" + existPlacement.charAt(3) + existPlacement.charAt(4) + existPlacement.charAt(5);
         }
         // Opposite move minus 1
@@ -1051,7 +1038,7 @@ public class Arboretum {
             }
         }
         // If the card is 01 and with the opposite move
-        else if (existPlacement.charAt(3) == 'W' && existPlacement.charAt(4) == '0' && existPlacement.charAt(5) == '1') {
+        else if (existPlacement.charAt(3) == 'W' && existPlacement.charAt(4) == '0' && existPlacement.charAt(5) == '1'){
             newPlacement = Character.toString(existPlacement.charAt(0))
                     + existPlacement.charAt(1) + existPlacement.charAt(2) + "C00";
         }
@@ -1289,10 +1276,15 @@ public class Arboretum {
                 isPlacementValid(validState, placementString);
             }
         }
-
         Position test1 = new Position("C00C00");
         Position test2 = new Position(0, 0);
         System.out.println(test1.hashCode());
         System.out.println(test2.hashCode());
+        String outputString = new String("abc\nc");
+        System.out.println(outputString);
+        Arbor aArbor = new Arbor(validState[0][1]);
+        Arbor bArbor = new Arbor(validState[0][3]);
+        System.out.println(aArbor.currentScore(validState[0][1])); //validState, 'A'
+        System.out.println(bArbor.currentScore(validState[0][3])); //validState, 'B'
     }
 }

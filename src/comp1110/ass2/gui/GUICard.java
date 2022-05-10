@@ -32,7 +32,10 @@ class GUICard extends ImageView {
      * @throws FileNotFoundException if the image could not be found (eg if the cardCode is not one with a recognised image)
      */
     private static Image getImage(Card card) throws FileNotFoundException {
-        String cardCode=card.toString();
+        String cardCode="back";
+        if(card!= null) {
+            cardCode = card.toString();
+        }
         String fileAddress="";
         switch(cardCode) {
             case "a1" -> fileAddress="assets/cards/a_01.png";
@@ -83,6 +86,7 @@ class GUICard extends ImageView {
             case "m6" -> fileAddress="assets/cards/m_06.png";
             case "m7" -> fileAddress="assets/cards/m_07.png";
             case "m8" -> fileAddress="assets/cards/m_08.png";
+            case "back" ->fileAddress="assets/cards/z_back.png";
             default -> {}
         }
         Image image=new Image(new FileInputStream(fileAddress), 112, 112, true, true);
@@ -128,6 +132,26 @@ class GUICard extends ImageView {
         setOnMouseDragged(event -> {
             if(draggable) mouseDrag(event);
         });
+    }
+
+    /**
+     * Contribution: Natasha
+     * Second constructor to generate a card-back-only variant (for use in deck display)
+     * @param root - the root group of the GUI display
+     * @param checkBack - string "back" (just to confirm you want the card back image and are intentionally using this constructor)
+     */
+    public GUICard(Group root,String checkBack) {
+        if(checkBack.equals("back"))
+            this.root=root;
+            this.draggable=false;
+            Card card=null;
+            this.card=card;
+            try {
+                setImage(getImage(card));
+            } catch(FileNotFoundException e) {
+                System.out.println("Card back not found");
+            }
+
     }
 
     public String getName() {return this.name;}

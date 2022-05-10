@@ -13,6 +13,7 @@ public class Arbor {
     private Position eBound;
     private Position sBound;
     private Position wBound;
+    private String originalArbor;
 
 
     /**
@@ -44,14 +45,15 @@ public class Arbor {
     }
 
     /**
-     * Contribution: Natasha
+     * Contribution: Natasha, Hongzhe
      * Constructor for use with assignment specification strings
      *
      * @param arborCode - the string representing the arboretum, in assignment specification format
      */
     public Arbor(String arborCode) {
         this.arbor = new HashMap<Position, Card>();
-
+        //the original arbor String given to construct Arbor
+        this.originalArbor = arborCode;
         //assume we're working with the 2-player variant
         this.numSpecies=6;
         this.limit = 8 * this.numSpecies - 1;
@@ -413,5 +415,62 @@ public class Arbor {
     public Position[] getBounds() {
         Position[] bounds=new Position[]{this.nBound,this.eBound,this.sBound,this.wBound};
         return bounds;
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * List all the existing placements without the card specie and value.
+     *
+     * @return a set that separates all the exists placements
+     */
+    public Set<String> separateCards() {
+        Set<String> output = new HashSet<>();
+        for (int i = 3; i < originalArbor.length() - 5; i += 8) {
+            output.add(Character.toString(originalArbor.charAt(i))
+                    + originalArbor.charAt(i + 1)
+                    + originalArbor.charAt(i + 2)
+                    + originalArbor.charAt(i + 3)
+                    + originalArbor.charAt(i + 4)
+                    + originalArbor.charAt(i + 5));
+        }
+        return output;
+    }
+    /** Contribution: Hongzhe
+     * Generate a hashmap containing the current score of existing species of the arboretum for each player.
+     * String[][] gameState, char player
+     * @return a hashmap with its key of species and the current score of the species.
+     */
+    public HashMap<String, Integer> currentScore(String arboretum) {
+//        System.out.println(arboretum);
+        HashMap<String, Integer> output = new HashMap<>();
+        for (String species : new String[]{"a", "b", "c", "d", "j", "m"}){
+            // Check if the species do exist in the arboretum
+            if (arboretum.contains(species)){
+                output.put(species, getHighestScore(species.charAt(0)));
+            }
+        }
+        return output;
+    }
+
+    /** Contribution: Hongzhe
+     * Convert the short name to the full name of a species.
+     * @param shortName the short name of the species
+     * @return the full name of the species
+     */
+    public String speciesFullName(String shortName){
+        if (shortName == "a") return "Cassia";
+        else if (shortName == "b") return "Blue Spruce";
+        else if (shortName == "c") return "Cherry blossom";
+        else if (shortName == "d") return "Dogwood";
+        else if (shortName == "j") return "Jacaranda";
+        else return "Maple";
+    }
+
+    public int getHighestScore(char species) {
+        HashMap<Species, Integer> scores = this.score();
+
+        //get score for target species
+        Species toScore = Species.valueOf(String.valueOf(species));
+        return scores.get(toScore);
     }
 }
