@@ -447,6 +447,7 @@ public class Arbor {
             // Check if the species do exist in the arboretum
             if (arboretum.contains(species)){
                 output.put(species, getHighestScore(species.charAt(0)));
+
             }
         }
         return output;
@@ -473,4 +474,6 @@ public class Arbor {
         Species toScore = Species.valueOf(String.valueOf(species));
         return scores.get(toScore);
     }
+
 }
+
