@@ -13,6 +13,7 @@ public class Arbor {
     private Position eBound;
     private Position sBound;
     private Position wBound;
+    private String originalArbor;
 
 
     /**
@@ -44,14 +45,15 @@ public class Arbor {
     }
 
     /**
-     * Contribution: Natasha
+     * Contribution: Natasha, Hongzhe
      * Constructor for use with assignment specification strings
      *
      * @param arborCode - the string representing the arboretum, in assignment specification format
      */
     public Arbor(String arborCode) {
         this.arbor = new HashMap<Position, Card>();
-
+        //the original arbor String given to construct Arbor
+        this.originalArbor = arborCode;
         //assume we're working with the 2-player variant
         this.numSpecies=6;
         this.limit = 8 * this.numSpecies - 1;
@@ -413,5 +415,24 @@ public class Arbor {
     public Position[] getBounds() {
         Position[] bounds=new Position[]{this.nBound,this.eBound,this.sBound,this.wBound};
         return bounds;
+    }
+
+    /**
+     * Contribution: Hongzhe
+     * List all the existing placements without the card specie and value.
+     *
+     * @return a set that separates all the exists placements
+     */
+    public Set<String> separateCards() {
+        Set<String> output = new HashSet<>();
+        for (int i = 3; i < originalArbor.length() - 5; i += 8) {
+            output.add(Character.toString(originalArbor.charAt(i))
+                    + originalArbor.charAt(i + 1)
+                    + originalArbor.charAt(i + 2)
+                    + originalArbor.charAt(i + 3)
+                    + originalArbor.charAt(i + 4)
+                    + originalArbor.charAt(i + 5));
+        }
+        return output;
     }
 }
