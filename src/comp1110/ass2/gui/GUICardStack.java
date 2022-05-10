@@ -18,8 +18,8 @@ public class GUICardStack extends Shape {
     private GUICard topCard;
     private final double STACK_X_COORD;
     private final double STACK_Y_COORD;
-    private final double STACK_X_WIDTH=130;
-    private final double STACK_Y_WIDTH=130;
+    private final double STACK_X_WIDTH=85;
+    private final double STACK_Y_WIDTH=117;
     private boolean isDeck;
 
     public GUICardStack(CardStack stack,Game game,Group root, double xCoord, double yCoord) {
@@ -42,12 +42,15 @@ public class GUICardStack extends Shape {
 
 
         setOnMousePressed(event -> {
-            if (stack.isEmpty()) {
-                return;
-            } else {
-                if (game.isDrawPhase()) {
+            System.out.println("Detected click");
+            if (!stack.isEmpty()) {
+                System.out.println("Not empty");
+                if (game.cardsDrawn<2) {
+                    System.out.println("Drawing");
                     Player activePlayer = game.getActivePlayer();
                     activePlayer.draw(this.stack);
+                    game.cardsDrawn++;
+                    game.updateHand(activePlayer);
                     this.updateTopCard();
                 }
             }

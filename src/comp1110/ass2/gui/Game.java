@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Objects;
 
 public class Game extends Application {
@@ -38,7 +39,7 @@ public class Game extends Application {
     private static final int WINDOW_XOFFSET = 10;
     private static final int WINDOW_YOFFSET = 30;
     private static final int TEXTBOX_WIDTH = 120;
-    private static final int BASE_CARD_WIDTH=112;
+    private static final int BASE_CARD_WIDTH=80;
     private static final int BASE_CARD_HEIGHT=112;
 
 
@@ -50,6 +51,19 @@ public class Game extends Application {
     private static final int rightArborY=10;
     private static final int arborMargin=5;
 
+    private static final int handBackingWidth=BASE_CARD_WIDTH*10;
+    private static final int handBackingHeight= (int) Math.floor(BASE_CARD_HEIGHT*1.2);
+    private static final int handBackingX=(BOARD_WIDTH-handBackingWidth)/2;
+    private static final int handBackingY=BOARD_HEIGHT-handBackingHeight;
+
+    private static final int CARD_STACK_WIDTH=BASE_CARD_WIDTH+10;
+    private static final int CARD_STACK_HEIGHT=BASE_CARD_HEIGHT+10;
+    private static final int deckX=(BOARD_WIDTH-CARD_STACK_WIDTH)/2;
+    private static final int deckY=10;
+    private static final int leftDiscardX=10;
+    private static final int leftDiscardY=(int) Math.floor(BOARD_HEIGHT-BASE_CARD_HEIGHT*1.5);
+    private static final int rightDiscardX=BOARD_WIDTH-CARD_STACK_WIDTH-10;
+    private static final int rightDiscardY=(int) Math.floor(BOARD_HEIGHT-BASE_CARD_HEIGHT*1.5);
 
 //    private TextField turnIDTextField;
 //    private TextField aArboretumTextField;
@@ -64,7 +78,8 @@ public class Game extends Application {
     private Player playerB;
     private Deck deck;
     private String activeTurn;
-    private boolean drawPhase;
+    public int cardsDrawn;
+    private LinkedList<GUICard> displayedHand;
 
     public Game() throws FileNotFoundException {
     }
@@ -93,7 +108,6 @@ public class Game extends Application {
             playerB.draw(deck);
         }
         this.activeTurn = "A";
-        this.drawPhase=false;
 
         //add arbor, current score, cards, decks to display
         GUIArbor displayArborA=new GUIArbor(playerA,ARBOR_X,ARBOR_Y,leftArborX,leftArborY,arborMargin);
@@ -104,10 +118,17 @@ public class Game extends Application {
         playButton.setLayoutY(200);
         root.getChildren().addAll(displayArborA,displayArborB,playButton);
 
+        //prepare backing for hand area, for visual niceness
+        Rectangle handBacking=new Rectangle(handBackingWidth,handBackingHeight);
+        handBacking.setLayoutX(handBackingX);
+        handBacking.setLayoutY(handBackingY);
+        handBacking.setFill(Color.LIGHTGREY);
+        root.getChildren().add(handBacking);
+
         //TODO - add deck & discard display
-        GUICardStack displayDeck=new GUICardStack(this.deck,this,this.root,550,10);
-        GUICardStack discardA=new GUICardStack(this.playerA.getDiscardPile(),this,this.root,10,BOARD_HEIGHT-BASE_CARD_HEIGHT*2);
-        GUICardStack discardB=new GUICardStack(this.playerB.getDiscardPile(),this,this.root,BOARD_WIDTH-BASE_CARD_WIDTH-10,BOARD_HEIGHT-BASE_CARD_HEIGHT*2);
+        GUICardStack displayDeck=new GUICardStack(this.deck,this,this.root,deckX,deckY);
+        GUICardStack discardA=new GUICardStack(this.playerA.getDiscardPile(),this,this.root,leftDiscardX,leftDiscardY);
+        GUICardStack discardB=new GUICardStack(this.playerB.getDiscardPile(),this,this.root,rightDiscardX,rightDiscardY);
 
         //turns
         //TODO - actually cycle turns
@@ -165,14 +186,11 @@ public class Game extends Application {
     private void startTurn(Player player) {
 //        this.activeTurn=player;
         player.getDisplayArbor().startTurn();
+        this.cardsDrawn=0;
 
         //TODO - accept draw input somehow
-        this.drawPhase=true;
-        player.draw(deck);
-        player.draw(deck);
-        this.drawPhase=false;
 
-        displayHand(player);
+        updateHand(player);
     }
 
     /**
@@ -180,20 +198,23 @@ public class Game extends Application {
      * Displays the hand of the current player
      * @param player - the player who is currently taking their turn
      */
-    private void displayHand(Player player) {
-        //set up a backing rectangle for visual niceness
-        Rectangle handBacking=new Rectangle(BASE_CARD_WIDTH*8,BASE_CARD_HEIGHT*1.2);
-        handBacking.setLayoutX((BOARD_WIDTH-handBacking.getWidth())/2);
-        handBacking.setLayoutY(BOARD_HEIGHT-handBacking.getHeight());
-        handBacking.setFill(Color.LIGHTGREY);
-        root.getChildren().add(handBacking);
+    public void updateHand(Player player) {
+        //remove currently displayed hand
+        if(this.displayedHand!=null) {
+            for (GUICard card : this.displayedHand) {
+                root.getChildren().remove(card);
+            }
+        }
+        this.displayedHand=new LinkedList<GUICard>();
 
         //add the cards currently in the player's hand
         int i=0;
+        double spacer=(handBackingWidth-10)/player.getHand().size();
         for(Card card:player.getHand()) {
             GUICard guiCard=new GUICard(card,root);
-            guiCard.updateCoord(handBacking.getLayoutX()+i*BASE_CARD_WIDTH*1.1,handBacking.getLayoutY()+BASE_CARD_HEIGHT*0.25);
+            guiCard.updateCoord(handBackingX+5+i*spacer,handBackingY+(handBackingY-BASE_CARD_HEIGHT)/2);
             root.getChildren().add(guiCard);
+            this.displayedHand.add(guiCard);
             guiCard.toFront();
             i++;
         }
@@ -207,10 +228,6 @@ public class Game extends Application {
         if(this.activeTurn.equals("A")) return playerA;
         else if(this.activeTurn.equals("B")) return playerB;
         else return null;
-    }
-
-    public boolean isDrawPhase() {
-        return drawPhase;
     }
 
     private Player getWinner(){
