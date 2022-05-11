@@ -25,10 +25,7 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.util.*;
 
 public class Game extends Application {
     /* board layout */
@@ -110,8 +107,8 @@ public class Game extends Application {
         this.activeTurn = "A";
 
         //add arbor, current score, cards, decks to display
-        GUIArbor displayArborA=new GUIArbor(playerA,ARBOR_X,ARBOR_Y,leftArborX,leftArborY,arborMargin);
-        GUIArbor displayArborB=new GUIArbor(playerB,ARBOR_X,ARBOR_Y,rightArborX,rightArborY,arborMargin);
+        GUIArbor displayArborA=new GUIArbor(playerA,this,ARBOR_X,ARBOR_Y,leftArborX,leftArborY,arborMargin);
+        GUIArbor displayArborB=new GUIArbor(playerB,this,ARBOR_X,ARBOR_Y,rightArborX,rightArborY,arborMargin);
         Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn));
         Button playButton = new Button("Next");
         playButton.setLayoutX(500);
@@ -125,10 +122,12 @@ public class Game extends Application {
         handBacking.setFill(Color.LIGHTGREY);
         root.getChildren().add(handBacking);
 
-        //TODO - add deck & discard display
+        //add deck & discard display
         GUICardStack displayDeck=new GUICardStack(this.deck,this,this.root,deckX,deckY);
         GUICardStack discardA=new GUICardStack(this.playerA.getDiscardPile(),this,this.root,leftDiscardX,leftDiscardY);
         GUICardStack discardB=new GUICardStack(this.playerB.getDiscardPile(),this,this.root,rightDiscardX,rightDiscardY);
+        root.getChildren().addAll(displayDeck,discardA,discardB);
+
 
         //turns
         //TODO - actually cycle turns
@@ -187,10 +186,7 @@ public class Game extends Application {
 //        this.activeTurn=player;
         player.getDisplayArbor().startTurn();
         this.cardsDrawn=0;
-
-        //TODO - accept draw input somehow
-
-        updateHand(player);
+        this.updateHand(player);
     }
 
     /**
@@ -212,7 +208,7 @@ public class Game extends Application {
         double spacer=(handBackingWidth-10)/player.getHand().size();
         for(Card card:player.getHand()) {
             GUICard guiCard=new GUICard(card,root);
-            guiCard.updateCoord(handBackingX+5+i*spacer,handBackingY+(handBackingY-BASE_CARD_HEIGHT)/2);
+            guiCard.updateCoord(handBackingX+5+i*spacer,handBackingY+(handBackingHeight-BASE_CARD_HEIGHT)/2);
             root.getChildren().add(guiCard);
             this.displayedHand.add(guiCard);
             guiCard.toFront();
@@ -228,6 +224,10 @@ public class Game extends Application {
         if(this.activeTurn.equals("A")) return playerA;
         else if(this.activeTurn.equals("B")) return playerB;
         else return null;
+    }
+
+    public List<GUICard> getDisplayHand() {
+        return this.displayedHand;
     }
 
     private Player getWinner(){
