@@ -3,8 +3,8 @@ package comp1110.ass2.game;
 import java.util.*;
 
 public class Arbor {
-    private HashMap<Position, Card> arbor;
-    private List<String> arboretumList;
+    public HashMap<Position, Card> arbor;
+    public List<String> arboretumList;
     private HashMap<Position, ArrayList<Position>> scoringMap;
     private int numCards;
     private final int limit;
@@ -57,8 +57,8 @@ public class Arbor {
         //assume we're working with the 2-player variant
         this.numSpecies=6;
         this.limit = 8 * this.numSpecies - 1;
-
-        //truncate first character, since this is to represent the player
+        this.arboretumList = new ArrayList<>();
+//        //truncate first character, since this is to represent the player
         arborCode = arborCode.substring(1);
 
         //each move is 8 characters long
@@ -72,6 +72,7 @@ public class Arbor {
 
             Card playedCard = new Card(cardCode);
             Position playedPosition = new Position(posCode);
+            this.arboretumList.add(playedCard.toString() + playedPosition.toArborString());
             this.arbor.put(playedPosition, playedCard);
         }
 
@@ -188,18 +189,37 @@ public class Arbor {
 
         return adjacentPos;
     }
+    public List<Position> getAvailablePos(){
+
+        if (this.numCards > 0 ){
+            List<Position> positions = new LinkedList<>();
+            for (Position card:this.arbor.keySet()) {
+                Position[] adjacentPos = getAdjacentPos(card);
+                for (int i = 0; i < adjacentPos.length; i++) {
+                    if (isPosCanPlace(adjacentPos[i])) {
+                        positions.add(adjacentPos[i]);
+                    }
+                }
+            }
+            Set<Position> set = new HashSet<>(positions);
+            positions.clear();
+            positions.addAll(set);
+            return positions;
+        }else {
+            List<Position> positions = new LinkedList<>();
+            positions.add(new Position(0,0));
+            return positions;
+        }
+
+    }
 
     @Override
     public String toString() {
-        if (this.originalArbor == null){
-            StringBuilder output = new StringBuilder();
-            for (String card : this.arboretumList) {
-                output.append(card);
-            }
-            return output.toString();
-        }else {
-            return this.originalArbor;
+        StringBuilder output = new StringBuilder();
+        for (String card : this.arboretumList) {
+            output.append(card);
         }
+        return output.toString();
 
     }
 
@@ -445,12 +465,12 @@ public class Arbor {
      * String[][] gameState, char player
      * @return a hashmap with its key of species and the current score of the species.
      */
-    public HashMap<String, Integer> currentScore(String arboretum) {
+    public HashMap<String, Integer> currentScore() {
 //        System.out.println(arboretum);
         HashMap<String, Integer> output = new HashMap<>();
         for (String species : new String[]{"a", "b", "c", "d", "j", "m"}){
             // Check if the species do exist in the arboretum
-            if (arboretum.contains(species)){
+            if (this.toString().contains(species)){
                 output.put(species, getHighestScore(species.charAt(0)));
 
             }

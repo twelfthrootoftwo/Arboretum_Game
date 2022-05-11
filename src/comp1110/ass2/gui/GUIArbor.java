@@ -15,11 +15,12 @@ import javafx.stage.Stage;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 public class GUIArbor extends Group {
     public Player player;
     private Arbor arbor;
-    Group root;
+    Game game;
     private boolean thisTurn;//whether it's the turn of this arbor's player
 
     //coordinate reference limits for positions
@@ -49,9 +50,10 @@ public class GUIArbor extends Group {
     //constant used
     String newLine = "\n";
 
-    public GUIArbor(Player player, int xSize,int ySize, int xPos, int yPos,int margin) {
+    public GUIArbor(Player player, Game game, int xSize,int ySize, int xPos, int yPos,int margin) {
         this.player=player;
         this.arbor=player.getArboretum();
+        this.game=game;
         this.ARBOR_X_SIZE=xSize;
         this.ARBOR_Y_SIZE=ySize;
         this.margin=margin;
@@ -63,7 +65,6 @@ public class GUIArbor extends Group {
         player.setDisplayArbor(this);
 
         //create a border to mark the visual bounds of the arbor
-        //TODO - make the border colour/width change to indicate whether the turn is active
         borderOutside=new Rectangle(xSize,ySize);
         borderInside=new Rectangle(xSize-margin*2,ySize-margin*2);
         borderOutside.setFill(Color.LIGHTGREY);
@@ -322,6 +323,11 @@ public class GUIArbor extends Group {
         this.getChildren().add(pos);
         pos.toFront();
         return pos;
+    }
+
+    public void removeFromHand(GUICard card) {
+        List<GUICard> hand=this.game.getDisplayHand();
+        hand.remove(card);
     }
 
 }

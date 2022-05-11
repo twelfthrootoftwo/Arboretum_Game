@@ -1287,7 +1287,7 @@ public class Arboretum {
         System.out.println(outputString);
         Arbor aArbor = new Arbor(validState[0][1]);
         Arbor bArbor = new Arbor(validState[0][3]);
-        System.out.println(aArbor.currentScore(validState[0][1])); //validState, 'A'
-        System.out.println(bArbor.currentScore(validState[0][3])); //validState, 'B'
+        System.out.println(aArbor.currentScore()); //validState, 'A'
+        System.out.println(bArbor.currentScore()); //validState, 'B'
     }
 }

@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-public class GUICardStack extends Shape {
+public class GUICardStack extends Group {
     private CardStack stack;
     private Game game;
     private Group root;
@@ -29,24 +29,24 @@ public class GUICardStack extends Shape {
         this.STACK_X_COORD=xCoord;
         this.STACK_Y_COORD=yCoord;
         this.isDeck=stack instanceof Deck;
+        this.setLayoutX(xCoord);
+        this.setLayoutY(yCoord);
 
         //Create a backing rectangle for visual niceness
         Rectangle backing=new Rectangle(STACK_X_WIDTH,STACK_Y_WIDTH);
-        backing.setLayoutX(this.STACK_X_COORD);
-        backing.setLayoutY(this.STACK_Y_COORD);
+        backing.setLayoutX(0);
+        backing.setLayoutY(0);
         backing.setFill(Color.DARKGREEN);
-        root.getChildren().add(backing);
+        this.getChildren().add(backing);
 
         //Set the top card display
         this.updateTopCard();
 
 
-        setOnMousePressed(event -> {
-            System.out.println("Detected click");
+        setOnMouseClicked(event -> {
+            //only draw cards if the stack is non-empty and less than 2 cards have been drawn this turn
             if (!stack.isEmpty()) {
-                System.out.println("Not empty");
                 if (game.cardsDrawn<2) {
-                    System.out.println("Drawing");
                     Player activePlayer = game.getActivePlayer();
                     activePlayer.draw(this.stack);
                     game.cardsDrawn++;
@@ -87,9 +87,9 @@ public class GUICardStack extends Shape {
         }
         if (this.topCard != null){
             //now that we have the right topCard recorded, add it to the display
-            this.topCard.updateCoord(this.STACK_X_COORD,this.STACK_Y_COORD);
-            root.getChildren().add(this.topCard);
+            this.topCard.updateCoord(0,0);
+            this.getChildren().add(this.topCard);
+            this.topCard.toFront();
         }
-
     }
 }
