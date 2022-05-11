@@ -437,16 +437,17 @@ public class Arbor {
     }
     /** Contribution: Hongzhe
      * Generate a hashmap containing the current score of existing species of the arboretum for each player.
-
+     * String[][] gameState, char player
      * @return a hashmap with its key of species and the current score of the species.
      */
-    public HashMap<String, Integer> currentScore(String[][] gameState, char player) {
+    public HashMap<String, Integer> currentScore(String arboretum) {
+//        System.out.println(arboretum);
         HashMap<String, Integer> output = new HashMap<>();
         for (String species : new String[]{"a", "b", "c", "d", "j", "m"}){
             // Check if the species do exist in the arboretum
-            if (originalArbor.contains(species)){
-                output.put(speciesFullName(species),
-                        getHighestScore(species.charAt(0)));
+            if (arboretum.contains(species)){
+                output.put(species, getHighestScore(species.charAt(0)));
+
             }
         }
         return output;
@@ -473,4 +474,6 @@ public class Arbor {
         Species toScore = Species.valueOf(String.valueOf(species));
         return scores.get(toScore);
     }
+
 }
+

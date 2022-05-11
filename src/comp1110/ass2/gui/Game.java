@@ -1,10 +1,8 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Arboretum;
 import comp1110.ass2.Event.Turn;
-import comp1110.ass2.game.Card;
-import comp1110.ass2.game.Deck;
-import comp1110.ass2.game.Player;
-import comp1110.ass2.game.Position;
+import comp1110.ass2.game.*;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -139,6 +137,7 @@ public class Game extends Application {
 //                System.out.println(activeTurn.equals("A"));
 //                System.out.println(activeTurn.equals("B"));
                 if (activeTurn.equals("A")) {
+                    AIMove(playerA);
                     playerB.getDisplayArbor().endTurn();
                     startTurn(playerA);
                     System.out.println("A");
@@ -209,6 +208,8 @@ public class Game extends Application {
         for(Card card:player.getHand()) {
             GUICard guiCard=new GUICard(card,root);
             guiCard.updateCoord(handBackingX+5+i*spacer,handBackingY+(handBackingHeight-BASE_CARD_HEIGHT)/2);
+            System.out.println(guiCard.name);
+
             root.getChildren().add(guiCard);
             this.displayedHand.add(guiCard);
             guiCard.toFront();
@@ -257,6 +258,16 @@ public class Game extends Application {
         String[][] gameState = {sharedState,hiddenState};
 
         return gameState;
+    }
+    private void AIMove(Player player){
+
+        if(player.getName().equals("A")){
+            Arbor arboretum_A = player.getArboretum();
+            System.out.println(arboretum_A.currentScore(arboretum_A.toString()));
+        }
+
+
+
     }
 //
 //    private void update(String[][] gameState) throws FileNotFoundException {
