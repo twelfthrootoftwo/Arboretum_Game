@@ -220,7 +220,7 @@ class GUICard extends ImageView {
             GUIPosition localPos=localArbor.findNearestSlot(mouseX,mouseY);
             if(localPos.canPlayArbor()) {
                 localPos.playHere(this);
-                //this.removeFromHand(); TODO - implement
+                localArbor.removeFromHand(this); //TODO - implement
 //                played=true;
                 this.draggable=false;//lock this card so it can't be moved again
                 return this.getCard();

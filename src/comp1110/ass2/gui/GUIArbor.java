@@ -53,6 +53,7 @@ public class GUIArbor extends Group {
     public GUIArbor(Player player, Game game, int xSize,int ySize, int xPos, int yPos,int margin) {
         this.player=player;
         this.arbor=player.getArboretum();
+        this.game=game;
         this.ARBOR_X_SIZE=xSize;
         this.ARBOR_Y_SIZE=ySize;
         this.margin=margin;

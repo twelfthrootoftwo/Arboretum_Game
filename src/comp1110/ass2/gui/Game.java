@@ -126,6 +126,9 @@ public class Game extends Application {
         GUICardStack discardB=new GUICardStack(this.playerB.getDiscardPile(),this,this.root,rightDiscardX,rightDiscardY);
         root.getChildren().addAll(displayDeck,discardA,discardB);
 
+        //TODO - fix initial turn start
+        startTurn(playerA);
+
 
         //turns
         //TODO - actually cycle turns
