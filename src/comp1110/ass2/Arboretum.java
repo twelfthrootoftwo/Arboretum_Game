@@ -1169,7 +1169,10 @@ public class Arboretum {
 
         //add all cards in list to outString
         for (Card card : cardList) {
-            outString += card.toString();
+            if (card != null){
+                outString += card.toString();
+            }
+
         }
         return outString;
     }

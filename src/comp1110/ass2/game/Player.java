@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Player {
     String name;
     Arbor arboretum;
-    CardStack discardPile;
+    DiscardPile discardPile;
     List<Card> hand;
     GUIArbor displayArbor;
 
@@ -32,6 +32,7 @@ public class Player {
      * @param discardCode - code for the player's discard
      */
     public Player(String name, String handCode, String arborCode, String discardCode) {
+//        System.out.println(arborCode);
         this.name = name;
         this.arboretum = new Arbor(arborCode);
         this.discardPile = new DiscardPile(discardCode);
@@ -50,7 +51,7 @@ public class Player {
         return this.getName() + this.getArboretum().toString();
     }
 
-    public CardStack getDiscardPile() {
+    public DiscardPile getDiscardPile() {
         return discardPile;
     }
 

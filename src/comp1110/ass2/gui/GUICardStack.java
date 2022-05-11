@@ -85,9 +85,11 @@ public class GUICardStack extends Shape {
             Card toTop=((DiscardPile) stack).peekTopCard();
             this.topCard=new GUICard(toTop,this.root);
         }
+        if (this.topCard != null){
+            //now that we have the right topCard recorded, add it to the display
+            this.topCard.updateCoord(this.STACK_X_COORD,this.STACK_Y_COORD);
+            root.getChildren().add(this.topCard);
+        }
 
-        //now that we have the right topCard recorded, add it to the display
-        this.topCard.updateCoord(this.STACK_X_COORD,this.STACK_Y_COORD);
-        root.getChildren().add(this.topCard);
     }
 }

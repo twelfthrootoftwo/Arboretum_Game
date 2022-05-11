@@ -191,11 +191,16 @@ public class Arbor {
 
     @Override
     public String toString() {
-        StringBuilder output = new StringBuilder();
-        for (String card : this.arboretumList) {
-            output.append(card);
+        if (this.originalArbor == null){
+            StringBuilder output = new StringBuilder();
+            for (String card : this.arboretumList) {
+                output.append(card);
+            }
+            return output.toString();
+        }else {
+            return this.originalArbor;
         }
-        return output.toString();
+
     }
 
     public int getNumCards() {

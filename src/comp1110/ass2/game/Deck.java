@@ -47,7 +47,7 @@ public class Deck extends CardStack {
             }
 
             //the deck code is presented in sorted order, so shuffle it after creating
-            this.randomise();
+//            this.randomise();
         }
 
     }

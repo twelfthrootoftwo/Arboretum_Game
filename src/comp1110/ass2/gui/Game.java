@@ -23,10 +23,7 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.util.*;
 
 public class Game extends Application {
     /* board layout */
@@ -97,20 +94,23 @@ public class Game extends Application {
 
 
         //setup
-        this.deck = new Deck(6);
-        this.playerA = new Player("A",6);
-        this.playerB = new Player("B",6);
+//        this.deck = new Deck(6);
+//        this.playerA = new Player("A",6);
+//        this.playerB = new Player("B",6);
+        this.deck = new Deck("a3a8c2c7d1d3d7d8m1");
+        this.playerA = new Player("A","Ab3b4c1j1m2m5m8","Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01","Aa7c4d6");
+        this.playerB = new Player("B","Ba6b5b6b7b8c8d2j2j8","Bj5C00C00j6S01C00j7S02C00j4C00W01m6C00E01m3C00W02j3N01W01", "Bb2d4c5a1d5");
 
-        for (int i = 0; i < 7; i++) {
-            playerA.draw(deck);
-            playerB.draw(deck);
-        }
-        this.activeTurn = "A";
+//        for (int i = 0; i < 7; i++) {
+//            playerA.draw(deck);
+//            playerB.draw(deck);
+//        }
+        this.activeTurn = "B";
 
         //add arbor, current score, cards, decks to display
         GUIArbor displayArborA=new GUIArbor(playerA,ARBOR_X,ARBOR_Y,leftArborX,leftArborY,arborMargin);
         GUIArbor displayArborB=new GUIArbor(playerB,ARBOR_X,ARBOR_Y,rightArborX,rightArborY,arborMargin);
-        Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn));
+        System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
         Button playButton = new Button("Next");
         playButton.setLayoutX(500);
         playButton.setLayoutY(200);
@@ -145,6 +145,7 @@ public class Game extends Application {
                     System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                     activeTurn = "B";
                 }else if (activeTurn.equals("B")) {
+                    AIMove(playerB);
                     playerA.getDisplayArbor().endTurn();
                     startTurn(playerB);
                     System.out.println("B");
@@ -198,7 +199,7 @@ public class Game extends Application {
      * @param player - the player who is currently taking their turn
      */
     public void updateHand(Player player) {
-        //remove currently displayed hand
+//        remove currently displayed hand
         if(this.displayedHand!=null) {
             for (GUICard card : this.displayedHand) {
                 root.getChildren().remove(card);
@@ -211,10 +212,10 @@ public class Game extends Application {
         double spacer=(handBackingWidth-10)/player.getHand().size();
         for(Card card:player.getHand()) {
             GUICard guiCard=new GUICard(card,root);
-            System.out.println(guiCard.name);
+//            System.out.println(guiCard.name);
             guiCard.updateCoord(handBackingX+5+i*spacer,handBackingY+(handBackingY-BASE_CARD_HEIGHT)/2);
             root.getChildren().add(guiCard);
-            this.displayedHand.add(guiCard);
+//            this.displayedHand.add(guiCard);
             guiCard.toFront();
             i++;
         }
@@ -237,6 +238,8 @@ public class Game extends Application {
         return false;
     }
     private String[][] generateGameState(Player playerA,Player playerB,Deck deck,String turn){
+
+
         //put all gameState to tree strings
 //        String nextTurn = turn; //sharedState[0];
         String arboretumA =  playerA.getArboretumString();//sharedState[1];
@@ -252,7 +255,7 @@ public class Game extends Application {
         String handB = playerB.getHandString();//hiddenState[2];
 
         String[] sharedState = {turn,arboretumA,discardA,arboretumB,discardB};
-        String[] hiddenState = {deck.toString(),handA,handB};
+        String[] hiddenState = {deck.getDeckString(),handA,handB};
 
         String[][] gameState = {sharedState,hiddenState};
 
@@ -262,7 +265,19 @@ public class Game extends Application {
 
         if(player.getName().equals("A")){
             Arbor arboretum_A = player.getArboretum();
-            System.out.println(arboretum_A.currentScore(arboretum_A.toString()));
+            HashMap<String, Integer> currentScore = arboretum_A.currentScore(arboretum_A.toString());
+            System.out.println(currentScore);
+            List<Card> availableCards = new ArrayList<>();
+            Card discardAPeek = this.playerA.getDiscardPile().peekTopCard();
+
+        }
+        if(player.getName().equals("B")){
+            Arbor arboretum_B = player.getArboretum();
+            HashMap<String, Integer> currentScore = arboretum_B.currentScore(arboretum_B.toString());
+            System.out.println(currentScore);
+            List<Card> availableCards = new ArrayList<>();
+            Card discardAPeek = this.playerB.getDiscardPile().peekTopCard();
+
         }
 
 
