@@ -462,7 +462,6 @@ public class Arbor {
     }
     /** Contribution: Hongzhe
      * Generate a hashmap containing the current score of existing species of the arboretum for each player.
-     * String[][] gameState, char player
      * @return a hashmap with its key of species and the current score of the species.
      */
     public HashMap<String, Integer> currentScore() {
