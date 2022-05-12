@@ -38,11 +38,11 @@ public class Game extends Application {
     private static final int BASE_CARD_HEIGHT = 112;
 
 
-    private static final int ARBOR_X = 540;
-    private static final int ARBOR_Y = 500;
+    private static final int ARBOR_X = 350;
+    private static final int ARBOR_Y = 480;
     private static final int leftArborX = 10;
     private static final int leftArborY = 10;
-    private static final int rightArborX = 645;
+    private static final int rightArborX = BOARD_WIDTH - leftArborX - ARBOR_X;
     private static final int rightArborY = 10;
     private static final int arborMargin = 5;
 
@@ -56,9 +56,9 @@ public class Game extends Application {
     private static final int deckX = (BOARD_WIDTH - CARD_STACK_WIDTH) / 2;
     private static final int deckY = 10;
     private static final int leftDiscardX = 10;
-    private static final int leftDiscardY = (int) Math.floor(BOARD_HEIGHT - BASE_CARD_HEIGHT * 1.5);
+    private static final int leftDiscardY = (int) Math.floor(BOARD_HEIGHT - BASE_CARD_HEIGHT * 1.2);
     private static final int rightDiscardX = BOARD_WIDTH - CARD_STACK_WIDTH - 10;
-    private static final int rightDiscardY = (int) Math.floor(BOARD_HEIGHT - BASE_CARD_HEIGHT * 1.5);
+    private static final int rightDiscardY = (int) Math.floor(BOARD_HEIGHT - BASE_CARD_HEIGHT * 1.2);
 
 //    private TextField turnIDTextField;
 //    private TextField aArboretumTextField;
@@ -107,8 +107,10 @@ public class Game extends Application {
         this.activeTurn = "A";
 
         //add arbor, current score, cards, decks to display
-        GUIArbor displayArborA = new GUIArbor(playerA, this, ARBOR_X, ARBOR_Y, leftArborX, leftArborY, arborMargin);
-        GUIArbor displayArborB = new GUIArbor(playerB, this, ARBOR_X, ARBOR_Y, rightArborX, rightArborY, arborMargin);
+        GUIArbor displayArborA = new GUIArbor(playerA, this, ARBOR_X, ARBOR_Y, leftArborX, leftArborY, arborMargin, false);
+        GUIArbor displayArborB = new GUIArbor(playerB, this, ARBOR_X, ARBOR_Y, rightArborX, rightArborY, arborMargin, true);
+        ScoreText scoreTextA = new ScoreText(playerA,  ARBOR_X, ARBOR_Y, leftArborX, leftArborY, false);
+        ScoreText scoreTextB = new ScoreText(playerB,  ARBOR_X, ARBOR_Y, rightArborX, rightArborY, true);
         Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn));
         Button playButton = new Button("Next");
         playButton.setLayoutX(575);
@@ -116,7 +118,7 @@ public class Game extends Application {
         Button drawButton = new Button("Draw from Deck");
         drawButton.setLayoutX(545);
         drawButton.setLayoutY(220);
-        root.getChildren().addAll(displayArborA, displayArborB, playButton, drawButton);
+        root.getChildren().addAll(displayArborA, displayArborB, playButton, drawButton, scoreTextA, scoreTextB);
 
         //prepare backing for hand area, for visual niceness
         Rectangle handBacking = new Rectangle(handBackingWidth, handBackingHeight);
@@ -151,6 +153,11 @@ public class Game extends Application {
                     System.out.println("A");
                     System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                     activeTurn = "B";
+                    // update score text
+                    root.getChildren().remove(scoreTextB);
+                    scoreTextB.update();
+                    root.getChildren().add(scoreTextB);
+
                 } else if (activeTurn.equals("B")) {
                     AIMove(playerB);
                     playerA.getDisplayArbor().endTurn();
@@ -158,8 +165,12 @@ public class Game extends Application {
                     System.out.println("B");
                     System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                     activeTurn = "A";
-
+                    // update score text
+                    root.getChildren().remove(scoreTextA);
+                    scoreTextA.update();
+                    root.getChildren().add(scoreTextA);
                 }
+
             }
         }));
         drawButton.setOnMouseClicked((new EventHandler<MouseEvent>() {

@@ -183,4 +183,9 @@ public class Player {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Player " + name;
+    }
 }
