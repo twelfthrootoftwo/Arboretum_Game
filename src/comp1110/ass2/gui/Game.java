@@ -289,13 +289,13 @@ public class Game extends Application {
         return gameState;
     }
 
-    private void AIMove(Player player) {
+    private Arbor AIMove(Player player) {
 
         if (player.getName().equals("A")) {
             HashMap<Arbor, Position> availableChoices = new LinkedHashMap<>();
             Arbor arboretum_A = player.getArboretum();
             HashMap<String, Integer> currentScore = arboretum_A.currentScore();
-            System.out.println(currentScore);
+//            System.out.println(currentScore);
             List<Card> availableCards = player.getHand();
 //            System.out.println(player.getArboretum().getAvailablePos());
             for (Card card:availableCards) {
@@ -311,25 +311,128 @@ public class Game extends Application {
 
                 }
             }
-            System.out.println(availableChoices);
+//            System.out.println("availableChoices: " + availableChoices);
+            HashMap<Arbor, HashMap<String, Integer>> availableResults = new LinkedHashMap<>();
             for (Arbor key:availableChoices.keySet()) {
-                System.out.println("compare "+ currentScore + " and " + key.currentScore());
+//                System.out.println("compare "+ currentScore + " and " + key.currentScore());
                 HashMap<String, Integer> result = compareScores(currentScore,key.currentScore());
-                System.out.println("result: " + result);
+                if (result != currentScore){
+                    availableResults.put(key, result);
+//                    System.out.println("result: " + result);
+                }
+
             }
+//            System.out.println("availableResults: " + availableResults);
+            HashMap<Arbor, Integer> availableResults2 = new LinkedHashMap<>();
+            int valueBiggest = 0;
+            for (Arbor key:availableResults.keySet()) {
+                HashMap<String, Integer> value = availableResults.get(key);
+                if (value != null){
+                    String keyBiggest = Collections.max(value.entrySet(), Map.Entry.comparingByValue()).getKey();
+                    if (value.get(keyBiggest) > valueBiggest){
+                        valueBiggest = value.get(keyBiggest);
+                        availableResults2.put(key, valueBiggest);
+                    }
+                }
+            }
+            if (!availableResults2.isEmpty()){
+                System.out.println("availableResults2: " + availableResults2);
+                Arbor result = Collections.max(availableResults2.entrySet(), Map.Entry.comparingByValue()).getKey();
+                System.out.println("AI Move is: " + result);
+                return result;
+            }else {
+                if (!availableResults.isEmpty()){
+                    System.out.println("availableResults1: " + availableResults);
+                    List<Arbor> keysAsArray = new ArrayList<Arbor>(availableResults.keySet());
+                    Random rand = new Random();
+                    Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
+                    System.out.println("AI Move is: " + result);
+                    return result;
+                }else {
+                    System.out.println("availableChoices: " + availableChoices);
+                    List<Arbor> keysAsArray = new ArrayList<Arbor>(availableChoices.keySet());
+                    Random rand = new Random();
+                    Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
+                    System.out.println("AI Move is: " + result);
+                    return result;
+                }
+
+
+            }
+
 
         }
         if (player.getName().equals("B")) {
+            HashMap<Arbor, Position> availableChoices = new LinkedHashMap<>();
             Arbor arboretum_B = player.getArboretum();
             HashMap<String, Integer> currentScore = arboretum_B.currentScore();
-            System.out.println(currentScore);
-            List<Card> availableCards = new ArrayList<>();
-            System.out.println(player.getArboretum().getAvailablePos());
+//            System.out.println(currentScore);
+            List<Card> availableCards = player.getHand();
+//            System.out.println(player.getArboretum().getAvailablePos());
+            for (Card card:availableCards) {
+//                System.out.println("card: " + card );
+                for (Position pos:player.getArboretum().getAvailablePos()) {
+//                    System.out.println("pos: " +  pos);
+                    Arbor newArbor = new Arbor(this.playerB.getName() + this.playerB.getArboretum().toString());
+//                    System.out.println(this.playerA.getName() + this.playerA.getArboretum().toString());
+//                    System.out.println("old: "+ newArbor.arboretumList);
+                    newArbor.addCard(card,pos);
+//                    System.out.println("new: "+ newArbor.arboretumList);
+                    availableChoices.put(newArbor, pos);
 
+                }
+            }
+//            System.out.println("availableChoices: " + availableChoices);
+            HashMap<Arbor, HashMap<String, Integer>> availableResults = new LinkedHashMap<>();
+            for (Arbor key:availableChoices.keySet()) {
+//                System.out.println("compare "+ currentScore + " and " + key.currentScore());
+                HashMap<String, Integer> result = compareScores(currentScore,key.currentScore());
+                if (result != currentScore){
+                    availableResults.put(key, result);
+//                    System.out.println("result: " + result);
+                }
+
+            }
+//            System.out.println("availableResults: " + availableResults);
+            HashMap<Arbor, Integer> availableResults2 = new LinkedHashMap<>();
+            int valueBiggest = 0;
+            for (Arbor key:availableResults.keySet()) {
+                HashMap<String, Integer> value = availableResults.get(key);
+                if (value != null){
+                    String keyBiggest = Collections.max(value.entrySet(), Map.Entry.comparingByValue()).getKey();
+                    if (value.get(keyBiggest) > valueBiggest){
+                        valueBiggest = value.get(keyBiggest);
+                        availableResults2.put(key, valueBiggest);
+                    }
+                }
+            }
+            if (!availableResults2.isEmpty()){
+                System.out.println("availableResults2: " + availableResults2);
+                Arbor result = Collections.max(availableResults2.entrySet(), Map.Entry.comparingByValue()).getKey();
+                System.out.println("AI Move is: " + result);
+                return result;
+            }else {
+                if (!availableResults.isEmpty()){
+                    System.out.println("availableResults1: " + availableResults);
+                    List<Arbor> keysAsArray = new ArrayList<Arbor>(availableResults.keySet());
+                    Random rand = new Random();
+                    Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
+                    System.out.println("AI Move is: " + result);
+                    return result;
+                }else {
+                    System.out.println("availableChoices: " + availableChoices);
+                    List<Arbor> keysAsArray = new ArrayList<Arbor>(availableChoices.keySet());
+                    Random rand = new Random();
+                    Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
+                    System.out.println("AI Move is: " + result);
+                    return result;
+                }
+
+            }
 
         }
 
-
+        return null;
     }
     private HashMap<String, Integer> compareScores(HashMap<String, Integer> scoreOld, HashMap<String, Integer> scoreNew){
         if (!scoreOld.isEmpty() && !scoreNew.isEmpty()){
