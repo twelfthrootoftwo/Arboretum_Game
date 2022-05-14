@@ -19,7 +19,7 @@ public class DiscardPile extends CardStack {
      */
     public DiscardPile(String discardCode) {
         this.cards = new ArrayList<>();
-
+//        System.out.println(discardCode);
         //Remove the player code
         discardCode = discardCode.substring(1);
 

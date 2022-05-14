@@ -1,27 +1,16 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.Arboretum;
-import comp1110.ass2.Event.Turn;
 import comp1110.ass2.game.*;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.*;
 
@@ -38,7 +27,9 @@ public class Game extends Application {
     private static final int BASE_CARD_HEIGHT = 112;
 
 
-    private static final int ARBOR_X = 350;
+    private static final int SCORE_X = 450;
+    private static final int SCORE_Y = 480;
+    private static final int ARBOR_X = 450;
     private static final int ARBOR_Y = 480;
     private static final int leftArborX = 10;
     private static final int leftArborY = 10;
@@ -109,8 +100,8 @@ public class Game extends Application {
         //add arbor, current score, cards, decks to display
         GUIArbor displayArborA = new GUIArbor(playerA, this, ARBOR_X, ARBOR_Y, leftArborX, leftArborY, arborMargin, false);
         GUIArbor displayArborB = new GUIArbor(playerB, this, ARBOR_X, ARBOR_Y, rightArborX, rightArborY, arborMargin, true);
-        ScoreText scoreTextA = new ScoreText(playerA,  ARBOR_X, ARBOR_Y, leftArborX, leftArborY, false);
-        ScoreText scoreTextB = new ScoreText(playerB,  ARBOR_X, ARBOR_Y, rightArborX, rightArborY, true);
+        GUIScore GUIScoreA = new GUIScore(playerA, SCORE_X, SCORE_Y, leftArborX, leftArborY, false);
+        GUIScore GUIScoreB = new GUIScore(playerB, SCORE_X, SCORE_Y, rightArborX, rightArborY, true);
         Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn));
         Button playButton = new Button("Next");
         playButton.setLayoutX(575);
@@ -118,7 +109,7 @@ public class Game extends Application {
         Button drawButton = new Button("Draw from Deck");
         drawButton.setLayoutX(545);
         drawButton.setLayoutY(220);
-        root.getChildren().addAll(displayArborA, displayArborB, playButton, drawButton, scoreTextA, scoreTextB);
+        root.getChildren().addAll(displayArborA, displayArborB, playButton, drawButton, GUIScoreA, GUIScoreB);
 
         //prepare backing for hand area, for visual niceness
         Rectangle handBacking = new Rectangle(handBackingWidth, handBackingHeight);
@@ -147,6 +138,7 @@ public class Game extends Application {
 //                System.out.println(activeTurn.equals("A"));
 //                System.out.println(activeTurn.equals("B"));
                 if (activeTurn.equals("A")) {
+//                    AIDraw(playerA, playerB);
                     AIMove(playerA);
                     playerB.getDisplayArbor().endTurn();
                     startTurn(playerA);
@@ -154,11 +146,12 @@ public class Game extends Application {
                     System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                     activeTurn = "B";
                     // update score text
-                    root.getChildren().remove(scoreTextB);
-                    scoreTextB.update();
-                    root.getChildren().add(scoreTextB);
+                    root.getChildren().remove(GUIScoreB);
+                    GUIScoreB.update();
+                    root.getChildren().add(GUIScoreB);
 
                 } else if (activeTurn.equals("B")) {
+//                    AIDraw(playerB, playerA);
                     AIMove(playerB);
                     playerA.getDisplayArbor().endTurn();
                     startTurn(playerB);
@@ -166,9 +159,9 @@ public class Game extends Application {
                     System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                     activeTurn = "A";
                     // update score text
-                    root.getChildren().remove(scoreTextA);
-                    scoreTextA.update();
-                    root.getChildren().add(scoreTextA);
+                    root.getChildren().remove(GUIScoreA);
+                    GUIScoreA.update();
+                    root.getChildren().add(GUIScoreA);
                 }
 
             }
@@ -178,7 +171,7 @@ public class Game extends Application {
                 if (activeTurn.equals("B")) {
                     playerA.draw(deck);
                     updateHand(playerA);
-                }else if (activeTurn.equals("A")){
+                } else if (activeTurn.equals("A")) {
                     playerB.draw(deck);
                     updateHand(playerB);
                 }
@@ -300,6 +293,64 @@ public class Game extends Application {
         return gameState;
     }
 
+    private void AIDraw(Player player_turn, Player player_notTurn) {
+        List<CardStack> availableChoices = new ArrayList<>();
+        HashMap<String, Integer> currentScore = player_turn.getArboretum().currentScore();
+        DiscardPile player_turn_discard = new DiscardPile(player_turn.getName() + player_turn.getDiscardPile().toString());
+        DiscardPile player_notTurn_discard = new DiscardPile(player_notTurn.getName() + player_notTurn.getDiscardPile().toString());
+//        System.out.println(player_turn_discard);
+//        System.out.println(player_notTurn_discard);
+        availableChoices.add(player_turn_discard);
+        availableChoices.add(player_notTurn_discard);
+        HashMap<Player,List<CardStack>> availablePlayers = new HashMap<>();
+        for (CardStack stack : availableChoices) {
+            for (CardStack stack2 : availableChoices) {
+                if (!stack.isEmpty() && !stack2.isEmpty()) {
+                    List<CardStack> valueList = new ArrayList<>();
+                    valueList.add(stack);
+                    valueList.add(stack2);
+                    availablePlayers.put(new Player(player_turn.getName(), player_turn.getHandString() + stack.drawTopCard().toString() + stack2.drawTopCard().toString(), player_turn.getArboretumString(), player_turn.getDiscardPileString()),valueList);
+                }
+
+            }
+        }
+        System.out.println(availablePlayers);
+        HashMap<List<CardStack>,Integer> availablePlayers2 = new HashMap<>();
+        for (Player player:availablePlayers.keySet()) {
+            Arbor playerArbor = AIMove(player);
+            if (playerArbor != null){
+                int valueBiggest = 0;
+                HashMap<String, Integer> playerScore = playerArbor.currentScore();
+                if (playerScore != null){
+                    if (compareScores(currentScore,playerScore) == playerScore){
+                        String keyBiggest = Collections.max(playerScore.entrySet(), Map.Entry.comparingByValue()).getKey();
+                        if (playerScore.get(keyBiggest) > valueBiggest) {
+                            valueBiggest = playerScore.get(keyBiggest);
+                            availablePlayers2.put(availablePlayers.get(player),valueBiggest);
+                        }
+
+                    }
+                }
+            }
+        }
+        if (!availablePlayers2.isEmpty()){
+            List<CardStack> resultList = Collections.max(availablePlayers2.entrySet(), Map.Entry.comparingByValue()).getKey();
+            for (CardStack discard: resultList){
+                player_turn.draw(discard);
+            }
+            updateHand(player_turn);
+        }else {
+            player_turn.draw(this.deck);
+            player_turn.draw(this.deck);
+            updateHand(player_turn);
+        }
+    }
+
+
+    private void AIDiscard(){
+
+    }
+
     private Arbor AIMove(Player player) {
 
         if (player.getName().equals("A")) {
@@ -309,14 +360,14 @@ public class Game extends Application {
 //            System.out.println(currentScore);
             List<Card> availableCards = player.getHand();
 //            System.out.println(player.getArboretum().getAvailablePos());
-            for (Card card:availableCards) {
+            for (Card card : availableCards) {
 //                System.out.println("card: " + card );
-                for (Position pos:player.getArboretum().getAvailablePos()) {
+                for (Position pos : player.getArboretum().getAvailablePos()) {
 //                    System.out.println("pos: " +  pos);
                     Arbor newArbor = new Arbor(this.playerA.getName() + this.playerA.getArboretum().toString());
 //                    System.out.println(this.playerA.getName() + this.playerA.getArboretum().toString());
 //                    System.out.println("old: "+ newArbor.arboretumList);
-                    newArbor.addCard(card,pos);
+                    newArbor.addCard(card, pos);
 //                    System.out.println("new: "+ newArbor.arboretumList);
                     availableChoices.put(newArbor, pos);
 
@@ -324,10 +375,10 @@ public class Game extends Application {
             }
 //            System.out.println("availableChoices: " + availableChoices);
             HashMap<Arbor, HashMap<String, Integer>> availableResults = new LinkedHashMap<>();
-            for (Arbor key:availableChoices.keySet()) {
+            for (Arbor key : availableChoices.keySet()) {
 //                System.out.println("compare "+ currentScore + " and " + key.currentScore());
-                HashMap<String, Integer> result = compareScores(currentScore,key.currentScore());
-                if (result != currentScore){
+                HashMap<String, Integer> result = compareScores(currentScore, key.currentScore());
+                if (result != currentScore) {
                     availableResults.put(key, result);
 //                    System.out.println("result: " + result);
                 }
@@ -336,31 +387,31 @@ public class Game extends Application {
 //            System.out.println("availableResults: " + availableResults);
             HashMap<Arbor, Integer> availableResults2 = new LinkedHashMap<>();
             int valueBiggest = 0;
-            for (Arbor key:availableResults.keySet()) {
+            for (Arbor key : availableResults.keySet()) {
                 HashMap<String, Integer> value = availableResults.get(key);
-                if (value != null){
+                if (value != null) {
                     String keyBiggest = Collections.max(value.entrySet(), Map.Entry.comparingByValue()).getKey();
-                    if (value.get(keyBiggest) > valueBiggest){
+                    if (value.get(keyBiggest) > valueBiggest) {
                         valueBiggest = value.get(keyBiggest);
                         availableResults2.put(key, valueBiggest);
                     }
                 }
             }
-            if (!availableResults2.isEmpty()){
-                System.out.println("availableResults2: " + availableResults2);
+            if (!availableResults2.isEmpty()) {
+//                System.out.println("availableResults2: " + availableResults2);
                 Arbor result = Collections.max(availableResults2.entrySet(), Map.Entry.comparingByValue()).getKey();
                 System.out.println("AI Move is: " + result);
                 return result;
-            }else {
-                if (!availableResults.isEmpty()){
-                    System.out.println("availableResults1: " + availableResults);
+            } else {
+                if (!availableResults.isEmpty()) {
+//                    System.out.println("availableResults1: " + availableResults);
                     List<Arbor> keysAsArray = new ArrayList<Arbor>(availableResults.keySet());
                     Random rand = new Random();
                     Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
                     System.out.println("AI Move is: " + result);
                     return result;
-                }else {
-                    System.out.println("availableChoices: " + availableChoices);
+                } else {
+//                    System.out.println("availableChoices: " + availableChoices);
                     List<Arbor> keysAsArray = new ArrayList<Arbor>(availableChoices.keySet());
                     Random rand = new Random();
                     Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
@@ -380,14 +431,14 @@ public class Game extends Application {
 //            System.out.println(currentScore);
             List<Card> availableCards = player.getHand();
 //            System.out.println(player.getArboretum().getAvailablePos());
-            for (Card card:availableCards) {
+            for (Card card : availableCards) {
 //                System.out.println("card: " + card );
-                for (Position pos:player.getArboretum().getAvailablePos()) {
+                for (Position pos : player.getArboretum().getAvailablePos()) {
 //                    System.out.println("pos: " +  pos);
                     Arbor newArbor = new Arbor(this.playerB.getName() + this.playerB.getArboretum().toString());
 //                    System.out.println(this.playerA.getName() + this.playerA.getArboretum().toString());
 //                    System.out.println("old: "+ newArbor.arboretumList);
-                    newArbor.addCard(card,pos);
+                    newArbor.addCard(card, pos);
 //                    System.out.println("new: "+ newArbor.arboretumList);
                     availableChoices.put(newArbor, pos);
 
@@ -395,10 +446,10 @@ public class Game extends Application {
             }
 //            System.out.println("availableChoices: " + availableChoices);
             HashMap<Arbor, HashMap<String, Integer>> availableResults = new LinkedHashMap<>();
-            for (Arbor key:availableChoices.keySet()) {
+            for (Arbor key : availableChoices.keySet()) {
 //                System.out.println("compare "+ currentScore + " and " + key.currentScore());
-                HashMap<String, Integer> result = compareScores(currentScore,key.currentScore());
-                if (result != currentScore){
+                HashMap<String, Integer> result = compareScores(currentScore, key.currentScore());
+                if (result != currentScore) {
                     availableResults.put(key, result);
 //                    System.out.println("result: " + result);
                 }
@@ -407,31 +458,31 @@ public class Game extends Application {
 //            System.out.println("availableResults: " + availableResults);
             HashMap<Arbor, Integer> availableResults2 = new LinkedHashMap<>();
             int valueBiggest = 0;
-            for (Arbor key:availableResults.keySet()) {
+            for (Arbor key : availableResults.keySet()) {
                 HashMap<String, Integer> value = availableResults.get(key);
-                if (value != null){
+                if (value != null) {
                     String keyBiggest = Collections.max(value.entrySet(), Map.Entry.comparingByValue()).getKey();
-                    if (value.get(keyBiggest) > valueBiggest){
+                    if (value.get(keyBiggest) > valueBiggest) {
                         valueBiggest = value.get(keyBiggest);
                         availableResults2.put(key, valueBiggest);
                     }
                 }
             }
-            if (!availableResults2.isEmpty()){
-                System.out.println("availableResults2: " + availableResults2);
+            if (!availableResults2.isEmpty()) {
+//                System.out.println("availableResults2: " + availableResults2);
                 Arbor result = Collections.max(availableResults2.entrySet(), Map.Entry.comparingByValue()).getKey();
                 System.out.println("AI Move is: " + result);
                 return result;
-            }else {
-                if (!availableResults.isEmpty()){
-                    System.out.println("availableResults1: " + availableResults);
+            } else {
+                if (!availableResults.isEmpty()) {
+//                    System.out.println("availableResults1: " + availableResults);
                     List<Arbor> keysAsArray = new ArrayList<Arbor>(availableResults.keySet());
                     Random rand = new Random();
                     Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
                     System.out.println("AI Move is: " + result);
                     return result;
-                }else {
-                    System.out.println("availableChoices: " + availableChoices);
+                } else {
+//                    System.out.println("availableChoices: " + availableChoices);
                     List<Arbor> keysAsArray = new ArrayList<Arbor>(availableChoices.keySet());
                     Random rand = new Random();
                     Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
@@ -445,334 +496,28 @@ public class Game extends Application {
 
         return null;
     }
-    private HashMap<String, Integer> compareScores(HashMap<String, Integer> scoreOld, HashMap<String, Integer> scoreNew){
-        if (!scoreOld.isEmpty() && !scoreNew.isEmpty()){
+
+    private HashMap<String, Integer> compareScores(HashMap<String, Integer> scoreOld, HashMap<String, Integer> scoreNew) {
+        if (!scoreOld.isEmpty() && !scoreNew.isEmpty()) {
             String keyOld = Collections.max(scoreOld.entrySet(), Map.Entry.comparingByValue()).getKey();
             String keyNew = Collections.max(scoreNew.entrySet(), Map.Entry.comparingByValue()).getKey();
-            if (scoreOld.get(keyOld) < scoreNew.get(keyNew)){
+            if (scoreOld.get(keyOld) < scoreNew.get(keyNew)) {
                 return scoreNew;
-            }else if (scoreOld.get(keyOld) > scoreNew.get(keyNew)){
+            } else if (scoreOld.get(keyOld) > scoreNew.get(keyNew)) {
                 return scoreOld;
-            }else {
+            } else {
                 int sumNew = scoreNew.values().stream().mapToInt(Integer::intValue).sum();
-                int sumOld= scoreOld.values().stream().mapToInt(Integer::intValue).sum();
-                if (sumNew > sumOld){
+                int sumOld = scoreOld.values().stream().mapToInt(Integer::intValue).sum();
+                if (sumNew > sumOld) {
                     return scoreNew;
-                }else {
+                } else {
                     return scoreOld;
                 }
             }
-        }else {
+        } else {
             return null;
         }
 
 
     }
-//
-//    private void update(String[][] gameState) throws FileNotFoundException {
-//
-//        String[] sharedState = gameState[0];
-//        String[] hiddenState = gameState[1];
-//
-//        //put all gameState to tree strings
-//        String turn = sharedState[0];
-//        String arboretumA = sharedState[1];
-//        String discardA = sharedState[2];
-//        String arboretumB = sharedState[3];
-//        String discardB = sharedState[4];
-//        String deck = hiddenState[0];
-//        String handA = hiddenState[1];
-//        String handB = hiddenState[2];
-//
-//        if (!Objects.equals(turn, "") && !Objects.equals(arboretumA, "") && !Objects.equals(discardA, "") && !Objects.equals(arboretumB, "") && !Objects.equals(discardB, "") && !Objects.equals(deck, "") && !Objects.equals(handA, "") && !Objects.equals(handB, "")) {
-//            ScrollPane scrollPane = new ScrollPane();
-//            Label arboretum_A = new Label("Player A arboretum: " + arboretumA);
-//            Label discard_A = new Label("Player A discard: " + discardA);
-//            Label hand_A = new Label("Player A hand(hidden): " + handA);
-//            Label arboretum_B = new Label("Player B arboretum: " + arboretumB);
-//            Label discard_B = new Label("Player B discard: " + discardB);
-//            Label hand_B = new Label("Player B hand(hidden): " + handB);
-//            Label deckC = new Label("Deck(hidden): " + deck);
-//            Label turnP = new Label("turn: " + turn);
-//
-//            //Player A part
-//            //player A share area
-//            HBox sharedA = new HBox();
-//            sharedA.setBackground(new Background(new BackgroundFill(Color.rgb(185, 230, 160), CornerRadii.EMPTY, Insets.EMPTY)));
-//
-//            //player A arboretum (left part)
-//            VBox arboretumABox = new VBox();
-//            GridPane gridPaneSA = addArboretum(arboretumA);
-//            arboretumABox.getChildren().addAll(arboretum_A, gridPaneSA);
-//
-//            //player A discard + hand (right part)
-//            VBox discardABox = new VBox();
-//
-//            //player A hand
-//            VBox hiddenA = new VBox();
-//            hiddenA.setBackground(new Background(new BackgroundFill(Color.rgb(189, 189, 189), CornerRadii.EMPTY, Insets.EMPTY)));
-//            GridPane gridPaneHA = addHand(handA);
-//            hiddenA.getChildren().addAll(hand_A, gridPaneHA);
-//
-//            //player A discard
-//            GridPane gridPaneDA = addDiscard(discardA);
-//            discardABox.getChildren().addAll(discard_A, gridPaneDA, hiddenA);
-//
-//            sharedA.getChildren().addAll(arboretumABox, discardABox);
-//
-//
-//            //Player B part
-//            //player B share area
-//            HBox sharedB = new HBox();
-//            sharedB.setBackground(new Background(new BackgroundFill(Color.rgb(185, 230, 160), CornerRadii.EMPTY, Insets.EMPTY)));
-//
-//            //player B arboretum (left part)
-//            VBox arboretumBBox = new VBox();
-//            GridPane gridPaneSB = addArboretum(arboretumB);
-//            arboretumBBox.getChildren().addAll(arboretum_B, gridPaneSB);
-//
-//            //player B discard + hand (right part)
-//            VBox discardBBox = new VBox();
-//
-//            //player B hand
-//            VBox hiddenB = new VBox();
-//            hiddenB.setBackground(new Background(new BackgroundFill(Color.rgb(189, 189, 189), CornerRadii.EMPTY, Insets.EMPTY)));
-//            GridPane gridPaneHB = addHand(handB);
-//            hiddenB.getChildren().addAll(hand_B, gridPaneHB);
-//
-//            //player B discard
-//            GridPane gridPaneDB = addDiscard(discardB);
-//            discardBBox.getChildren().addAll(discard_B, gridPaneDB, hiddenB);
-//
-//            sharedB.getChildren().addAll(arboretumBBox, discardBBox);
-//
-//
-//            //deck and turn part
-//            VBox vboxD = new VBox();
-//            vboxD.setBackground(new Background(new BackgroundFill(Color.rgb(230, 90, 90), CornerRadii.EMPTY, Insets.EMPTY)));
-//            VBox discardDBox = new VBox();
-//            discardDBox.setBackground(new Background(new BackgroundFill(Color.rgb(189, 189, 189), CornerRadii.EMPTY, Insets.EMPTY)));
-//            GridPane gridPaneDD = addDeck(deck);
-//            discardDBox.getChildren().addAll(deckC, gridPaneDD);
-//
-//            vboxD.getChildren().addAll(discardDBox, turnP);
-//
-//
-//            //add scroll
-//            VBox vboxS = new VBox();
-//            vboxS.getChildren().addAll(sharedA, sharedB);
-//            HBox all = new HBox();
-//            all.getChildren().addAll(vboxS, vboxD);
-//
-//            scrollPane.setContent(all);
-//            scrollPane.setPrefSize(1200, 700);
-//            this.root.getChildren().addAll(scrollPane);
-////            this.root.getChildren().addAll(new GUICard("a1",addImage("a1")));
-//
-//
-//        }
-//    }
-//
-//
-//    private GridPane addHand(String hand) {
-//        String newArboretum = hand.substring(1);
-//
-//        //Creating a Grid Pane
-//        GridPane gridPane = new GridPane();
-//        if (!newArboretum.equals("")) {
-//            String[] trees = newArboretum.split("(?<=\\G.{" + 2 + "})");
-//
-//            //Setting size for the pane
-//            gridPane.setMinSize(100, 50);
-//
-//            //Setting the padding
-//            gridPane.setPadding(new Insets(10, 10, 10, 10));
-//
-//            gridPane.setVgap(5);
-//            gridPane.setHgap(5);
-//
-//            //Setting the Grid alignment
-//            gridPane.setAlignment(Pos.CENTER);
-//            for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
-//                String tree = trees[i];
-//                try {
-////                    gridPane.add(new ImageView(addImage(tree)), i, 0);
-//                    gridPane.add(new GUICard(tree,addImage(tree)), i, 0);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//
-//
-//        }
-//        return gridPane;
-//    }
-//
-//    private GridPane addDeck(String discard) {
-//        String[] trees = discard.split("(?<=\\G.{" + 2 + "})");
-//
-//        //Creating a Grid Pane
-//        GridPane gridPane = new GridPane();
-//
-//        //Setting size for the pane
-//        gridPane.setMinSize(100, 50);
-//
-//        //Setting the padding
-//        gridPane.setPadding(new Insets(10, 10, 10, 10));
-//
-//        gridPane.setVgap(5);
-//        gridPane.setHgap(5);
-//
-//        //Setting the Grid alignment
-//        gridPane.setAlignment(Pos.CENTER);
-//        for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
-//            String tree = trees[i];
-//            try {
-//                if (i < 8) {
-////                    gridPane.add(new ImageView(addImage(tree)), 0, i);
-//                    gridPane.add(new GUICard(tree,addImage(tree)), 0, i);
-//                } else if (i < 16) {
-////                    gridPane.add(new ImageView(addImage(tree)), 1, i - 8);
-//                    gridPane.add(new GUICard(tree,addImage(tree)), 1, i - 8);
-//                }else if (i < 24) {
-////                    gridPane.add(new ImageView(addImage(tree)), 2, i - 16);
-//                    gridPane.add(new GUICard(tree,addImage(tree)), 2, i - 16);
-//                }else if (i < 32) {
-////                    gridPane.add(new ImageView(addImage(tree)), 3, i - 24);
-//                    gridPane.add(new GUICard(tree,addImage(tree)), 3, i - 24);
-//                }else if (i < 40) {
-////                    gridPane.add(new ImageView(addImage(tree)), 4, i - 32);
-//                    gridPane.add(new GUICard(tree,addImage(tree)), 4, i - 32);
-//                }else if (i < 48){
-////                    gridPane.add(new ImageView(addImage(tree)), 5, i - 40);
-//                    gridPane.add(new GUICard(tree,addImage(tree)), 5, i - 40);
-//                }
-//
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
-//
-//        return gridPane;
-//    }
-//
-//    private GridPane addDiscard(String discard) {
-//        String newArboretum = discard.substring(1);
-//
-//        //Creating a Grid Pane
-//        GridPane gridPane = new GridPane();
-//
-//        if (!newArboretum.equals("")) {
-//            String[] trees = newArboretum.split("(?<=\\G.{" + 2 + "})");
-//
-//            //Setting size for the pane
-//            gridPane.setMinSize(100, 50);
-//
-//            //Setting the padding
-//            gridPane.setPadding(new Insets(10, 10, 10, 10));
-//
-//            gridPane.setVgap(5);
-//            gridPane.setHgap(5);
-//
-//            //Setting the Grid alignment
-//            gridPane.setAlignment(Pos.CENTER);
-//            for (int i = 0, treesLength = trees.length; i < treesLength; i++) {
-//                String tree = trees[i];
-//                try {
-//                    gridPane.add(new GUICard(tree,addImage(tree)), i, 0);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//            System.out.println(Math.pow(30, 35) % 29);
-//
-//        }
-//        return gridPane;
-//    }
-//
-//
-//    private GridPane addArboretum(String arboretum) {
-//        String newArboretum = arboretum.substring(1);
-//
-//        //Creating a Grid Pane
-//        GridPane gridPane = new GridPane();
-//        if (!newArboretum.equals("")) {
-//            String[] trees = newArboretum.split("(?<=\\G.{" + 8 + "})");
-//
-//            //Setting size for the pane
-//            gridPane.setMinSize(100, 50);
-//
-//            //Setting the padding
-//            gridPane.setPadding(new Insets(10, 10, 10, 10));
-//
-//            gridPane.setVgap(5);
-//            gridPane.setHgap(5);
-//
-//            //Setting the Grid alignment
-//            gridPane.setAlignment(Pos.CENTER);
-//            HashMap<String, int[]> map = new HashMap<>();
-//            int[] startPos = {0, 0};
-//            int northest = 0;
-//            int westest = 0;
-//            for (String tree : trees) {
-//                String name = tree.substring(0, 2);
-//                String directionV = tree.substring(2, 3);
-//                int stepV = Integer.parseInt(tree.substring(3, 5));
-//                String directionH = tree.substring(5, 6);
-//                int stepH = Integer.parseInt(tree.substring(6));
-//
-//                int newPosV = 0;
-//                int newPosH = 0;
-//                if (directionV.equals("C")) {
-//                    newPosV = startPos[0];
-//                }
-//                if (directionV.equals("N")) {
-//                    newPosV = startPos[0] - stepV;
-//                    if (northest > newPosV) {
-//                        northest = newPosV;
-//                    }
-//                }
-//                if (directionV.equals("S")) {
-//                    newPosV = startPos[0] + stepV;
-//                }
-//                if (directionH.equals("C")) {
-//                    newPosH = startPos[0];
-//                }
-//                if (directionH.equals("W")) {
-//                    newPosH = startPos[0] - stepH;
-//                    if (westest > newPosH) {
-//                        westest = newPosH;
-//                    }
-//                }
-//                if (directionH.equals("E")) {
-//                    newPosH = startPos[0] + stepH;
-//                }
-//                int[] newPos = {newPosV, newPosH};
-//                map.put(name, newPos);
-//
-//                if (directionV.equals("C") && directionH.equals("C")) {
-//                    startPos = new int[]{0, 0};
-//                    map.put(name, startPos);
-//                }
-//
-//            }
-//
-//            for (String key : map.keySet()) {
-//                int[] value = map.get(key);
-//                value[0] = value[0] + Math.abs(northest);
-//                value[1] = value[1] + Math.abs(westest);
-//                try {
-//                    gridPane.add(new GUICard(key,addImage(key)), value[1], value[0]);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//
-//        }
-//        return gridPane;
-//    }
 }
