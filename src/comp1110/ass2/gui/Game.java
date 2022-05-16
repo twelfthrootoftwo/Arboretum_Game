@@ -60,11 +60,15 @@ public class Game extends Application {
 //    private TextField aHandTextField;
 //    private TextField bHandTextField;
 
+    //tracking turn parameters
+    public int cardsDrawn;
+    private boolean cardPlayed;
+    private boolean cardDiscarded;
+
     private Player playerA;
     private Player playerB;
     private Deck deck;
     private String activeTurn;
-    public int cardsDrawn;
     private LinkedList<GUICard> displayedHand;
 
     public Game() throws FileNotFoundException {
@@ -142,7 +146,7 @@ public class Game extends Application {
                     AIMove(playerA);
                     playerB.getDisplayArbor().endTurn();
                     startTurn(playerA);
-                    System.out.println("A");
+                    System.out.println("End B's turn, start A's turn");
                     System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                     activeTurn = "B";
                     // update score text
@@ -155,7 +159,7 @@ public class Game extends Application {
                     AIMove(playerB);
                     playerA.getDisplayArbor().endTurn();
                     startTurn(playerB);
-                    System.out.println("B");
+                    System.out.println("End A's turn, start B's turn");
                     System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                     activeTurn = "A";
                     // update score text
@@ -210,9 +214,12 @@ public class Game extends Application {
      */
     private void startTurn(Player player) {
 //        this.activeTurn=player;
+        System.out.println("Starting turn of player "+player.getName());
         player.getDisplayArbor().startTurn();
 
         this.cardsDrawn = 0;
+        this.cardPlayed=false;
+        this.cardDiscarded=false;
         this.updateHand(player);
     }
 
@@ -235,7 +242,7 @@ public class Game extends Application {
         int i = 0;
         double spacer = (handBackingWidth - 10) / player.getHand().size();
         for (Card card : player.getHand()) {
-            GUICard guiCard = new GUICard(card, root);
+            GUICard guiCard = new GUICard(card, root, this);
             guiCard.updateCoord(handBackingX + 5 + i * spacer, handBackingY + (handBackingHeight - BASE_CARD_HEIGHT) / 2);
 //            System.out.println(guiCard.name);
             root.getChildren().add(guiCard);
@@ -251,8 +258,8 @@ public class Game extends Application {
      * @return the Player object that is currently taking their turn
      */
     public Player getActivePlayer() {
-        if (this.activeTurn.equals("A")) return playerA;
-        else if (this.activeTurn.equals("B")) return playerB;
+        if (this.activeTurn.equals("A")) return playerB;
+        else if (this.activeTurn.equals("B")) return playerA;
         else return null;
     }
 
@@ -519,5 +526,21 @@ public class Game extends Application {
         }
 
 
+    }
+
+    /**
+     * Contribution: Natasha
+     * update trackers for whether cards have been played or discarded
+     * @return True if a new action was recorded, False if this action has previously been recorded this turn
+     */
+    public boolean trackCardPlayed() {
+        if(this.cardPlayed) return false;
+        this.cardPlayed=true;
+        return true;
+    }
+    public boolean trackCardDiscarded() {
+        if(this.cardDiscarded) return false;
+        this.cardDiscarded=true;
+        return true;
     }
 }

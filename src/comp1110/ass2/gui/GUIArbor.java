@@ -328,9 +328,12 @@ public class GUIArbor extends Group {
         return pos;
     }
 
-    public void removeFromHand(GUICard card) {
-        List<GUICard> hand=this.game.getDisplayHand();
-        hand.remove(card);
+    /**
+     * Contribution: Natasha
+     * Tracks that a card has been played this turn
+     */
+    public boolean updateCardPlayedCount() {
+        return this.game.trackCardPlayed();
     }
 
 }

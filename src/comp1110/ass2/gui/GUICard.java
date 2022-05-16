@@ -14,6 +14,7 @@ import javafx.scene.shape.Shape;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 class GUICard extends ImageView {
 
@@ -22,6 +23,7 @@ class GUICard extends ImageView {
     double homeX, homeY;
     double mouseX, mouseY;
     Group root;
+    Game game;
     private boolean draggable;
 
     /**
@@ -100,9 +102,10 @@ class GUICard extends ImageView {
      * @param card - the card to associate
      * @param root - the base display group
      */
-    public GUICard(Card card, Group root) {
+    public GUICard(Card card, Group root, Game game) {
         this.name=card.toString();
         this.card=card;
+        this.game=game;
         this.root=root;
         this.draggable=true;
         try {
@@ -120,10 +123,13 @@ class GUICard extends ImageView {
 
             if(draggable) {
                 Card newCard = mouseRelease(event);
-                if (newCard != null && this.findArbor() != null){
-                    this.findArbor().player.play(newCard);
+                GUIArbor gArb=this.findArbor();
+                if (newCard != null && gArb != null){
+                    if(gArb.updateCardPlayedCount()) {
+                        gArb.player.play(newCard);
 //                    System.out.println(findArbor().player.getName());
-                    System.out.println(newCard.toString());
+                        System.out.println(newCard.toString());
+                    }
                 }
 
             }
@@ -211,6 +217,7 @@ class GUICard extends ImageView {
      */
     private Card mouseRelease(MouseEvent event) {
         GUIArbor localArbor=findArbor();
+        GUICardStack localDiscard=findDiscard();
         mouseX = event.getSceneX();
         mouseY = event.getSceneY();
         boolean played=false;
@@ -220,10 +227,17 @@ class GUICard extends ImageView {
             GUIPosition localPos=localArbor.findNearestSlot(mouseX,mouseY);
             if(localPos.canPlayArbor()) {
                 localPos.playHere(this);
-                localArbor.removeFromHand(this); //TODO - implement
+                removeFromHand(); //TODO - implement
 //                played=true;
                 this.draggable=false;//lock this card so it can't be moved again
                 return this.getCard();
+            }
+        } else if(localDiscard!=null) {
+            //if the card was dropped onto the player's discard pile, add it to the discard
+            if(localDiscard.isTurn()) {
+                localDiscard.discardHere(this);
+                root.getChildren().remove(this);
+                removeFromHand();
             }
         }
 
@@ -275,5 +289,29 @@ class GUICard extends ImageView {
         return "GUICard{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    /**
+     * Contribution: Natasha
+     * Remove this guiCard from the currently displayed hand
+     */
+    public void removeFromHand() {
+        List<GUICard> hand=this.game.getDisplayHand();
+        hand.remove(this);
+    }
+
+    private GUICardStack findDiscard() {
+        //look through all nodes on root plane to find GUIArbors
+        ObservableList<Node> nodes=root.getChildren();
+        for(Node node:nodes) {
+            if(node instanceof GUICardStack) {
+                //check if this card is over the arbor & it's that arbor's turn
+                GUICardStack gStack=(GUICardStack) node;
+                if(gStack.isTurn()&&gStack.coordsInside(mouseX,mouseY)) {
+                    return gStack;
+                }
+            }
+        }
+        return null;
     }
 }

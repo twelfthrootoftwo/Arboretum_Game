@@ -55,6 +55,10 @@ public class GUICardStack extends Group {
                 }
             }
         });
+
+        setOnMouseDragEntered(event -> {
+
+        });
     }
 
     /**
@@ -69,7 +73,7 @@ public class GUICardStack extends Group {
         //Relevant if the stack is empty, or if it's a discard and the top card display needs to change
         if(stack.isEmpty()||!this.isDeck) {
             if(this.topCard!=null) {
-                root.getChildren().remove(this.topCard);
+                this.getChildren().remove(this.topCard);
                 this.topCard=null;
             }
         } else {
@@ -83,7 +87,7 @@ public class GUICardStack extends Group {
         //for a discard pile, check the top card, and display it
         if(stack instanceof DiscardPile) {
             Card toTop=((DiscardPile) stack).peekTopCard();
-            this.topCard=new GUICard(toTop,this.root);
+            this.topCard=new GUICard(toTop,this.root, this.game);
         }
         if (this.topCard != null){
             //now that we have the right topCard recorded, add it to the display
@@ -91,5 +95,55 @@ public class GUICardStack extends Group {
             this.getChildren().add(this.topCard);
             this.topCard.toFront();
         }
+    }
+
+    /**
+     * Contribution: Natasha
+     * Check if this cardStack is the discard of the player currently taking their turn
+     * @return True if this is a discard and the current turn is this player's, else False
+     */
+    public boolean isTurn() {
+        if(this.isDeck) return false;
+
+        if(game.getActivePlayer().getDiscardPile().equals(this.stack)) return true;
+        return false;
+    }
+
+    /**
+     * Contribution: Natasha
+     * Adds a card to this cardStack discard pile, and update backend record to match
+     * @param card - the GUICard to discard
+     */
+    public void discardHere(GUICard card) {
+        //update backend tracking for this card
+        this.stack.addTopCard(card.getCard());
+        this.game.getActivePlayer().play(card.getCard());
+
+        //update display
+        this.updateTopCard();
+
+        //record that a card has been discarded
+        game.trackCardDiscarded();
+    }
+
+    /**
+     * Contribution: Natasha
+     * Checks if a given coordinate is inside this GUIArbor
+     * @param x - the x coordinate to check
+     * @param y - the y coordinate to check
+     * @return True if the coord is inside this Arbor, false otherwise
+     */
+    public Boolean coordsInside(double x, double y) {
+        Boolean result=true;
+
+        //check x
+        if(this.getLayoutX()>x) result=false;
+        else if(this.getLayoutX()+this.STACK_X_WIDTH<x) result=false;
+
+        //check y
+        if(this.getLayoutY()>y) result=false;
+        else if(this.getLayoutY()+this.STACK_Y_WIDTH<y) result=false;
+
+        return result;
     }
 }
