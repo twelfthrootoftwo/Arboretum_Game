@@ -18,9 +18,11 @@ public class GUICardStack extends Group {
     private GUICard topCard;
     private final double STACK_X_COORD;
     private final double STACK_Y_COORD;
-    private final double STACK_X_WIDTH=85;
-    private final double STACK_Y_WIDTH=117;
+    private final double STACK_X_WIDTH=88;
+    private final double STACK_Y_WIDTH=120;
+    private final double margin=4;
     private boolean isDeck;
+    private Rectangle backing;
 
     public GUICardStack(CardStack stack,Game game,Group root, double xCoord, double yCoord) {
         this.stack = stack;
@@ -33,7 +35,7 @@ public class GUICardStack extends Group {
         this.setLayoutY(yCoord);
 
         //Create a backing rectangle for visual niceness
-        Rectangle backing=new Rectangle(STACK_X_WIDTH,STACK_Y_WIDTH);
+        this.backing=new Rectangle(STACK_X_WIDTH,STACK_Y_WIDTH);
         backing.setLayoutX(0);
         backing.setLayoutY(0);
         backing.setFill(Color.DARKGREEN);
@@ -57,7 +59,20 @@ public class GUICardStack extends Group {
         });
 
         setOnMouseDragEntered(event -> {
+            if(!this.isDeck&&!this.game.isCardDiscarded()) {
+                this.highlight();
+            }
+        });
 
+        //if cards can be drawn, highlight on mouse over to illustrate this
+        setOnMouseEntered(event -> {
+            if(this.game.cardsDrawn<2) {
+                this.highlight();
+            }
+        });
+
+        setOnMouseExited(event -> {
+            this.removeHighlight();
         });
     }
 
@@ -93,6 +108,8 @@ public class GUICardStack extends Group {
             //now that we have the right topCard recorded, add it to the display
             this.topCard.updateCoord(0,0);
             this.getChildren().add(this.topCard);
+            this.topCard.setLayoutX(margin);
+            this.topCard.setLayoutY(margin);
             this.topCard.toFront();
         }
     }
@@ -121,6 +138,7 @@ public class GUICardStack extends Group {
 
         //update display
         this.updateTopCard();
+        this.removeHighlight();
 
         //record that a card has been discarded
         game.trackCardDiscarded();
@@ -145,5 +163,12 @@ public class GUICardStack extends Group {
         else if(this.getLayoutY()+this.STACK_Y_WIDTH<y) result=false;
 
         return result;
+    }
+
+    private void highlight() {
+        this.backing.setFill(Color.LIGHTSEAGREEN);
+    }
+    public void removeHighlight() {
+        this.backing.setFill(Color.DARKGREEN);
     }
 }

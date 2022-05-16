@@ -543,4 +543,11 @@ public class Game extends Application {
         this.cardDiscarded=true;
         return true;
     }
+
+    public boolean isCardDiscarded() {
+        return this.cardDiscarded;
+    }
+    public boolean isCardPlayed() {
+        return cardPlayed;
+    }
 }
