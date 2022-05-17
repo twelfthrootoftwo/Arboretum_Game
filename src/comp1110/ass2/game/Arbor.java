@@ -4,7 +4,8 @@ import java.util.*;
 
 public class Arbor {
     public HashMap<Position, Card> arbor;
-    public List<String> arboretumList;
+    private List<String> arboretumList;
+    private List<Card> arboretumCardList;
     private HashMap<Position, ArrayList<Position>> scoringMap;
     private int numCards;
     private final int limit;
@@ -25,6 +26,7 @@ public class Arbor {
     public Arbor(int numSpecies) {
         this.arbor = new HashMap<Position, Card>();
         this.arboretumList = new ArrayList<>();
+        this.arboretumCardList = new ArrayList<>();
         this.numCards = 0;
         this.limit = 8*numSpecies - 1;//8 card values per species
         this.scoringMap = new HashMap<Position, ArrayList<Position>>();
@@ -58,6 +60,7 @@ public class Arbor {
         this.numSpecies=6;
         this.limit = 8 * this.numSpecies - 1;
         this.arboretumList = new ArrayList<>();
+        this.arboretumCardList = new ArrayList<>();
 //        //truncate first character, since this is to represent the player
         arborCode = arborCode.substring(1);
 
@@ -73,6 +76,7 @@ public class Arbor {
             Card playedCard = new Card(cardCode);
             Position playedPosition = new Position(posCode);
             this.arboretumList.add(playedCard.toString() + playedPosition.toArborString());
+            this.arboretumCardList.add(playedCard);
             this.arbor.put(playedPosition, playedCard);
         }
 
@@ -97,7 +101,7 @@ public class Arbor {
     public void addCard(Card card, Position pos) {
         String cardName = card.toString() + pos.toArborString();
         this.arboretumList.add(cardName);
-
+        this.arboretumCardList.add(card);
         this.arbor.put(pos, card);
 
         //update range & card count
@@ -486,5 +490,8 @@ public class Arbor {
         return scores.get(toScore);
     }
 
+    public List<Card> getArboretumCardList() {
+        return arboretumCardList;
+    }
 }
 

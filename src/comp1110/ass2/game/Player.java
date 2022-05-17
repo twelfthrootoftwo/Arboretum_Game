@@ -127,13 +127,13 @@ public class Player {
      * @return True if the play is legal, false otherwise
      */
     public boolean checkPlay(Card card, Position position) {
-        System.out.println(0);
+//        System.out.println(0);
         if (this.hand.size() == 9) {
-            System.out.println(1);
+//            System.out.println(1);
             if (checkCardInHand(card)) {
-                System.out.println(2);
+//                System.out.println(2);
                 if (this.arboretum.isPosCanPlace(position)) {
-                    System.out.println(3);
+//                    System.out.println(3);
                     return true;
                 }
             }
