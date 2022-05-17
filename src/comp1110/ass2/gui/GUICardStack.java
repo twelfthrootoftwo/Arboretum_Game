@@ -49,11 +49,15 @@ public class GUICardStack extends Group {
             //only draw cards if the stack is non-empty and less than 2 cards have been drawn this turn
             if (!stack.isEmpty()) {
                 if (game.cardsDrawn<2) {
+                    //track new game state (draw a card and no. cards drawn)
                     Player activePlayer = game.getActivePlayer();
                     activePlayer.draw(this.stack);
                     game.cardsDrawn++;
+
+                    //update display
                     game.updateHand(activePlayer);
                     this.updateTopCard();
+                    if(game.cardsDrawn==2) this.removeHighlight();
                 }
             }
         });
@@ -88,6 +92,7 @@ public class GUICardStack extends Group {
         //Relevant if the stack is empty, or if it's a discard and the top card display needs to change
         if(stack.isEmpty()||!this.isDeck) {
             if(this.topCard!=null) {
+                System.out.println("Removing top card "+topCard.getCard());
                 this.getChildren().remove(this.topCard);
                 this.topCard=null;
             }
@@ -139,9 +144,6 @@ public class GUICardStack extends Group {
         //update display
         this.updateTopCard();
         this.removeHighlight();
-
-        //record that a card has been discarded
-        game.trackCardDiscarded();
     }
 
     /**

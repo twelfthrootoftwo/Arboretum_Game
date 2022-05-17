@@ -225,16 +225,15 @@ class GUICard extends ImageView {
         //if the card was dropped onto a valid place to play, play it there
         if(localArbor!=null) {
             GUIPosition localPos=localArbor.findNearestSlot(mouseX,mouseY);
-            if(localPos.canPlayArbor()) {
+            if(localPos.canPlayArbor()&&game.trackCardPlayed()) {
                 localPos.playHere(this);
-                removeFromHand(); //TODO - implement
-//                played=true;
+                removeFromHand();
                 this.draggable=false;//lock this card so it can't be moved again
                 return this.getCard();
             }
         } else if(localDiscard!=null) {
             //if the card was dropped onto the player's discard pile, add it to the discard
-            if(localDiscard.isTurn()) {
+            if(localDiscard.isTurn()&&game.trackCardDiscarded()) {
                 localDiscard.discardHere(this);
                 root.getChildren().remove(this);
                 removeFromHand();
