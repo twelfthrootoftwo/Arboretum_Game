@@ -128,15 +128,16 @@ public class Arbor {
     public Boolean isPosCanPlace(Position pos) {
 
 //        //if there are no other cards and the target position is (0,0), place here
-//        if (this.numCards == 0 && pos.getX() == 0 & pos.getY() == 0) {
-//            return true;
-//        }
+        if (this.numCards == 0 && pos.getX() == 0 & pos.getY() == 0) {
+            return true;
+        }
 
         //from chen: the above should be: if there are no other cards, the input pos can be anypos.
         // but in player.play, this anypos should be reset to 0,0
-        if (this.numCards == 0) {
-            return true;
-        }
+        //NP: Switched this back to forcing only (0,0) for the first move (otherwise we'd need to reassign positions to displayed GUIPositions)
+//        if (this.numCards == 0) {
+//            return true;
+//        }
 
         //if there are other cards, need no card in this position
         if (this.arbor.get(pos) == null) {

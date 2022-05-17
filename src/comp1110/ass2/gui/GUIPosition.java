@@ -110,15 +110,24 @@ public class GUIPosition extends Rectangle {
             this.guiArbor.player.play(card.getCard(),this.position);
 
             //store the GUICard here
-            card.setLayoutX(this.getLayoutX());
-            card.setLayoutY(this.getLayoutY());
-            this.playedCard=card;
-
-            //update display
-            this.guiArbor.update();
-
+            this.associateCard(card);
             return true;
         }
         return false;
+    }
+
+    /**
+     * Contribution: Natasha
+     * Associate a GUICard with this position
+     * Does not modify backend - use when backend will be modified elsewhere
+     * @param card - the GUICard to associate with this position slot
+     */
+    public void associateCard(GUICard card) {
+        card.setLayoutX(this.getLayoutX());
+        card.setLayoutY(this.getLayoutY());
+        this.playedCard=card;
+
+        //update display
+        this.guiArbor.update();
     }
 }
