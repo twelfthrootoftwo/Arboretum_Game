@@ -61,9 +61,10 @@ public class Game extends Application {
 //    private TextField bHandTextField;
 
     //tracking turn parameters
-    public int cardsDrawn;
-    private boolean cardPlayed;
-    private boolean cardDiscarded;
+    private TurnState turnState;
+//    public int cardsDrawn;
+//    private boolean cardPlayed;
+//    private boolean cardDiscarded;
 
     private Player playerA;
     private Player playerB;
@@ -100,6 +101,7 @@ public class Game extends Application {
             playerB.draw(deck);
         }
         this.activeTurn = "A";
+        this.turnState=TurnState.end;
 
         //add arbor, current score, cards, decks to display
         GUIArbor displayArborA = new GUIArbor(playerA, this, ARBOR_X, ARBOR_Y, leftArborX, leftArborY, arborMargin, false);
@@ -138,34 +140,37 @@ public class Game extends Application {
 //        startTurn(playerB);
         playButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
+                if(turnState==TurnState.end) {
+                    turnState = TurnState.begin;
 //                System.out.println(activeTurn);
 //                System.out.println(activeTurn.equals("A"));
 //                System.out.println(activeTurn.equals("B"));
-                if (activeTurn.equals("A")) {
+                    if (activeTurn.equals("A")) {
 //                    AIDraw(playerA, playerB);
-                    AIMove(playerA);
-                    playerB.getDisplayArbor().endTurn();
-                    startTurn(playerA);
-                    System.out.println("End B's turn, start A's turn");
-                    System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
-                    activeTurn = "B";
-                    // update score text
-                    root.getChildren().remove(GUIScoreB);
-                    GUIScoreB.update();
-                    root.getChildren().add(GUIScoreB);
+                        AIMove(playerA);
+                        playerB.getDisplayArbor().endTurn();
+                        startTurn(playerA);
+                        System.out.println("End B's turn, start A's turn");
+                        System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
+                        activeTurn = "B";
+                        // update score text
+                        root.getChildren().remove(GUIScoreB);
+                        GUIScoreB.update();
+                        root.getChildren().add(GUIScoreB);
 
-                } else if (activeTurn.equals("B")) {
+                    } else if (activeTurn.equals("B")) {
 //                    AIDraw(playerB, playerA);
-                    AIMove(playerB);
-                    playerA.getDisplayArbor().endTurn();
-                    startTurn(playerB);
-                    System.out.println("End A's turn, start B's turn");
-                    System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
-                    activeTurn = "A";
-                    // update score text
-                    root.getChildren().remove(GUIScoreA);
-                    GUIScoreA.update();
-                    root.getChildren().add(GUIScoreA);
+                        AIMove(playerB);
+                        playerA.getDisplayArbor().endTurn();
+                        startTurn(playerB);
+                        System.out.println("End A's turn, start B's turn");
+                        System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
+                        activeTurn = "A";
+                        // update score text
+                        root.getChildren().remove(GUIScoreA);
+                        GUIScoreA.update();
+                        root.getChildren().add(GUIScoreA);
+                    }
                 }
 
             }
@@ -216,10 +221,8 @@ public class Game extends Application {
 //        this.activeTurn=player;
         System.out.println("Starting turn of player "+player.getName());
         player.getDisplayArbor().startTurn();
+        this.turnState=TurnState.firstDraw;
 
-        this.cardsDrawn = 0;
-        this.cardPlayed=false;
-        this.cardDiscarded=false;
         this.updateHand(player);
     }
 
@@ -530,24 +533,44 @@ public class Game extends Application {
 
     /**
      * Contribution: Natasha
-     * update trackers for whether cards have been played or discarded
-     * @return True if a new action was recorded, False if this action has previously been recorded this turn
+     * update trackers for whether cards have been drawn, played, or discarded
+     * @return True if a new action was recorded, False if this action has previously been recorded this turn or requires other actions to be performed first
      */
+    public boolean trackDraw() {
+        if(this.turnState==TurnState.firstDraw) {
+            this.turnState=TurnState.secondDraw;
+            return true;
+        } else if (this.turnState==TurnState.secondDraw) {
+            this.turnState=TurnState.play;
+            return true;
+        }
+        else return false;
+    }
     public boolean trackCardPlayed() {
-        if(this.cardPlayed) return false;
-        this.cardPlayed=true;
-        return true;
+        if(this.turnState==TurnState.play) {
+            this.turnState=TurnState.discard;
+            return true;
+        }
+        return false;
     }
     public boolean trackCardDiscarded() {
-        if(this.cardDiscarded) return false;
-        this.cardDiscarded=true;
-        return true;
+        if(this.turnState==TurnState.discard) {
+            this.turnState=TurnState.end;
+            return true;
+        }
+        return false;
     }
 
-    public boolean isCardDiscarded() {
-        return this.cardDiscarded;
+    /**
+     * Contribution: Natasha
+     * Check if the turn is in the relevant phase for a specific action
+     * @return True if the turn is in this phase, False otherwise
+     */
+    public boolean waitingForDraw() {return this.turnState==TurnState.firstDraw||this.turnState==TurnState.secondDraw;}
+    public boolean waitingForDiscard() {
+        return this.turnState==TurnState.discard;
     }
-    public boolean isCardPlayed() {
-        return cardPlayed;
+    public boolean waitingForPlay() {
+        return this.turnState==TurnState.play;
     }
 }

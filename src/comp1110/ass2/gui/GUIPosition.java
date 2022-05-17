@@ -107,7 +107,7 @@ public class GUIPosition extends Rectangle {
         //first check the play is legal
         if(this.canPlayArbor()) {
             //register the played card to the arbor
-            this.arbor.addCard(card.getCard(),this.position);
+            this.guiArbor.player.play(card.getCard(),this.position);
 
             //store the GUICard here
             card.setLayoutX(this.getLayoutX());

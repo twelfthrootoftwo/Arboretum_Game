@@ -48,29 +48,23 @@ public class GUICardStack extends Group {
         setOnMouseClicked(event -> {
             //only draw cards if the stack is non-empty and less than 2 cards have been drawn this turn
             if (!stack.isEmpty()) {
-                if (game.cardsDrawn<2) {
+                if (game.waitingForDraw()) {
                     //track new game state (draw a card and no. cards drawn)
                     Player activePlayer = game.getActivePlayer();
                     activePlayer.draw(this.stack);
-                    game.cardsDrawn++;
+                    game.trackDraw();
 
                     //update display
                     game.updateHand(activePlayer);
                     this.updateTopCard();
-                    if(game.cardsDrawn==2) this.removeHighlight();
+                    if(game.waitingForPlay()) this.removeHighlight();
                 }
-            }
-        });
-
-        setOnMouseDragEntered(event -> {
-            if(!this.isDeck&&!this.game.isCardDiscarded()) {
-                this.highlight();
             }
         });
 
         //if cards can be drawn, highlight on mouse over to illustrate this
         setOnMouseEntered(event -> {
-            if(this.game.cardsDrawn<2) {
+            if(this.game.waitingForDraw()&&!stack.isEmpty()) {
                 this.highlight();
             }
         });
@@ -138,8 +132,7 @@ public class GUICardStack extends Group {
      */
     public void discardHere(GUICard card) {
         //update backend tracking for this card
-        this.stack.addTopCard(card.getCard());
-        this.game.getActivePlayer().play(card.getCard());
+        this.game.getActivePlayer().discard(card.getCard());
 
         //update display
         this.updateTopCard();
@@ -167,7 +160,7 @@ public class GUICardStack extends Group {
         return result;
     }
 
-    private void highlight() {
+    public void highlight() {
         this.backing.setFill(Color.LIGHTSEAGREEN);
     }
     public void removeHighlight() {

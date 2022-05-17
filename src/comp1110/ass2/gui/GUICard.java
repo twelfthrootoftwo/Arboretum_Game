@@ -120,18 +120,8 @@ class GUICard extends ImageView {
         });
 
         setOnMouseReleased(event -> {
-
             if(draggable) {
                 Card newCard = mouseRelease(event);
-                GUIArbor gArb=this.findArbor();
-                if (newCard != null && gArb != null){
-                    if(gArb.updateCardPlayedCount()) {
-                        gArb.player.play(newCard);
-//                    System.out.println(findArbor().player.getName());
-                        System.out.println(newCard.toString());
-                    }
-                }
-
             }
         });
 
@@ -203,10 +193,16 @@ class GUICard extends ImageView {
         mouseX = event.getSceneX();
         mouseY = event.getSceneY();
 
-        //highlight slots below if they're valid places to play
+        //highlight slots below if they're valid places to play & game is waiting for play
         GUIArbor localArbor=findArbor();
-        if(localArbor!=null) {
+        if(localArbor!=null&&game.waitingForPlay()) {
             localArbor.highlightSlot(mouseX,mouseY);
+        }
+
+        //highlight discard below if it's this player's discard & game is waiting for discard
+        GUICardStack localDiscard=findDiscard();
+        if(localDiscard!=null&&game.waitingForDiscard()) {
+            localDiscard.highlight();
         }
     }
 
@@ -225,26 +221,39 @@ class GUICard extends ImageView {
         //if the card was dropped onto a valid place to play, play it there
         if(localArbor!=null) {
             GUIPosition localPos=localArbor.findNearestSlot(mouseX,mouseY);
-            if(localPos.canPlayArbor()&&game.trackCardPlayed()) {
+            //check hovered position is playable and it's the play phase
+            if(localPos.canPlayArbor()&&game.waitingForPlay()) {
+                //update backend & attach GUICard to GUIPosition
                 localPos.playHere(this);
+
+                //update displayed game state
                 removeFromHand();
+                game.trackCardPlayed();
+
                 this.draggable=false;//lock this card so it can't be moved again
                 return this.getCard();
             }
         } else if(localDiscard!=null) {
             //if the card was dropped onto the player's discard pile, add it to the discard
-            if(localDiscard.isTurn()&&game.trackCardDiscarded()) {
+            //check it's this player's discard & it's the discard phase
+            if(localDiscard.isTurn()&&game.waitingForDiscard()) {
+                //update backend
                 localDiscard.discardHere(this);
+
+                //update displayed game state
                 root.getChildren().remove(this);
                 removeFromHand();
+                game.trackCardDiscarded();
+
+                this.draggable=false;//lock this card so it can't be moved again
+                return null;
             }
         }
 
         //if the card wasn't played, return it to where it was
-        if(!played) {
-            this.setLayoutX(this.homeX);
-            this.setLayoutY(this.homeY);
-        }
+        this.setLayoutX(this.homeX);
+        this.setLayoutY(this.homeY);
+
         return null;
     }
 
@@ -300,11 +309,11 @@ class GUICard extends ImageView {
     }
 
     private GUICardStack findDiscard() {
-        //look through all nodes on root plane to find GUIArbors
+        //look through all nodes on root plane to find GUICardStacks
         ObservableList<Node> nodes=root.getChildren();
         for(Node node:nodes) {
             if(node instanceof GUICardStack) {
-                //check if this card is over the arbor & it's that arbor's turn
+                //check if this card is over a discard pile & it's that arbor's turn
                 GUICardStack gStack=(GUICardStack) node;
                 if(gStack.isTurn()&&gStack.coordsInside(mouseX,mouseY)) {
                     return gStack;
