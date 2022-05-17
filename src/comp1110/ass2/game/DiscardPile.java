@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DiscardPile extends CardStack {
-    List<Card> cards;
+    //List<Card> cards;
 
     public DiscardPile() {
         this.cards = new ArrayList<>();
@@ -19,7 +19,7 @@ public class DiscardPile extends CardStack {
      */
     public DiscardPile(String discardCode) {
         this.cards = new ArrayList<>();
-
+//        System.out.println(discardCode);
         //Remove the player code
         discardCode = discardCode.substring(1);
 

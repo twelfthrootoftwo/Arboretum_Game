@@ -477,20 +477,6 @@ public class Arbor {
         return output;
     }
 
-    /** Contribution: Hongzhe
-     * Convert the short name to the full name of a species.
-     * @param shortName the short name of the species
-     * @return the full name of the species
-     */
-    public String speciesFullName(String shortName){
-        if (shortName == "a") return "Cassia";
-        else if (shortName == "b") return "Blue Spruce";
-        else if (shortName == "c") return "Cherry blossom";
-        else if (shortName == "d") return "Dogwood";
-        else if (shortName == "j") return "Jacaranda";
-        else return "Maple";
-    }
-
     public int getHighestScore(char species) {
         HashMap<Species, Integer> scores = this.score();
 
