@@ -55,7 +55,10 @@ public abstract class CardStack {
      * @param card - the card to be added
      */
     public void addTopCard(Card card) {
-        this.cards.add(card);
+        if (card!=null){
+            this.cards.add(card);
+        }
+
     }
 
     /**

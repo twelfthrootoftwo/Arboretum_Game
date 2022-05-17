@@ -10,9 +10,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.FileNotFoundException;
 import java.util.*;
+
+import static java.lang.Thread.sleep;
 
 public class Game extends Application {
     /* board layout */
@@ -112,10 +115,10 @@ public class Game extends Application {
         Button playButton = new Button("Next");
         playButton.setLayoutX(575);
         playButton.setLayoutY(180);
-        Button drawButton = new Button("Draw from Deck");
-        drawButton.setLayoutX(545);
-        drawButton.setLayoutY(220);
-        root.getChildren().addAll(displayArborA, displayArborB, playButton, drawButton, GUIScoreA, GUIScoreB);
+//        Button drawButton = new Button("Draw from Deck");
+//        drawButton.setLayoutX(545);
+//        drawButton.setLayoutY(220);
+        root.getChildren().addAll(displayArborA, displayArborB, playButton, GUIScoreA, GUIScoreB);
 
         //prepare backing for hand area, for visual niceness
         Rectangle handBacking = new Rectangle(handBackingWidth, handBackingHeight);
@@ -147,9 +150,9 @@ public class Game extends Application {
 //                System.out.println(activeTurn.equals("B"));
                     if (activeTurn.equals("A")) {
 //                    AIDraw(playerA, playerB);
-                        AIMove(playerA);
                         playerB.getDisplayArbor().endTurn();
                         startTurn(playerA);
+                        AIMove(playerA);
                         System.out.println("End B's turn, start A's turn");
                         System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                         activeTurn = "B";
@@ -159,10 +162,13 @@ public class Game extends Application {
                         root.getChildren().add(GUIScoreB);
 
                     } else if (activeTurn.equals("B")) {
-//                    AIDraw(playerB, playerA);
-                        AIMove(playerB);
                         playerA.getDisplayArbor().endTurn();
                         startTurn(playerB);
+                        AIDraw(playerB, playerA);
+
+                        AIMove(playerB);
+                        displayArborB.update();
+                        updateHand(playerB);
                         System.out.println("End A's turn, start B's turn");
                         System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                         activeTurn = "A";
@@ -175,19 +181,19 @@ public class Game extends Application {
 
             }
         }));
-        drawButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                if (activeTurn.equals("B")) {
-                    playerA.draw(deck);
-                    updateHand(playerA);
-                } else if (activeTurn.equals("A")) {
-                    playerB.draw(deck);
-                    updateHand(playerB);
-                }
-
-            }
-
-        }));
+//        drawButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
+//            public void handle(MouseEvent event) {
+//                if (activeTurn.equals("B")) {
+//                    playerA.draw(deck);
+//                    updateHand(playerA);
+//                } else if (activeTurn.equals("A")) {
+//                    playerB.draw(deck);
+//                    updateHand(playerB);
+//                }
+//
+//            }
+//
+//        }));
 //        while (!isGameEnd()){
 //            if (isGameEnd()){
 //                getWinner();
@@ -304,60 +310,81 @@ public class Game extends Application {
     }
 
     private void AIDraw(Player player_turn, Player player_notTurn) {
+        System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
         List<CardStack> availableChoices = new ArrayList<>();
         HashMap<String, Integer> currentScore = player_turn.getArboretum().currentScore();
         DiscardPile player_turn_discard = new DiscardPile(player_turn.getName() + player_turn.getDiscardPile().toString());
         DiscardPile player_notTurn_discard = new DiscardPile(player_notTurn.getName() + player_notTurn.getDiscardPile().toString());
-//        System.out.println(player_turn_discard);
-//        System.out.println(player_notTurn_discard);
-        availableChoices.add(player_turn_discard);
-        availableChoices.add(player_notTurn_discard);
+        System.out.println(player_turn_discard);
+        System.out.println(player_notTurn_discard);
         HashMap<Player,List<CardStack>> availablePlayers = new HashMap<>();
-        for (CardStack stack : availableChoices) {
-            for (CardStack stack2 : availableChoices) {
-                if (!stack.isEmpty() && !stack2.isEmpty()) {
-                    List<CardStack> valueList = new ArrayList<>();
-                    valueList.add(stack);
-                    valueList.add(stack2);
-                    availablePlayers.put(new Player(player_turn.getName(), player_turn.getHandString() + stack.drawTopCard().toString() + stack2.drawTopCard().toString(), player_turn.getArboretumString(), player_turn.getDiscardPileString()),valueList);
-                }
-
-            }
-        }
-        System.out.println(availablePlayers);
         HashMap<List<CardStack>,Integer> availablePlayers2 = new HashMap<>();
-        for (Player player:availablePlayers.keySet()) {
-            Arbor playerArbor = AIMove(player);
-            if (playerArbor != null){
-                int valueBiggest = 0;
-                HashMap<String, Integer> playerScore = playerArbor.currentScore();
-                if (playerScore != null){
-                    if (compareScores(currentScore,playerScore) == playerScore){
-                        String keyBiggest = Collections.max(playerScore.entrySet(), Map.Entry.comparingByValue()).getKey();
-                        if (playerScore.get(keyBiggest) > valueBiggest) {
-                            valueBiggest = playerScore.get(keyBiggest);
-                            availablePlayers2.put(availablePlayers.get(player),valueBiggest);
-                        }
+        if (!player_turn_discard.isEmpty() && !player_notTurn_discard.isEmpty()){
+            availableChoices.add(player_turn_discard);
+            availableChoices.add(player_notTurn_discard);
 
+            for (CardStack stack : availableChoices) {
+                for (CardStack stack2 : availableChoices) {
+
+                    if (!stack.isEmpty() && !stack2.isEmpty()) {
+                        List<CardStack> valueList = new ArrayList<>();
+                        Card drawStack1 = stack.drawTopCard();
+                        Card drawStack2 = stack2.drawTopCard();
+                        if (drawStack1 != null && drawStack2 != null){
+                            System.out.println("drawStack1: " + drawStack1);
+                            System.out.println("drawStack2: " + drawStack2);
+                            valueList.add(stack);
+                            valueList.add(stack2);
+                            availablePlayers.put(new Player(player_turn.getName(), player_turn.getHandString() + drawStack1.toString() + drawStack2.toString(), player_turn.getArboretumString(), player_turn.getDiscardPileString()),valueList);
+                        }
+                        stack.addTopCard(drawStack1);
+                        stack2.addTopCard(drawStack2);
+
+                    }
+
+                }
+            }
+            System.out.println(availablePlayers);
+            for (Player player:availablePlayers.keySet()) {
+                Arbor playerArbor = AIMove(player);
+                if (playerArbor != null){
+                    int valueBiggest = 0;
+                    HashMap<String, Integer> playerScore = playerArbor.currentScore();
+                    if (playerScore != null){
+                        if (compareScores(currentScore,playerScore) == playerScore){
+                            String keyBiggest = Collections.max(playerScore.entrySet(), Map.Entry.comparingByValue()).getKey();
+                            if (playerScore.get(keyBiggest) > valueBiggest) {
+                                valueBiggest = playerScore.get(keyBiggest);
+                                availablePlayers2.put(availablePlayers.get(player),valueBiggest);
+                            }
+
+                        }
                     }
                 }
             }
         }
+
         if (!availablePlayers2.isEmpty()){
             List<CardStack> resultList = Collections.max(availablePlayers2.entrySet(), Map.Entry.comparingByValue()).getKey();
             for (CardStack discard: resultList){
+                System.out.println("ai draw from: " + discard);
                 player_turn.draw(discard);
             }
             updateHand(player_turn);
+            this.turnState=TurnState.play;
         }else {
+            System.out.println("ai draw from: deck");
             player_turn.draw(this.deck);
+            System.out.println("ai draw from: deck");
             player_turn.draw(this.deck);
             updateHand(player_turn);
+            this.turnState=TurnState.play;
         }
+        System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
     }
 
 
-    private void AIDiscard(){
+    private void AIDiscard(Player player_turn, Player player_notTurn){
 
     }
 
@@ -468,6 +495,7 @@ public class Game extends Application {
 //            System.out.println("availableResults: " + availableResults);
             HashMap<Arbor, Integer> availableResults2 = new LinkedHashMap<>();
             int valueBiggest = 0;
+            // updates select select most speices from availableResults(hand)
             for (Arbor key : availableResults.keySet()) {
                 HashMap<String, Integer> value = availableResults.get(key);
                 if (value != null) {
@@ -481,29 +509,47 @@ public class Game extends Application {
             if (!availableResults2.isEmpty()) {
 //                System.out.println("availableResults2: " + availableResults2);
                 Arbor result = Collections.max(availableResults2.entrySet(), Map.Entry.comparingByValue()).getKey();
-                System.out.println("AI Move is: " + result);
+                System.out.println("AI Move R2 is: " + result);
+                Pair<Card, Position> pair = findCardToPlay(result);
+                player.play(pair.getKey(),pair.getValue());
                 return result;
             } else {
                 if (!availableResults.isEmpty()) {
-//                    System.out.println("availableResults1: " + availableResults);
-                    List<Arbor> keysAsArray = new ArrayList<Arbor>(availableResults.keySet());
+                    System.out.println("availableResults1: " + availableResults);
+                    List<Arbor> keysAsArray = new ArrayList<>(availableResults.keySet());
                     Random rand = new Random();
                     Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
-                    System.out.println("AI Move is: " + result);
+                    System.out.println("AI Move R1 is: " + result);
+                    Pair<Card, Position> pair = findCardToPlay(result);
+                    player.play(pair.getKey(),pair.getValue());
                     return result;
                 } else {
 //                    System.out.println("availableChoices: " + availableChoices);
                     List<Arbor> keysAsArray = new ArrayList<Arbor>(availableChoices.keySet());
                     Random rand = new Random();
                     Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
-                    System.out.println("AI Move is: " + result);
+                    System.out.println("AI Move R0 is: " + result);
+                    Pair<Card, Position> pair = findCardToPlay(result);
+                    player.play(pair.getKey(),pair.getValue());
                     return result;
                 }
 
             }
 
         }
+        System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
+        return null;
+    }
+    private Pair<Card, Position> findCardToPlay(Arbor arbor){
+        if (arbor != null){
+            String cardAndPos = arbor.toString().substring(arbor.toString().length()-8);
+            String card = cardAndPos.substring(0,2);
+            String pos = cardAndPos.substring(2,8);
+//            System.out.println(card);
+//            System.out.println(pos);
+            return new Pair<>(new Card(card),new Position(pos));
 
+        }
         return null;
     }
 

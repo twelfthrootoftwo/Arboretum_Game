@@ -103,6 +103,7 @@ public class GUIArbor extends Group {
         this.updatePosDisplay();//change the position display with new numbers and sizes
         this.layout();//?
         this.layoutChildren();//?
+
     }
 
     /**
@@ -124,6 +125,7 @@ public class GUIArbor extends Group {
         this.borderInside.setWidth(ARBOR_X_SIZE-margin*2);
         this.borderInside.setHeight(ARBOR_Y_SIZE-margin*2);
         update();
+
     }
     public void startTurn() {
         this.thisTurn=true;
@@ -133,6 +135,7 @@ public class GUIArbor extends Group {
         this.borderInside.setWidth(ARBOR_X_SIZE-margin*2-2);
         this.borderInside.setHeight(ARBOR_Y_SIZE-margin*2-2);
         update();
+
     }
 
     /**

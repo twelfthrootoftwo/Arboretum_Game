@@ -58,6 +58,7 @@ public class GUICardStack extends Group {
                     game.updateHand(activePlayer);
                     this.updateTopCard();
                     if(game.waitingForPlay()) this.removeHighlight();
+
                 }
             }
         });
@@ -137,6 +138,7 @@ public class GUICardStack extends Group {
         //update display
         this.updateTopCard();
         this.removeHighlight();
+        this.game.updateHand(this.game.getActivePlayer());
     }
 
     /**

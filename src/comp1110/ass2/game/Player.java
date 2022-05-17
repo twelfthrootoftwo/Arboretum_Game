@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class Player {
-    String name;
-    Arbor arboretum;
-    DiscardPile discardPile;
-    List<Card> hand;
-    GUIArbor displayArbor;
+    private String name;
+    private Arbor arboretum;
+    private DiscardPile discardPile;
+    private List<Card> hand;
+    private GUIArbor displayArbor;
 
     public Player(String name, int numSpecies) {
         this.name = name;
@@ -45,6 +45,10 @@ public class Player {
 
     public Arbor getArboretum() {
         return arboretum;
+    }
+
+    public void setArboretum(Arbor arbor) {
+        this.arboretum = arbor;
     }
 
     public String getArboretumString() {
