@@ -91,7 +91,7 @@ public class Game extends Application {
         stage.setTitle("comp1110.ass2.Arboretum");
 
 
-        //setup
+//        //setup
         this.deck = new Deck(6);
         this.playerA = new Player("A", 6);
         this.playerB = new Player("B", 6);
@@ -119,6 +119,9 @@ public class Game extends Application {
 //        drawButton.setLayoutX(545);
 //        drawButton.setLayoutY(220);
         root.getChildren().addAll(displayArborA, displayArborB, playButton, GUIScoreA, GUIScoreB);
+
+        //displayArborA.updateFromBackend();
+        //displayArborB.updateFromBackend();
 
         //prepare backing for hand area, for visual niceness
         Rectangle handBacking = new Rectangle(handBackingWidth, handBackingHeight);
@@ -619,4 +622,7 @@ public class Game extends Application {
     public boolean waitingForPlay() {
         return this.turnState==TurnState.play;
     }
+
+    //TODO - fix GUICard implementation so this isn't needed
+    public Group getRoot() {return this.root;}
 }

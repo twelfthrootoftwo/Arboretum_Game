@@ -339,4 +339,50 @@ public class GUIArbor extends Group {
         return this.game.trackCardPlayed();
     }
 
+    /**
+     * Contribtuion: Natasha
+     * Updates the GUIArbor to match backend changes. Call once the attached arbor is up-to-date to process all display changes.
+     * For use with AI-calculated moves - human player moves will be displayed and recorded based on player actions.
+     */
+    public void updateFromBackend() {
+        //ensure all required GUIPositions are initialised
+        this.updateScale();
+
+        //look through all nodes to find GUIPositions
+        for(Node node : this.getChildren()) {
+            if(node instanceof GUIPosition) {
+                GUIPosition gPos=(GUIPosition) node;
+                Position pos=gPos.position;
+                GUICard gCard=gPos.playedCard;
+                Card targetCard=arbor.getCard(pos);
+
+                //compare card stored in GUIPosition to card recorded in arbor
+                if(targetCard!=null) {
+                    if(gCard==null) {
+                        //no recorded card
+                        //create new card and associate with display slot
+                        gCard=new GUICard(targetCard,game.getRoot(),game);
+                        game.getRoot().getChildren().add(gCard);
+                        gPos.associateCard(gCard);
+                    } else if(gCard.getCard()!=targetCard) {
+                        //recorded card is wrong somehow
+                        //remove incorrect card
+                        game.getRoot().getChildren().remove(gCard);
+
+                        //associate new card
+                        gCard=new GUICard(targetCard,game.getRoot(),game);
+                        game.getRoot().getChildren().add(gCard);
+                        gPos.associateCard(gCard);
+                    } else {
+                        //all good - cards match
+                    }
+
+                }
+            }
+        }
+
+        //reset display
+        this.update();
+    }
+
 }
