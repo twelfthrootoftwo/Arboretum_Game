@@ -69,6 +69,7 @@ public class Game extends Application {
     private Player playerB;
     private Deck deck;
     private String activeTurn;
+    private boolean gameEnd;
 
     //display elements
     private LinkedList<GUICard> displayedHand;
@@ -147,6 +148,12 @@ public class Game extends Application {
         //await game start on button press
         playButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
+                //if the game should end, don't progress - instead show game end screen
+                if(gameEnd) {
+                    //displayGameEnd();
+                    return;
+                }
+
                 if (turnState == TurnState.end) {
                     turnState = TurnState.begin;
 //                System.out.println(activeTurn);
@@ -236,7 +243,6 @@ public class Game extends Application {
      * @param player - start the turn of this player
      */
     private void startTurn(Player player, boolean human) {
-//        this.activeTurn=player;
         System.out.println("Starting turn of player " + player.getName());
         player.getDisplayArbor().startTurn();
         this.turnState = TurnState.firstDraw;
@@ -295,8 +301,14 @@ public class Game extends Application {
         return null;
     }
 
+    /**
+     * Contribution: Natasha
+     * Checks if the deck is empty, meaning the game is over
+     * @return True if the game should end, False otherwise
+     */
     private boolean isGameEnd() {
-        return false;
+        this.gameEnd=this.deck.isEmpty();
+        return this.gameEnd;
     }
 
     private String[][] generateGameState(Player playerA, Player playerB, Deck deck, String turn) {
@@ -661,6 +673,7 @@ public class Game extends Application {
     public boolean trackCardDiscarded() {
         if (this.turnState == TurnState.discard) {
             this.turnState = TurnState.end;
+            this.isGameEnd();
             return true;
         }
         return false;
