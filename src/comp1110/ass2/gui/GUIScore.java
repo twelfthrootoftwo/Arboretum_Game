@@ -3,7 +3,6 @@ package comp1110.ass2.gui;
 import comp1110.ass2.game.Arbor;
 import comp1110.ass2.game.Player;
 import javafx.scene.Group;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class GUIScore extends Group {
@@ -14,7 +13,6 @@ public class GUIScore extends Group {
     public final int ARBOR_X_SIZE;
     public final int ARBOR_Y_SIZE;
 
-    Rectangle scoreBox;
     Text scoreText;
 
     //constant used
@@ -32,17 +30,11 @@ public class GUIScore extends Group {
         this.heading = player +
                 " Score: " + newLine;
 
-        //create a text box to record the score
-//        scoreBox = new Rectangle(500,500);
-//        scoreBox.setX(xPos);
-//        scoreBox.setY(yPos);
-//        scoreBox.setFill(Color.WHITE);
         scoreText = new Text(heading);
         if (inverse) scoreText.setX(xPosArbor-ARBOR_X_SIZE*1.85);
         else scoreText.setX(xPosArbor+ARBOR_X_SIZE);
         scoreText.setY(yPosArbor);
         this.getChildren().add(scoreText);
-//        System.out.println(arbor.currentScore());
     }
 
     public void update(){

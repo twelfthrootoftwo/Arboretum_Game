@@ -50,9 +50,9 @@ assets:
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
 signatures:
-  - name:
-    uid:
-  - name:
-    uid:
-  - name:
-    uid:
+  - name: Natasha Pegler
+    uid: u7447030
+  - name: Hongzhe Zhu
+    uid: u7338066
+  - name: Junxian Chen
+    uid: u7238355

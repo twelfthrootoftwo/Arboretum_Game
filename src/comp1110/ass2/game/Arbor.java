@@ -132,8 +132,10 @@ public class Arbor {
     public Boolean isPosCanPlace(Position pos) {
 
 //        //if there are no other cards and the target position is (0,0), place here
-        if (this.numCards == 0 && pos.getX() == 0 & pos.getY() == 0) {
-            return true;
+        if (this.numCards == 0) {
+            if(pos.getX() == 0 & pos.getY() == 0) {
+                return true;
+            } else return false;
         }
 
         //from chen: the above should be: if there are no other cards, the input pos can be anypos.

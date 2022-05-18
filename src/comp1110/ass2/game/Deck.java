@@ -21,9 +21,7 @@ public class Deck extends CardStack {
                         this.cards.add(new Card(species, i));
                     }
                 }
-
             }
-
         }
         this.randomise();
     }

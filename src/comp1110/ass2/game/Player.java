@@ -32,7 +32,6 @@ public class Player {
      * @param discardCode - code for the player's discard
      */
     public Player(String name, String handCode, String arborCode, String discardCode) {
-//        System.out.println(arborCode);
         this.name = name;
         this.arboretum = new Arbor(arborCode);
         this.discardPile = new DiscardPile(discardCode);
@@ -111,8 +110,6 @@ public class Player {
             }
             this.hand.remove(card);
             return true;
-
-
         }
         return false;
     }
@@ -127,13 +124,9 @@ public class Player {
      * @return True if the play is legal, false otherwise
      */
     public boolean checkPlay(Card card, Position position) {
-//        System.out.println(0);
         if (this.hand.size() == 9) {
-//            System.out.println(1);
             if (checkCardInHand(card)) {
-//                System.out.println(2);
                 if (this.arboretum.isPosCanPlace(position)) {
-//                    System.out.println(3);
                     return true;
                 }
             }
@@ -171,13 +164,12 @@ public class Player {
      * @return True if it's in hand, False otherwise
      */
     private boolean checkCardInHand(Card cardToCheck) {
-        Boolean result = false;
         for (Card card : this.hand) {
             if (cardToCheck.isEqual(card)) {
-                result = true;
+                return true;
             }
         }
-        return result;
+        return false;
     }
 
     @Override

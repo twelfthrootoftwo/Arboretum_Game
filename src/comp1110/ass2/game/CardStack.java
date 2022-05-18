@@ -81,11 +81,6 @@ public abstract class CardStack {
      */
     @Override
     public String toString() {
-//        String stack = "";
-//        for (int i = 0; i < this.cards.size(); i++) {
-//            stack += this.cards.get(i).toString();
-//        }
-//        return stack;
         return Arboretum.cardListToString(cards);
     }
 

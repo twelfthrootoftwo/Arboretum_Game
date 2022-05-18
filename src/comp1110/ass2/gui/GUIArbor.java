@@ -45,10 +45,6 @@ public class GUIArbor extends Group {
     Rectangle borderOutside;
     Rectangle borderInside;
     Rectangle scoreBox;
-    Text scoreText;
-
-    //constant used
-    String newLine = "\n";
 
     public GUIArbor(Player player, Game game, int xSize,int ySize, int xPos, int yPos,int margin, boolean inverse) {
         this.player=player;
@@ -71,18 +67,7 @@ public class GUIArbor extends Group {
         borderInside.setFill(Color.WHITE);
         borderInside.setLayoutX(margin);
         borderInside.setLayoutY(margin);
-        //create a text box to record the score
-//        scoreBox = new Rectangle(500,500);
-//        scoreBox.setX(xPos);
-//        scoreBox.setY(yPos);
-//        scoreBox.setFill(Color.WHITE);
-//        scoreText = new Text("Score for " + player +
-//                ": " + newLine + arbor.currentScore());
-//        if (inverse) scoreText.setX(xPos-xSize*2.7);
-//        else scoreText.setX(xPos+xSize);
-//        scoreText.setY(yPos);
         this.getChildren().addAll(borderOutside,borderInside);
-//        System.out.println(arbor.currentScore());
         //establish a starting position at (0,0) - this will be expanded into a 3x3 grid before initial display
         this.positions=new LinkedList<LinkedList<GUIPosition>>();
         GUIPosition origin=addNewPosition(0,0);
@@ -376,7 +361,6 @@ public class GUIArbor extends Group {
                     } else {
                         //all good - cards match
                     }
-
                 }
             }
         }
