@@ -142,8 +142,9 @@ public class Game extends Application {
         playButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 //if the game should end, don't progress - instead show game end screen
-                if(gameEnd) {
+                if (gameEnd) {
                     //displayGameEnd();
+                    System.out.println("---------------GAME OVER------------");
                     return;
                 }
 
@@ -159,6 +160,8 @@ public class Game extends Application {
                         if (!playerAHuman) {
                             //move logic
                             AIDraw(playerA, playerB);
+                            displayDiscardA.updateTopCard();
+                            displayDiscardB.updateTopCard();
                             System.out.println("AI draw finish");
                             System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                             AIMove(playerA);
@@ -188,6 +191,8 @@ public class Game extends Application {
                         if (!playerBHuman) {
                             //move logic
                             AIDraw(playerB, playerA);
+                            displayDiscardA.updateTopCard();
+                            displayDiscardB.updateTopCard();
                             System.out.println("AI draw finish");
                             System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                             AIMove(playerB);
@@ -209,7 +214,6 @@ public class Game extends Application {
                         root.getChildren().add(GUIScoreA);
                     }
                 }
-
             }
         }));
         stage.setScene(scene);
@@ -229,7 +233,7 @@ public class Game extends Application {
         this.turnState = TurnState.firstDraw;
 
         //only change displayed hand if it's a human player
-        if(human) {
+        if (human) {
             this.updateDisplayHand(player);
         }
     }
@@ -285,10 +289,11 @@ public class Game extends Application {
     /**
      * Contribution: Natasha
      * Checks if the deck is empty, meaning the game is over
+     *
      * @return True if the game should end, False otherwise
      */
     private boolean isGameEnd() {
-        this.gameEnd=this.deck.isEmpty();
+        this.gameEnd = this.deck.isEmpty();
         return this.gameEnd;
     }
 
@@ -354,17 +359,22 @@ public class Game extends Application {
         }
         if (!availablePlayers2.isEmpty()) {
             List<CardStack> resultList = Collections.max(availablePlayers2.entrySet(), Map.Entry.comparingByValue()).getKey();
+            int count = 0;
             for (CardStack discard : resultList) {
-                if (discard.toString().equals(playerA.getDiscardPile().toString())) {
+                if (count < 2 && discard.toString().equals(playerA.getDiscardPile().toString())) {
                     System.out.println("ai draw from playerA: " + discard);
                     player_turn.draw(playerA.getDiscardPile());
                     discard.drawTopCard();
+                    count++;
                 }
-                if (discard.toString().equals(playerB.getDiscardPile().toString())) {
+                if (count < 2 && discard.toString().equals(playerB.getDiscardPile().toString())) {
                     System.out.println("ai draw from playerB: " + discard);
                     player_turn.draw(playerB.getDiscardPile());
                     discard.drawTopCard();
+                    count++;
                 }
+
+
             }
             this.turnState = TurnState.play;
         } else {
