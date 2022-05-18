@@ -63,17 +63,21 @@ public class Game extends Application {
 //    private TextField aHandTextField;
 //    private TextField bHandTextField;
 
-    //tracking turn parameters
+    //game turn parameters
     private TurnState turnState;
-//    public int cardsDrawn;
-//    private boolean cardPlayed;
-//    private boolean cardDiscarded;
-
     private Player playerA;
     private Player playerB;
     private Deck deck;
     private String activeTurn;
+
+    //display elements
     private LinkedList<GUICard> displayedHand;
+    private GUIArbor displayArborA;
+    private GUIArbor displayArborB;
+    private GUICardStack displayDeck;
+    private GUICardStack displayDiscardA;
+    private GUICardStack displayDiscardB;
+
 
     public Game() throws FileNotFoundException {
     }
@@ -107,8 +111,8 @@ public class Game extends Application {
         this.turnState = TurnState.end;
 
         //add arbor, current score, cards, decks to display
-        GUIArbor displayArborA = new GUIArbor(playerA, this, ARBOR_X, ARBOR_Y, leftArborX, leftArborY, arborMargin, false);
-        GUIArbor displayArborB = new GUIArbor(playerB, this, ARBOR_X, ARBOR_Y, rightArborX, rightArborY, arborMargin, true);
+        this.displayArborA = new GUIArbor(playerA, this, ARBOR_X, ARBOR_Y, leftArborX, leftArborY, arborMargin, false);
+        this.displayArborB = new GUIArbor(playerB, this, ARBOR_X, ARBOR_Y, rightArborX, rightArborY, arborMargin, true);
         GUIScore GUIScoreA = new GUIScore(playerA, SCORE_X, SCORE_Y, leftArborX, leftArborY, false);
         GUIScore GUIScoreB = new GUIScore(playerB, SCORE_X, SCORE_Y, rightArborX, rightArborY, true);
         Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn));
@@ -131,19 +135,16 @@ public class Game extends Application {
         root.getChildren().add(handBacking);
 
         //add deck & discard display
-        GUICardStack displayDeck = new GUICardStack(this.deck, this, this.root, deckX, deckY);
-        GUICardStack discardA = new GUICardStack(this.playerA.getDiscardPile(), this, this.root, leftDiscardX, leftDiscardY);
-        GUICardStack discardB = new GUICardStack(this.playerB.getDiscardPile(), this, this.root, rightDiscardX, rightDiscardY);
-        root.getChildren().addAll(displayDeck, discardA, discardB);
+        this.displayDeck = new GUICardStack(this.deck, this, this.root, deckX, deckY);
+        this.displayDiscardA = new GUICardStack(this.playerA.getDiscardPile(), this, this.root, leftDiscardX, leftDiscardY);
+        this.displayDiscardB = new GUICardStack(this.playerB.getDiscardPile(), this, this.root, rightDiscardX, rightDiscardY);
+        root.getChildren().addAll(displayDeck, displayDiscardA, displayDiscardB);
 
-        //TODO - fix initial turn start
-//        startTurn(playerA);
+        //player settings
+        boolean playerAHuman=true;
+        boolean playerBHuman=false;
 
-
-        //turns
-        //TODO - actually cycle turns
-
-//        startTurn(playerB);
+        //await game start on button press
         playButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 if (turnState == TurnState.end) {
@@ -153,10 +154,21 @@ public class Game extends Application {
 //                System.out.println(activeTurn.equals("B"));
                     if (activeTurn.equals("A")) {
                         playerB.getDisplayArbor().endTurn();
-                        startTurn(playerA);
-//                        AIDraw(playerA, playerB);
-//                        AIMove(playerA);
+                        startTurn(playerA,playerAHuman);
                         System.out.println("End B's turn, start A's turn");
+
+                        //run AI if this player is computer controlled
+                        if(!playerAHuman) {
+                            //move logic
+                            AIDraw(playerA, playerB);
+                            AIMove(playerA);
+                            AIDiscard(playerA, playerB);
+
+                            //update display
+                            displayArborA.updateFromBackend();
+                            displayDiscardA.updateTopCard();
+                            //updateDisplayHand(playerA);
+                        }
                         System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                         activeTurn = "B";
                         // update score text
@@ -166,17 +178,25 @@ public class Game extends Application {
 
                     } else if (activeTurn.equals("B")) {
                         playerA.getDisplayArbor().endTurn();
-                        startTurn(playerB);
-                        AIDraw(playerB, playerA);
-
-                        AIMove(playerB);
-                        displayArborB.updateFromBackend();
-
-                        AIDiscard(playerB, playerA);
-                        updateHand(playerB);
+                        startTurn(playerB,playerBHuman);
                         System.out.println("End A's turn, start B's turn");
+
+                        //run AI if this player is computer controlled
+                        if(!playerBHuman) {
+                            //move logic
+                            AIDraw(playerB, playerA);
+                            AIMove(playerB);
+                            AIDiscard(playerB, playerA);
+
+                            //update display
+                            displayArborB.updateFromBackend();
+                            displayDiscardB.updateTopCard();
+                            //updateHand(playerB);
+                        }
+
                         System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                         activeTurn = "A";
+
                         // update score text
                         root.getChildren().remove(GUIScoreA);
                         GUIScoreA.update();
@@ -228,13 +248,16 @@ public class Game extends Application {
      *
      * @param player - start the turn of this player
      */
-    private void startTurn(Player player) {
+    private void startTurn(Player player, boolean human) {
 //        this.activeTurn=player;
         System.out.println("Starting turn of player " + player.getName());
         player.getDisplayArbor().startTurn();
         this.turnState = TurnState.firstDraw;
 
-        this.updateHand(player);
+        //only change displayed hand if it's a human player
+        if(human) {
+            this.updateDisplayHand(player);
+        }
     }
 
     /**
@@ -243,7 +266,7 @@ public class Game extends Application {
      *
      * @param player - the player who is currently taking their turn
      */
-    public void updateHand(Player player) {
+    public void updateDisplayHand(Player player) {
 //        remove currently displayed hand
         if (this.displayedHand != null) {
             for (GUICard card : this.displayedHand) {
@@ -387,14 +410,14 @@ public class Game extends Application {
                 }
 
             }
-            updateHand(this.playerB);
+            //updateDisplayHand(this.playerB);
             this.turnState = TurnState.play;
         } else {
             System.out.println("ai draw from: deck");
             this.playerB.draw(this.deck);
             System.out.println("ai draw from: deck");
             this.playerB.draw(this.deck);
-            updateHand(this.playerB);
+            //updateDisplayHand(this.playerB);
             this.turnState = TurnState.play;
         }
         System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
@@ -422,6 +445,7 @@ public class Game extends Application {
         if (player_turn.getName().equals("A")) {
             System.out.println("PlayerA discard: " + result);
             playerA.discard(result);
+
             this.turnState = TurnState.end;
         }
         if (player_turn.getName().equals("B")) {
