@@ -142,7 +142,7 @@ public class Game extends Application {
         playButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 //if the game should end, don't progress - instead show game end screen
-                if (gameEnd) {
+                if(gameEnd) {
                     //displayGameEnd();
                     return;
                 }
@@ -229,7 +229,7 @@ public class Game extends Application {
         this.turnState = TurnState.firstDraw;
 
         //only change displayed hand if it's a human player
-        if (human) {
+        if(human) {
             this.updateDisplayHand(player);
         }
     }
@@ -285,11 +285,10 @@ public class Game extends Application {
     /**
      * Contribution: Natasha
      * Checks if the deck is empty, meaning the game is over
-     *
      * @return True if the game should end, False otherwise
      */
     private boolean isGameEnd() {
-        this.gameEnd = this.deck.isEmpty();
+        this.gameEnd=this.deck.isEmpty();
         return this.gameEnd;
     }
 
