@@ -1275,20 +1275,19 @@ public class Arboretum {
         String handBCards = handB.substring(1);
 
 
-        Arbor currentArbor = new Arbor(6);
-        DiscardPile player_turn_discard = new DiscardPile();
-        DiscardPile player_notTurn_discard = new DiscardPile();
-        if (turn.equals("A")) {
-            currentArbor = new Arbor(arboretumA);
-            player_turn_discard = new DiscardPile(discardA);
-            player_notTurn_discard = new DiscardPile(discardB);
-        }
-        if (turn.equals("B")) {
-            currentArbor = new Arbor(arboretumB);
-            player_turn_discard = new DiscardPile(discardB);
-            player_notTurn_discard = new DiscardPile(discardA);
-        }
-
+//        Arbor currentArbor = new Arbor(6);
+//        DiscardPile player_turn_discard = new DiscardPile();
+//        DiscardPile player_notTurn_discard = new DiscardPile();
+//        if (turn.equals("A")) {
+//            currentArbor = new Arbor(arboretumA);
+//            player_turn_discard = new DiscardPile(discardA);
+//            player_notTurn_discard = new DiscardPile(discardB);
+//        }
+//        if (turn.equals("B")) {
+//            currentArbor = new Arbor(arboretumB);
+//            player_turn_discard = new DiscardPile(discardB);
+//            player_notTurn_discard = new DiscardPile(discardA);
+//        }
 //        List<CardStack> availableChoices = new ArrayList<>();
 //        HashMap<String, Integer> currentScore = currentArbor.currentScore();
 //        HashMap<Player, List<CardStack>> availablePlayers = new HashMap<>();
@@ -1370,8 +1369,6 @@ public class Arboretum {
 //        }
         // FIXME TASK 14
         if (deck.length() != 0) {
-//                System.out.println("ai draw from: deck");
-//                System.out.println("ai draw from: deck");
             return "D";
         } else {
             if (discardACards.length() != 0) {
@@ -1447,19 +1444,7 @@ public class Arboretum {
             otherPlayer = new Player("A", handA, arboretumA, discardA);
         }
 //        Arbor result = AIMove(currentPlayer);
-//
-//        String[] output = new String[2];
-//        if (result != null) {
-//            String outputString = result.toString().substring(result.toString().length() - 8);
-//            output[0] = outputString;
-//            Card cardToDraw = new Card(outputString.substring(0, 2));
-//            Position posToDraw = new Position(outputString.substring(2));
-//            currentPlayer.play(cardToDraw, posToDraw);
-//            Card discard = AIDiscard(currentPlayer, otherPlayer);
-//            output[1] = discard.toString();
-//            return output;
-//
-//        }
+
         Arbor result = DumbAIMove(currentPlayer);
 
         String[] output = new String[2];
@@ -1489,7 +1474,6 @@ public class Arboretum {
                 Arbor newArbor = new Arbor(player.getName() + player.getArboretum().toString());
                 newArbor.addCard(card, pos);
                 availableChoices.put(newArbor, pos);
-
             }
         }
         if (!availableChoices.isEmpty()) {
@@ -1522,7 +1506,6 @@ public class Arboretum {
             if (result != currentScore) {
                 availableResults.put(key, result);
             }
-
         }
         HashMap<Arbor, Integer> availableResults2 = new LinkedHashMap<>();
         int valueBiggest = 0;
@@ -1542,7 +1525,6 @@ public class Arboretum {
             return result;
         } else {
             if (!availableResults.isEmpty()) {
-//                System.out.println("availableResults1: " + availableResults);
                 List<Arbor> keysAsArray = new ArrayList<>(availableResults.keySet());
                 Random rand = new Random();
                 Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));

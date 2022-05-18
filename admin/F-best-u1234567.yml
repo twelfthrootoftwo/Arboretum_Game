@@ -22,17 +22,6 @@ collaboration:
   - name:
     comment: >-
 
-# Use this to list any code that you used that you did not write,
-# aside from code provided by the lecturer.  Provide a comment
-# explaining your use and the URL to that code and the licence for
-# that code
-#
-# Add as many "url+licence+comment" entries as necessary
-# (or remove it altogether if you haven't used any external code)
-code:
-  - comment:
-    url:
-    licence:
 
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
