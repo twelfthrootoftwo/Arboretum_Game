@@ -171,13 +171,12 @@ public class Player {
      * @return True if it's in hand, False otherwise
      */
     private boolean checkCardInHand(Card cardToCheck) {
-        Boolean result = false;
         for (Card card : this.hand) {
             if (cardToCheck.isEqual(card)) {
-                result = true;
+                return true;
             }
         }
-        return result;
+        return false;
     }
 
     @Override
