@@ -71,16 +71,6 @@ public class GUIArbor extends Group {
         borderInside.setFill(Color.WHITE);
         borderInside.setLayoutX(margin);
         borderInside.setLayoutY(margin);
-        //create a text box to record the score
-//        scoreBox = new Rectangle(500,500);
-//        scoreBox.setX(xPos);
-//        scoreBox.setY(yPos);
-//        scoreBox.setFill(Color.WHITE);
-//        scoreText = new Text("Score for " + player +
-//                ": " + newLine + arbor.currentScore());
-//        if (inverse) scoreText.setX(xPos-xSize*2.7);
-//        else scoreText.setX(xPos+xSize);
-//        scoreText.setY(yPos);
         this.getChildren().addAll(borderOutside,borderInside);
 //        System.out.println(arbor.currentScore());
         //establish a starting position at (0,0) - this will be expanded into a 3x3 grid before initial display
