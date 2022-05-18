@@ -3,7 +3,6 @@ package comp1110.ass2.gui;
 import comp1110.ass2.game.Arbor;
 import comp1110.ass2.game.Player;
 import javafx.scene.Group;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class GUIScore extends Group {

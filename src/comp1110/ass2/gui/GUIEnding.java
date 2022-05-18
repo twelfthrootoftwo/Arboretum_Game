@@ -1,7 +1,5 @@
 package comp1110.ass2.gui;
 
-
-import comp1110.ass2.game.Arbor;
 import comp1110.ass2.game.Player;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -10,7 +8,6 @@ import javafx.scene.text.Text;
 
 public class GUIEnding extends Group {
     public Player winner;
-    private Arbor arbor;
 
     Rectangle endBox;
     Text endText;
@@ -18,7 +15,6 @@ public class GUIEnding extends Group {
 
     public GUIEnding(Player winner, int x, int y, int boxSizeX, int boxSizeY) {
         this.winner=winner;
-        this.arbor=winner.getArboretum();
         this.content = winner + " Wins!";
 
         endBox = new Rectangle(boxSizeX, boxSizeY);
