@@ -74,8 +74,8 @@ public class Arbor {
             String posCode = thisMove.substring(2);
 
             Card playedCard = new Card(cardCode);
-            System.out.println("playedCard: " + playedCard);
-            System.out.println("posCode: "+ posCode);
+//            System.out.println("playedCard: " + playedCard);
+//            System.out.println("posCode: "+ posCode);
             Position playedPosition = new Position(posCode);
             this.arboretumList.add(playedCard.toString() + playedPosition.toArborString());
             this.arboretumCardList.add(playedCard);

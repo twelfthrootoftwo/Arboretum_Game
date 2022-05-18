@@ -51,9 +51,9 @@ public class Position {
             dirH = "C";
         }
         if (this.y > 0) {
-            dirV = "S";
-        } else if (this.y < 0) {
             dirV = "N";
+        } else if (this.y < 0) {
+            dirV = "S";
         } else {
             dirV = "C";
         }

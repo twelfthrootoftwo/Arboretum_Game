@@ -55,7 +55,7 @@ public class GUICardStack extends Group {
                     game.trackDraw();
 
                     //update display
-                    game.updateHand(activePlayer);
+                    game.updateDisplayHand(activePlayer);
                     this.updateTopCard();
                     if(game.waitingForPlay()) this.removeHighlight();
 
@@ -81,7 +81,7 @@ public class GUICardStack extends Group {
      * If the stack is currently empty, ensures the display is blank.
      * Otherwise, displays a GUICard with either the card face (for discard piles) or a card back image (for deck).
      */
-    private void updateTopCard() {
+    public void updateTopCard() {
 
         //Clear any record of the top card and remove the existing top card from display
         //Relevant if the stack is empty, or if it's a discard and the top card display needs to change
@@ -138,7 +138,7 @@ public class GUICardStack extends Group {
         //update display
         this.updateTopCard();
         this.removeHighlight();
-        this.game.updateHand(this.game.getActivePlayer());
+        this.game.updateDisplayHand(this.game.getActivePlayer());
     }
 
     /**

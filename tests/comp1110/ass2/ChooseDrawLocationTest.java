@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-@org.junit.jupiter.api.Timeout(value = 9999, unit = MILLISECONDS)
+@org.junit.jupiter.api.Timeout(value = 1000, unit = MILLISECONDS)
 
 public class ChooseDrawLocationTest {
 
