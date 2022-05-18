@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class Player {
-    String name;
-    Arbor arboretum;
-    DiscardPile discardPile;
-    List<Card> hand;
-    GUIArbor displayArbor;
+    private String name;
+    private Arbor arboretum;
+    private DiscardPile discardPile;
+    private List<Card> hand;
+    private GUIArbor displayArbor;
 
     public Player(String name, int numSpecies) {
         this.name = name;
@@ -47,6 +47,10 @@ public class Player {
         return arboretum;
     }
 
+    public void setArboretum(Arbor arbor) {
+        this.arboretum = arbor;
+    }
+
     public String getArboretumString() {
         return this.getName() + this.getArboretum().toString();
     }
@@ -69,6 +73,7 @@ public class Player {
 
 
     public void discard(Card card) {
+        this.hand.remove(card);
         this.discardPile.addTopCard(card);
     }
 
@@ -111,16 +116,7 @@ public class Player {
         }
         return false;
     }
-    /**
-     * Contribution: Junxian
-     * Checks if the chosen card can be played a the chosen position; if it can, play it there
-     *
-     * @param card     - card to play
-     * @return True if the move was legal and has been processed, False otherwise
-     */
-    public void play(Card card) {
-        this.hand.remove(card);
-    }
+
     /**
      * Contribution: Natasha
      * Checks whether a play is legal
@@ -131,13 +127,13 @@ public class Player {
      * @return True if the play is legal, false otherwise
      */
     public boolean checkPlay(Card card, Position position) {
-        System.out.println(0);
+//        System.out.println(0);
         if (this.hand.size() == 9) {
-            System.out.println(1);
+//            System.out.println(1);
             if (checkCardInHand(card)) {
-                System.out.println(2);
+//                System.out.println(2);
                 if (this.arboretum.isPosCanPlace(position)) {
-                    System.out.println(3);
+//                    System.out.println(3);
                     return true;
                 }
             }
@@ -175,13 +171,12 @@ public class Player {
      * @return True if it's in hand, False otherwise
      */
     private boolean checkCardInHand(Card cardToCheck) {
-        Boolean result = false;
         for (Card card : this.hand) {
             if (cardToCheck.isEqual(card)) {
-                result = true;
+                return true;
             }
         }
-        return result;
+        return false;
     }
 
     @Override

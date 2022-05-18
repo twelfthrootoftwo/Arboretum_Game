@@ -4,7 +4,8 @@ import java.util.*;
 
 public class Arbor {
     public HashMap<Position, Card> arbor;
-    public List<String> arboretumList;
+    private List<String> arboretumList;
+    private List<Card> arboretumCardList;
     private HashMap<Position, ArrayList<Position>> scoringMap;
     private int numCards;
     private final int limit;
@@ -25,6 +26,7 @@ public class Arbor {
     public Arbor(int numSpecies) {
         this.arbor = new HashMap<Position, Card>();
         this.arboretumList = new ArrayList<>();
+        this.arboretumCardList = new ArrayList<>();
         this.numCards = 0;
         this.limit = 8*numSpecies - 1;//8 card values per species
         this.scoringMap = new HashMap<Position, ArrayList<Position>>();
@@ -58,6 +60,7 @@ public class Arbor {
         this.numSpecies=6;
         this.limit = 8 * this.numSpecies - 1;
         this.arboretumList = new ArrayList<>();
+        this.arboretumCardList = new ArrayList<>();
 //        //truncate first character, since this is to represent the player
         arborCode = arborCode.substring(1);
 
@@ -73,6 +76,7 @@ public class Arbor {
             Card playedCard = new Card(cardCode);
             Position playedPosition = new Position(posCode);
             this.arboretumList.add(playedCard.toString() + playedPosition.toArborString());
+            this.arboretumCardList.add(playedCard);
             this.arbor.put(playedPosition, playedCard);
         }
 
@@ -97,7 +101,7 @@ public class Arbor {
     public void addCard(Card card, Position pos) {
         String cardName = card.toString() + pos.toArborString();
         this.arboretumList.add(cardName);
-
+        this.arboretumCardList.add(card);
         this.arbor.put(pos, card);
 
         //update range & card count
@@ -128,15 +132,18 @@ public class Arbor {
     public Boolean isPosCanPlace(Position pos) {
 
 //        //if there are no other cards and the target position is (0,0), place here
-//        if (this.numCards == 0 && pos.getX() == 0 & pos.getY() == 0) {
-//            return true;
-//        }
+        if (this.numCards == 0) {
+            if(pos.getX() == 0 & pos.getY() == 0) {
+                return true;
+            } else return false;
+        }
 
         //from chen: the above should be: if there are no other cards, the input pos can be anypos.
         // but in player.play, this anypos should be reset to 0,0
-        if (this.numCards == 0) {
-            return true;
-        }
+        //NP: Switched this back to forcing only (0,0) for the first move (otherwise we'd need to reassign positions to displayed GUIPositions)
+//        if (this.numCards == 0) {
+//            return true;
+//        }
 
         //if there are other cards, need no card in this position
         if (this.arbor.get(pos) == null) {
@@ -485,5 +492,8 @@ public class Arbor {
         return scores.get(toScore);
     }
 
+    public List<Card> getArboretumCardList() {
+        return arboretumCardList;
+    }
 }
 
