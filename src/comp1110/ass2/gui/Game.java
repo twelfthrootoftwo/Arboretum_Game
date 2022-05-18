@@ -168,12 +168,15 @@ public class Game extends Application {
                         playerA.getDisplayArbor().endTurn();
                         startTurn(playerB);
                         AIDraw(playerB, playerA);
+                        System.out.println("AI draw finish");
 
                         AIMove(playerB);
                         displayArborB.updateFromBackend();
+                        System.out.println("AI Move finish");
 
                         AIDiscard(playerB, playerA);
                         updateHand(playerB);
+                        System.out.println("AI Discard finish");
                         System.out.println("End A's turn, start B's turn");
                         System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                         activeTurn = "A";
@@ -199,23 +202,6 @@ public class Game extends Application {
 //            }
 //
 //        }));
-//        while (!isGameEnd()){
-//            if (isGameEnd()){
-//                getWinner();
-//                break;
-//            }
-////            if(this.activeTurn == playerA){
-////                startTurn(playerA);
-////                this.activeTurn = playerB;
-////            }
-////            if(this.activeTurn == playerB){
-////                startTurn(playerB);
-////                this.activeTurn = playerA;
-////            }
-////            startTurn(playerA);
-//        }
-
-
 //        System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, "A")));
         stage.setScene(scene);
         stage.show();
@@ -320,8 +306,8 @@ public class Game extends Application {
         HashMap<String, Integer> currentScore = player_turn.getArboretum().currentScore();
         DiscardPile player_turn_discard = new DiscardPile(player_turn.getName() + player_turn.getDiscardPile().toString());
         DiscardPile player_notTurn_discard = new DiscardPile(player_notTurn.getName() + player_notTurn.getDiscardPile().toString());
-        System.out.println(player_turn_discard);
-        System.out.println(player_notTurn_discard);
+//        System.out.println(player_turn_discard);
+//        System.out.println(player_notTurn_discard);
         HashMap<Player, List<CardStack>> availablePlayers = new HashMap<>();
         HashMap<List<CardStack>, Integer> availablePlayers2 = new HashMap<>();
         if (!player_turn_discard.isEmpty() && !player_notTurn_discard.isEmpty()) {
@@ -372,9 +358,9 @@ public class Game extends Application {
         if (!availablePlayers2.isEmpty()) {
             List<CardStack> resultList = Collections.max(availablePlayers2.entrySet(), Map.Entry.comparingByValue()).getKey();
             for (CardStack discard : resultList) {
-                System.out.println("discard.toString() " + discard.toString());
-                System.out.println("playerA.getDiscardPile().toString() " + playerA.getDiscardPile().toString());
-                System.out.println("playerB.getDiscardPile().toString() " + playerB.getDiscardPile().toString());
+//                System.out.println("discard.toString() " + discard.toString());
+//                System.out.println("playerA.getDiscardPile().toString() " + playerA.getDiscardPile().toString());
+//                System.out.println("playerB.getDiscardPile().toString() " + playerB.getDiscardPile().toString());
                 if (discard.toString().equals(playerA.getDiscardPile().toString())) {
                     System.out.println("ai draw from playerA: " + discard);
                     this.playerB.draw(playerA.getDiscardPile());
@@ -432,7 +418,7 @@ public class Game extends Application {
 
     }
 
-    private Arbor AIMove(Player player) {
+    public Arbor AIMove(Player player) {
 
         if (player.getName().equals("A")) {
             HashMap<Arbor, Position> availableChoices = new LinkedHashMap<>();
@@ -445,7 +431,7 @@ public class Game extends Application {
 //                System.out.println("card: " + card );
                 for (Position pos : player.getArboretum().getAvailablePos()) {
 //                    System.out.println("pos: " +  pos);
-                    Arbor newArbor = new Arbor(this.playerA.getName() + this.playerA.getArboretum().toString());
+                    Arbor newArbor = new Arbor(player.getName() + player.getArboretum().toString());
 //                    System.out.println(this.playerA.getName() + this.playerA.getArboretum().toString());
 //                    System.out.println("old: "+ newArbor.arboretumList);
                     newArbor.addCard(card, pos);
@@ -503,9 +489,10 @@ public class Game extends Application {
                 }
             }
         }
-        if (player.getName().equals("B")) {
+        else if (player.getName().equals("B")) {
             HashMap<Arbor, Position> availableChoices = new LinkedHashMap<>();
             Arbor arboretum_B = player.getArboretum();
+            System.out.println("orignal arbor: " + arboretum_B);
             HashMap<String, Integer> currentScore = arboretum_B.currentScore();
 //            System.out.println(currentScore);
             List<Card> availableCards = player.getHand();
@@ -514,11 +501,12 @@ public class Game extends Application {
 //                System.out.println("card: " + card );
                 for (Position pos : player.getArboretum().getAvailablePos()) {
 //                    System.out.println("pos: " +  pos);
-                    Arbor newArbor = new Arbor(this.playerB.getName() + this.playerB.getArboretum().toString());
-//                    System.out.println(this.playerA.getName() + this.playerA.getArboretum().toString());
-//                    System.out.println("old: "+ newArbor.arboretumList);
+                    System.out.println("input Arbor: "+ player.getName() + arboretum_B.toString());
+                    Arbor newArbor = new Arbor(player.getName() + arboretum_B.toString());
+                    System.out.println("output Arbor: "+ newArbor);
+                    System.out.println("old: "+ newArbor);
                     newArbor.addCard(card, pos);
-//                    System.out.println("new: "+ newArbor.arboretumList);
+//                    System.out.println("new: "+ newArbor);
                     availableChoices.put(newArbor, pos);
 
                 }
@@ -549,12 +537,14 @@ public class Game extends Application {
                 }
             }
             if (!availableResults2.isEmpty()) {
-//                System.out.println("availableResults2: " + availableResults2);
+                System.out.println("availableResults2: " + availableResults2);
                 Arbor result = Collections.max(availableResults2.entrySet(), Map.Entry.comparingByValue()).getKey();
                 System.out.println("AI Move R2 is: " + result);
                 Pair<Card, Position> pair = findCardToPlay(result);
                 player.play(pair.getKey(), pair.getValue());
                 this.turnState = TurnState.discard;
+                System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
+                System.out.println("-----------");
                 return result;
             } else {
                 if (!availableResults.isEmpty()) {
@@ -566,9 +556,11 @@ public class Game extends Application {
                     Pair<Card, Position> pair = findCardToPlay(result);
                     player.play(pair.getKey(), pair.getValue());
                     this.turnState = TurnState.discard;
+                    System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
+                    System.out.println("-----------");
                     return result;
                 } else {
-//                    System.out.println("availableChoices: " + availableChoices);
+                    System.out.println("availableChoices: " + availableChoices);
                     List<Arbor> keysAsArray = new ArrayList<Arbor>(availableChoices.keySet());
                     Random rand = new Random();
                     Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
@@ -576,6 +568,8 @@ public class Game extends Application {
                     Pair<Card, Position> pair = findCardToPlay(result);
                     player.play(pair.getKey(), pair.getValue());
                     this.turnState = TurnState.discard;
+                    System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
+                    System.out.println("-----------");
                     return result;
                 }
 
@@ -591,8 +585,8 @@ public class Game extends Application {
             String cardAndPos = arbor.toString().substring(arbor.toString().length() - 8);
             String card = cardAndPos.substring(0, 2);
             String pos = cardAndPos.substring(2, 8);
-//            System.out.println(card);
-//            System.out.println(pos);
+            System.out.println("card: " + card);
+            System.out.println("pos: " + pos);
             return new Pair<>(new Card(card), new Position(pos));
 
         }

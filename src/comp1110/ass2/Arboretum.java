@@ -1,7 +1,10 @@
 package comp1110.ass2;
 
 import comp1110.ass2.game.*;
+import comp1110.ass2.gui.Game;
+import comp1110.ass2.gui.TurnState;
 import javafx.scene.image.ImageView;
+import javafx.util.Pair;
 
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -1232,9 +1235,218 @@ public class Arboretum {
      * TASK 14
      */
     public static String chooseDrawLocation(String[][] gameState) {
-        System.out.println(Arrays.deepToString(gameState));
-        return null;
+
+
+//        System.out.println(Arrays.deepToString(gameState));
+
+        String[] sharedState = gameState[0];
+        String[] hiddenState = gameState[1];
+
+
+        //turn a string shows who's turn. e.g. "A"  "B"
+        String turn = sharedState[0];
+
+
+        //arboretumA a string shows Player A's arboretum. e.g. "Aa6C00C00d6S01C00"
+        //arboretumACardsList an array shows Player A's arboretum. e.g. [a6, d6, b3, d8, j6, d1, a8, m6, j2, d4]
+        String arboretumA = sharedState[1];
+        String arboretumATrees = arboretumA.substring(1);
+        String[] arboretumACardsList = {};
+        int numCardInArboretumA = 0;
+
+        //check if arboretum is empty. e.g. "A"
+        if (!arboretumATrees.equals("")) {
+
+            //separate arboretum by every 8 bit. e.g. "a6C00C00"
+            String[] arboretumATreesList = arboretumATrees.split("(?<=\\G.{" + 8 + "})");
+            numCardInArboretumA = arboretumATreesList.length;
+
+            //create an array to store all name of tree on arboretum
+            for (String tree : arboretumATreesList) {
+                String name = tree.substring(0, 2);
+                List<String> list = new ArrayList<>(Arrays.stream(arboretumACardsList).toList());
+                list.add(name);
+                arboretumACardsList = list.toArray(new String[0]);
+            }
+        }
+
+
+        //discardA a string shows Player A's discard. e.g. "Ab5m4j3"
+        //discardACards an array shows Player A's discard. e.g. [b5, m4, j3]
+        String discardA = sharedState[2];
+        String discardACards = discardA.substring(1);
+        int numCardInDiscardA = 0;
+        String[] discardACardsList = {};
+
+        //check if discard is empty. e.g. "A"
+        if (!discardACards.equals("")) {
+            discardACardsList = discardACards.split("(?<=\\G.{" + 2 + "})");
+            numCardInDiscardA = discardACardsList.length;
+        }
+
+
+        //arboretumB
+        String arboretumB = sharedState[3];
+        String arboretumBTrees = arboretumB.substring(1);
+        String[] arboretumBCardsList = {};
+        int numCardInArboretumB = 0;
+        if (!arboretumBTrees.equals("")) {
+            String[] arboretumBTreesList = arboretumBTrees.split("(?<=\\G.{" + 8 + "})");
+            numCardInArboretumB = arboretumBTreesList.length;
+            for (String tree : arboretumBTreesList) {
+                String name = tree.substring(0, 2);
+                List<String> list = new ArrayList<>(Arrays.stream(arboretumBCardsList).toList());
+                list.add(name);
+                arboretumBCardsList = list.toArray(new String[0]);
+            }
+        }
+
+
+        //discardB
+        String discardB = sharedState[4];
+        String discardBCards = discardB.substring(1);
+        int numCardInDiscardB = 0;
+        String[] discardBCardsList = {};
+        if (!discardBCards.equals("")) {
+            discardBCardsList = discardBCards.split("(?<=\\G.{" + 2 + "})");
+            numCardInDiscardB = discardBCardsList.length;
+        }
+
+
+        //deck a string shows the deck. e.g. "a1a2a3a4a5a6a7b2b4b5b6b7c1c3c4c5c6c8d1d2d3d5d7j1j3j4j6j7j8m3m4m5m6m7"
+        String deck = hiddenState[0];
+        int numCardInDeck = 0;
+        String[] deckList = {};
+        if (!deck.equals("")) {
+            deckList = deck.split("(?<=\\G.{" + 2 + "})");
+            numCardInDeck = deckList.length;
+        }
+
+
+        //handA a string shows cards in player A's hand. e.g. "Aa8b3c2d6d8j5m2"
+        String handA = hiddenState[1];
+        String handACards = handA.substring(1);
+        int numCardInHandA = 0;
+        String[] handACardsList = {};
+        if (!handACards.equals("")) {
+            handACardsList = handACards.split("(?<=\\G.{" + 2 + "})");
+            numCardInHandA = handACardsList.length;
+        }
+
+
+        //handB a string shows cards in player B's hand. e.g. "Ba8b3c2d6d8j5m2"
+        String handB = hiddenState[2];
+        String handBCards = handB.substring(1);
+        int numCardInHandB = 0;
+        String[] handBCardsList = {};
+        if (!handBCards.equals("")) {
+            handBCardsList = handBCards.split("(?<=\\G.{" + 2 + "})");
+            numCardInHandB = handBCardsList.length;
+        }
+
+
+        Arbor currentArbor = new Arbor(6);
+        DiscardPile player_turn_discard = new DiscardPile();
+        DiscardPile player_notTurn_discard = new DiscardPile();
+        if (turn.equals("A")){
+            currentArbor = new Arbor(arboretumA);
+            player_turn_discard = new DiscardPile(discardA);
+            player_notTurn_discard = new DiscardPile(discardB);
+        }
+        if(turn.equals("B")) {
+            currentArbor = new Arbor(arboretumB);
+            player_turn_discard = new DiscardPile(discardB);
+            player_notTurn_discard = new DiscardPile(discardA);
+        }
+
+        List<CardStack> availableChoices = new ArrayList<>();
+        HashMap<String, Integer> currentScore = currentArbor.currentScore();
+//        DiscardPile player_turn_discard = new DiscardPile(player_turn.getName() + player_turn.getDiscardPile().toString());
+//        DiscardPile player_notTurn_discard = new DiscardPile(player_notTurn.getName() + player_notTurn.getDiscardPile().toString());
+//        System.out.println(player_turn_discard);
+//        System.out.println(player_notTurn_discard);
+        HashMap<Player, List<CardStack>> availablePlayers = new HashMap<>();
+        HashMap<List<CardStack>, Integer> availablePlayers2 = new HashMap<>();
+        if (!player_turn_discard.isEmpty() && !player_notTurn_discard.isEmpty()) {
+            availableChoices.add(player_turn_discard);
+            availableChoices.add(player_notTurn_discard);
+
+            for (CardStack stack : availableChoices) {
+                for (CardStack stack2 : availableChoices) {
+
+                    if (!stack.isEmpty() && !stack2.isEmpty()) {
+                        List<CardStack> valueList = new ArrayList<>();
+                        Card drawStack1 = stack.drawTopCard();
+                        Card drawStack2 = stack2.drawTopCard();
+                        if (drawStack1 != null && drawStack2 != null) {
+//                            System.out.println("drawStack1: " + drawStack1);
+//                            System.out.println("drawStack2: " + drawStack2);
+                            valueList.add(stack);
+                            valueList.add(stack2);
+                            availablePlayers.put(new Player(turn, handA + drawStack1.toString() + drawStack2.toString(), arboretumA, discardA), valueList);
+                        }
+                        stack.addTopCard(drawStack2);
+                        stack2.addTopCard(drawStack1);
+
+                    }
+
+                }
+            }
+//            System.out.println(availablePlayers);
+            for (Player player : availablePlayers.keySet()) {
+                Arbor playerArbor = AIMove(player);
+                if (playerArbor != null) {
+                    int valueBiggest = 0;
+                    HashMap<String, Integer> playerScore = playerArbor.currentScore();
+                    if (playerScore != null) {
+                        if (compareScores(currentScore, playerScore) == playerScore) {
+                            String keyBiggest = Collections.max(playerScore.entrySet(), Map.Entry.comparingByValue()).getKey();
+                            if (playerScore.get(keyBiggest) > valueBiggest) {
+                                valueBiggest = playerScore.get(keyBiggest);
+                                availablePlayers2.put(availablePlayers.get(player), valueBiggest);
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!availablePlayers2.isEmpty()) {
+            String result = "";
+            List<CardStack> resultList = Collections.max(availablePlayers2.entrySet(), Map.Entry.comparingByValue()).getKey();
+            for (CardStack discard : resultList) {
+//                System.out.println("discard.toString() " + discard.toString());
+//                System.out.println("playerA.getDiscardPile().toString() " + discardA);
+//                System.out.println("playerB.getDiscardPile().toString() " + discardB);
+                if (discard.toString().equals(discardA)) {
+                    System.out.println("ai draw from playerA: " + discard);
+                    return discard.drawTopCard().toString();
+                }
+                if (discard.toString().equals(discardB)) {
+                    System.out.println("ai draw from playerB: " + discard);
+                    return discard.drawTopCard().toString();
+                }
+
+            }
+            System.out.println(result);
+        } else {
+            if (deck.length() != 0){
+                System.out.println("ai draw from: deck");
+                System.out.println("ai draw from: deck");
+                return "D";
+            }else {
+                if (discardACards.length() != 0){
+                    return new DiscardPile(discardA).drawTopCard().toString();
+                }
+                if (discardBCards.length() != 0){
+                    return new DiscardPile(discardB).drawTopCard().toString();
+                }
+            }
+
+        }
         // FIXME TASK 14
+        return "D";
     }
 
 
@@ -1258,8 +1470,368 @@ public class Arboretum {
      * TASK 15
      */
     public static String[] generateMove(String[][] gameState) {
-        return null;
+
+        System.out.println(Arrays.deepToString(gameState));
+
+        String[] sharedState = gameState[0];
+        String[] hiddenState = gameState[1];
+
+
+        //turn a string shows who's turn. e.g. "A"  "B"
+        String turn = sharedState[0];
+
+
+        //arboretumA a string shows Player A's arboretum. e.g. "Aa6C00C00d6S01C00"
+        //arboretumACardsList an array shows Player A's arboretum. e.g. [a6, d6, b3, d8, j6, d1, a8, m6, j2, d4]
+        String arboretumA = sharedState[1];
+        String arboretumATrees = arboretumA.substring(1);
+        String[] arboretumACardsList = {};
+        int numCardInArboretumA = 0;
+
+        //check if arboretum is empty. e.g. "A"
+        if (!arboretumATrees.equals("")) {
+
+            //separate arboretum by every 8 bit. e.g. "a6C00C00"
+            String[] arboretumATreesList = arboretumATrees.split("(?<=\\G.{" + 8 + "})");
+            numCardInArboretumA = arboretumATreesList.length;
+
+            //create an array to store all name of tree on arboretum
+            for (String tree : arboretumATreesList) {
+                String name = tree.substring(0, 2);
+                List<String> list = new ArrayList<>(Arrays.stream(arboretumACardsList).toList());
+                list.add(name);
+                arboretumACardsList = list.toArray(new String[0]);
+            }
+        }
+
+
+        //discardA a string shows Player A's discard. e.g. "Ab5m4j3"
+        //discardACards an array shows Player A's discard. e.g. [b5, m4, j3]
+        String discardA = sharedState[2];
+        String discardACards = discardA.substring(1);
+        int numCardInDiscardA = 0;
+        String[] discardACardsList = {};
+
+        //check if discard is empty. e.g. "A"
+        if (!discardACards.equals("")) {
+            discardACardsList = discardACards.split("(?<=\\G.{" + 2 + "})");
+            numCardInDiscardA = discardACardsList.length;
+        }
+
+
+        //arboretumB
+        String arboretumB = sharedState[3];
+        String arboretumBTrees = arboretumB.substring(1);
+        String[] arboretumBCardsList = {};
+        int numCardInArboretumB = 0;
+        if (!arboretumBTrees.equals("")) {
+            String[] arboretumBTreesList = arboretumBTrees.split("(?<=\\G.{" + 8 + "})");
+            numCardInArboretumB = arboretumBTreesList.length;
+            for (String tree : arboretumBTreesList) {
+                String name = tree.substring(0, 2);
+                List<String> list = new ArrayList<>(Arrays.stream(arboretumBCardsList).toList());
+                list.add(name);
+                arboretumBCardsList = list.toArray(new String[0]);
+            }
+        }
+
+
+        //discardB
+        String discardB = sharedState[4];
+        String discardBCards = discardB.substring(1);
+        int numCardInDiscardB = 0;
+        String[] discardBCardsList = {};
+        if (!discardBCards.equals("")) {
+            discardBCardsList = discardBCards.split("(?<=\\G.{" + 2 + "})");
+            numCardInDiscardB = discardBCardsList.length;
+        }
+
+
+        //deck a string shows the deck. e.g. "a1a2a3a4a5a6a7b2b4b5b6b7c1c3c4c5c6c8d1d2d3d5d7j1j3j4j6j7j8m3m4m5m6m7"
+        String deck = hiddenState[0];
+        int numCardInDeck = 0;
+        String[] deckList = {};
+        if (!deck.equals("")) {
+            deckList = deck.split("(?<=\\G.{" + 2 + "})");
+            numCardInDeck = deckList.length;
+        }
+
+
+        //handA a string shows cards in player A's hand. e.g. "Aa8b3c2d6d8j5m2"
+        String handA = hiddenState[1];
+        String handACards = handA.substring(1);
+        int numCardInHandA = 0;
+        String[] handACardsList = {};
+        if (!handACards.equals("")) {
+            handACardsList = handACards.split("(?<=\\G.{" + 2 + "})");
+            numCardInHandA = handACardsList.length;
+        }
+
+
+        //handB a string shows cards in player B's hand. e.g. "Ba8b3c2d6d8j5m2"
+        String handB = hiddenState[2];
+        String handBCards = handB.substring(1);
+        int numCardInHandB = 0;
+        String[] handBCardsList = {};
+        if (!handBCards.equals("")) {
+            handBCardsList = handBCards.split("(?<=\\G.{" + 2 + "})");
+            numCardInHandB = handBCardsList.length;
+        }
+
+
+        Arbor currentArbor = new Arbor(6);
+        Player currentPlayer = new Player(turn,6);
+        Player otherPlayer = new Player(turn,6);
+        if (turn.equals("A")){
+            currentArbor = new Arbor(arboretumA);
+            currentPlayer = new Player(turn,handA,arboretumA,discardA);
+            otherPlayer = new Player("B",handB,arboretumB,discardB);
+        }
+        if(turn.equals("B")) {
+            currentArbor = new Arbor(arboretumB);
+            currentPlayer = new Player(turn,handB,arboretumB,discardB);
+            otherPlayer = new Player("A",handA,arboretumA,discardA);
+        }
+        Arbor result = AIMove(currentPlayer);
+
+        String[] output = new String[2];
+        if (result!= null){
+            String outputString = result.toString().substring(result.toString().length()-8);
+            output[0] = outputString;
+            Card cardToDraw = new Card(outputString.substring(0,2));
+            Position posToDraw = new Position(outputString.substring(2));
+            currentPlayer.discard(cardToDraw);
+            Card discard = AIDiscard(currentPlayer,otherPlayer);
+            output[1] = discard.toString();
+
+        }
+
+
+        return output;
         // FIXME TASK 15
+    }
+
+    public static Arbor AIMove(Player player) {
+        HashMap<Arbor, Position> availableChoices = new LinkedHashMap<>();
+        Arbor arboretum_B = player.getArboretum();
+        HashMap<String, Integer> currentScore = arboretum_B.currentScore();
+        List<Card> availableCards = player.getHand();
+        for (Card card : availableCards) {
+            for (Position pos : player.getArboretum().getAvailablePos()) {
+                Arbor newArbor = new Arbor(player.getName() + player.getArboretum().toString());
+                newArbor.addCard(card, pos);
+                availableChoices.put(newArbor, pos);
+
+            }
+        }
+        HashMap<Arbor, HashMap<String, Integer>> availableResults = new LinkedHashMap<>();
+        for (Arbor key : availableChoices.keySet()) {
+            HashMap<String, Integer> result = compareScores(currentScore, key.currentScore());
+            if (result != currentScore) {
+                availableResults.put(key, result);
+            }
+
+        }
+        HashMap<Arbor, Integer> availableResults2 = new LinkedHashMap<>();
+        int valueBiggest = 0;
+        for (Arbor key : availableResults.keySet()) {
+            HashMap<String, Integer> value = availableResults.get(key);
+            if (value != null) {
+                String keyBiggest = Collections.max(value.entrySet(), Map.Entry.comparingByValue()).getKey();
+                if (value.get(keyBiggest) > valueBiggest) {
+                    valueBiggest = value.get(keyBiggest);
+                    availableResults2.put(key, valueBiggest);
+                }
+            }
+        }
+        if (!availableResults2.isEmpty()) {
+            Arbor result = Collections.max(availableResults2.entrySet(), Map.Entry.comparingByValue()).getKey();
+            System.out.println("AI Move R2 is: " + result);
+            return result;
+        } else {
+            if (!availableResults.isEmpty()) {
+                System.out.println("availableResults1: " + availableResults);
+                List<Arbor> keysAsArray = new ArrayList<>(availableResults.keySet());
+                Random rand = new Random();
+                Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
+                System.out.println("AI Move R1 is: " + result);
+                return result;
+            } else {
+                List<Arbor> keysAsArray = new ArrayList<Arbor>(availableChoices.keySet());
+                Random rand = new Random();
+                Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
+                System.out.println("AI Move R0 is: " + result);
+                return result;
+            }
+        }
+    }
+    public static Arbor AIMove2(Player player) {
+
+        if (player.getName().equals("A")) {
+            HashMap<Arbor, Position> availableChoices = new LinkedHashMap<>();
+            Arbor arboretum_A = player.getArboretum();
+            HashMap<String, Integer> currentScore = arboretum_A.currentScore();
+            List<Card> availableCards = player.getHand();
+            for (Card card : availableCards) {
+                for (Position pos : player.getArboretum().getAvailablePos()) {
+                    Arbor newArbor = new Arbor(player.getName() + player.getArboretum().toString());
+                    newArbor.addCard(card, pos);
+                    availableChoices.put(newArbor, pos);
+
+                }
+            }
+            HashMap<Arbor, HashMap<String, Integer>> availableResults = new LinkedHashMap<>();
+            for (Arbor key : availableChoices.keySet()) {
+                HashMap<String, Integer> result = compareScores(currentScore, key.currentScore());
+                if (result != currentScore) {
+                    availableResults.put(key, result);
+                }
+            }
+            HashMap<Arbor, Integer> availableResults2 = new LinkedHashMap<>();
+            int valueBiggest = 0;
+            for (Arbor key : availableResults.keySet()) {
+                HashMap<String, Integer> value = availableResults.get(key);
+                if (value != null) {
+                    String keyBiggest = Collections.max(value.entrySet(), Map.Entry.comparingByValue()).getKey();
+                    if (value.get(keyBiggest) > valueBiggest) {
+                        valueBiggest = value.get(keyBiggest);
+                        availableResults2.put(key, valueBiggest);
+                    }
+                }
+            }
+            if (!availableResults2.isEmpty()) {
+                Arbor result = Collections.max(availableResults2.entrySet(), Map.Entry.comparingByValue()).getKey();
+                System.out.println("AI Move is: " + result);
+                return result;
+            } else {
+                if (!availableResults.isEmpty()) {
+                    List<Arbor> keysAsArray = new ArrayList<Arbor>(availableResults.keySet());
+                    Random rand = new Random();
+                    Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
+                    System.out.println("AI Move is: " + result);
+                    return result;
+                } else {
+                    List<Arbor> keysAsArray = new ArrayList<Arbor>(availableChoices.keySet());
+                    Random rand = new Random();
+                    Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
+                    System.out.println("AI Move is: " + result);
+                    return result;
+                }
+            }
+        }
+        if (player.getName().equals("B")) {
+            HashMap<Arbor, Position> availableChoices = new LinkedHashMap<>();
+            Arbor arboretum_B = player.getArboretum();
+            HashMap<String, Integer> currentScore = arboretum_B.currentScore();
+            List<Card> availableCards = player.getHand();
+            for (Card card : availableCards) {
+                for (Position pos : player.getArboretum().getAvailablePos()) {
+                    Arbor newArbor = new Arbor(player.getName() + player.getArboretum().toString());
+                    newArbor.addCard(card, pos);
+                    availableChoices.put(newArbor, pos);
+
+                }
+            }
+            HashMap<Arbor, HashMap<String, Integer>> availableResults = new LinkedHashMap<>();
+            for (Arbor key : availableChoices.keySet()) {
+                HashMap<String, Integer> result = compareScores(currentScore, key.currentScore());
+                if (result != currentScore) {
+                    availableResults.put(key, result);
+                }
+
+            }
+            HashMap<Arbor, Integer> availableResults2 = new LinkedHashMap<>();
+            int valueBiggest = 0;
+            for (Arbor key : availableResults.keySet()) {
+                HashMap<String, Integer> value = availableResults.get(key);
+                if (value != null) {
+                    String keyBiggest = Collections.max(value.entrySet(), Map.Entry.comparingByValue()).getKey();
+                    if (value.get(keyBiggest) > valueBiggest) {
+                        valueBiggest = value.get(keyBiggest);
+                        availableResults2.put(key, valueBiggest);
+                    }
+                }
+            }
+            if (!availableResults2.isEmpty()) {
+                Arbor result = Collections.max(availableResults2.entrySet(), Map.Entry.comparingByValue()).getKey();
+                System.out.println("AI Move R2 is: " + result);
+                return result;
+            } else {
+                if (!availableResults.isEmpty()) {
+                    System.out.println("availableResults1: " + availableResults);
+                    List<Arbor> keysAsArray = new ArrayList<>(availableResults.keySet());
+                    Random rand = new Random();
+                    Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
+                    System.out.println("AI Move R1 is: " + result);
+                    return result;
+                } else {
+                    List<Arbor> keysAsArray = new ArrayList<Arbor>(availableChoices.keySet());
+                    Random rand = new Random();
+                    Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
+                    System.out.println("AI Move R0 is: " + result);
+                    return result;
+                }
+
+            }
+
+        }
+        return null;
+    }
+
+    private static HashMap<String, Integer> compareScores(HashMap<String, Integer> scoreOld, HashMap<String, Integer> scoreNew) {
+        if (!scoreOld.isEmpty() && !scoreNew.isEmpty()) {
+            String keyOld = Collections.max(scoreOld.entrySet(), Map.Entry.comparingByValue()).getKey();
+            String keyNew = Collections.max(scoreNew.entrySet(), Map.Entry.comparingByValue()).getKey();
+            if (scoreOld.get(keyOld) < scoreNew.get(keyNew)) {
+                return scoreNew;
+            } else if (scoreOld.get(keyOld) > scoreNew.get(keyNew)) {
+                return scoreOld;
+            } else {
+                int sumNew = scoreNew.values().stream().mapToInt(Integer::intValue).sum();
+                int sumOld = scoreOld.values().stream().mapToInt(Integer::intValue).sum();
+                if (sumNew > sumOld) {
+                    return scoreNew;
+                } else {
+                    return scoreOld;
+                }
+            }
+        } else {
+            return null;
+        }
+
+
+    }
+
+    private static Card AIDiscard(Player player_turn, Player player_notTurn) {
+
+        List<Card> availableChoices = new ArrayList<>();
+        List<Card> player_turn_arbor_cards = player_turn.getArboretum().getArboretumCardList();
+        List<Card> player_notTurn_arbor_cards = player_notTurn.getArboretum().getArboretumCardList();
+        for (Card card : player_turn.getHand()) {
+            if (!player_turn_arbor_cards.contains(card) && player_notTurn_arbor_cards.contains(card)) {
+                availableChoices.add(card);
+            }
+        }
+        Random rand = new Random();
+        Card result;
+        if (!availableChoices.isEmpty()) {
+            result = availableChoices.get(rand.nextInt(availableChoices.size()));
+
+        } else {
+            result = player_turn.getHand().get(rand.nextInt(player_turn.getHand().size()));
+        }
+        if (player_turn.getName().equals("A")) {
+            System.out.println("PlayerA discard: " + result);
+            return result;
+
+        }
+        if (player_turn.getName().equals("B")) {
+            System.out.println("PlayerB discard: " + result);
+            return result;
+
+        }
+        return result;
+
     }
 
     /**

@@ -8,7 +8,7 @@ import static comp1110.ass2.ExampleGames.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.junit.jupiter.api.Assertions.*;
 
-@org.junit.jupiter.api.Timeout(value = 1000, unit = MILLISECONDS)
+@org.junit.jupiter.api.Timeout(value = 9999, unit = MILLISECONDS)
 
 public class GenerateMoveTest {
 
