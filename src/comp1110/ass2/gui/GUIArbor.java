@@ -8,6 +8,9 @@ import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -62,14 +65,25 @@ public class GUIArbor extends Group {
 
         //create a border to mark the visual bounds of the arbor
         borderOutside=new Rectangle(xSize,ySize);
+        borderOutside.setFill(new LinearGradient(
+                0, 0, 1, 1, true,                      //sizing
+                CycleMethod.NO_CYCLE,                  //cycling
+                new Stop(0, Color.web("#D59289")),     //colors
+                new Stop(1, Color.web("#E2BBAA")))
+        );
         borderInside=new Rectangle(xSize-margin*2,ySize-margin*2);
-        borderOutside.setFill(Color.LIGHTGREY);
-        borderInside.setFill(Color.WHITE);
+//        borderOutside.setFill(Color.LIGHTGREY);
+        borderInside.setFill(new LinearGradient(
+                0, 0, 1, 1, true,                      //sizing
+                CycleMethod.NO_CYCLE,                  //cycling
+                new Stop(0, Color.web("#E6FFD0")),     //colors
+                new Stop(1, Color.web("#EDFFDF")))
+        );
         borderInside.setLayoutX(margin);
         borderInside.setLayoutY(margin);
         this.getChildren().addAll(borderOutside,borderInside);
         //establish a starting position at (0,0) - this will be expanded into a 3x3 grid before initial display
-        this.positions=new LinkedList<LinkedList<GUIPosition>>();
+        this.positions=new LinkedList<>();
         GUIPosition origin=addNewPosition(0,0);
         LinkedList<GUIPosition> start=new LinkedList<>();
         start.add(origin);
@@ -114,7 +128,7 @@ public class GUIArbor extends Group {
     }
     public void startTurn() {
         this.thisTurn=true;
-        this.borderOutside.setFill(Color.AQUAMARINE);
+        this.borderOutside.setFill(Color.GOLD);
         this.borderInside.setLayoutX(margin+1);
         this.borderInside.setLayoutY(margin+1);
         this.borderInside.setWidth(ARBOR_X_SIZE-margin*2-2);
@@ -268,7 +282,7 @@ public class GUIArbor extends Group {
      */
     public void highlightSlot(double x, double y) {
         //reset current highlighted slot back to normal
-        if(this.highlighted!=null) highlighted.setFill(Color.LIGHTGREY);
+        if(this.highlighted!=null) highlighted.setFill(Color.web("#B3774A"));
 
         //find the nearest slot
         GUIPosition closest=this.findNearestSlot(x,y);
@@ -276,7 +290,7 @@ public class GUIArbor extends Group {
         //if this is a valid place to play - i.e. a legal position and this arbor belongs to the current player - highlight the nearest slot
         if(closest.canPlayArbor()&&this.thisTurn) {
             this.highlighted=closest;
-            closest.setFill(Color.GREY);
+            closest.setFill(Color.web("#845734"));
         }
     }
 

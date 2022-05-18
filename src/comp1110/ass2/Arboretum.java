@@ -1368,6 +1368,7 @@ public class Arboretum {
 //
 //        }
         // FIXME TASK 14
+        //see AIDraw() In Game.java this method is just for pass task
         if (deck.length() != 0) {
             return "D";
         } else {
@@ -1444,7 +1445,6 @@ public class Arboretum {
             otherPlayer = new Player("A", handA, arboretumA, discardA);
         }
 //        Arbor result = AIMove(currentPlayer);
-
         Arbor result = DumbAIMove(currentPlayer);
 
         String[] output = new String[2];
@@ -1465,7 +1465,13 @@ public class Arboretum {
 
         // FIXME TASK 15
     }
-
+    /**
+     * Contribution: Junxian
+     * A smaller size of AIMove with only firs level
+     *
+     * @param player the player to perform action
+     * @return an Arbor with best score
+     */
     private static Arbor DumbAIMove(Player player) {
         HashMap<Arbor, Position> availableChoices = new LinkedHashMap<>();
         List<Card> availableCards = player.getHand();
@@ -1487,6 +1493,14 @@ public class Arboretum {
         }
     }
 
+    /**
+     * Contribution: Junxian
+     * AI make an action to get best score, by put all possible cards to all possibility position, due the size of
+     * current Game, the calculation time is acceptable.
+     *
+     * @param player the player to perform action
+     * @return an Arbor with best score
+     */
     private static Arbor AIMove(Player player) {
         HashMap<Arbor, Position> availableChoices = new LinkedHashMap<>();
         Arbor arboretum_B = player.getArboretum();
@@ -1497,7 +1511,6 @@ public class Arboretum {
                 Arbor newArbor = new Arbor(player.getName() + player.getArboretum().toString());
                 newArbor.addCard(card, pos);
                 availableChoices.put(newArbor, pos);
-
             }
         }
         HashMap<Arbor, HashMap<String, Integer>> availableResults = new LinkedHashMap<>();
@@ -1521,20 +1534,17 @@ public class Arboretum {
         }
         if (!availableResults2.isEmpty()) {
             Arbor result = Collections.max(availableResults2.entrySet(), Map.Entry.comparingByValue()).getKey();
-//            System.out.println("AI Move R2 is: " + result);
             return result;
         } else {
             if (!availableResults.isEmpty()) {
                 List<Arbor> keysAsArray = new ArrayList<>(availableResults.keySet());
                 Random rand = new Random();
                 Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
-//                System.out.println("AI Move R1 is: " + result);
                 return result;
             } else {
                 List<Arbor> keysAsArray = new ArrayList<Arbor>(availableChoices.keySet());
                 Random rand = new Random();
                 Arbor result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
-//                System.out.println("AI Move R0 is: " + result);
                 return result;
             }
         }
@@ -1564,6 +1574,16 @@ public class Arboretum {
 
     }
 
+    /**
+     * Contribution: Junxian
+     * discard A card for player_turn, the card to discard should:
+     *      1. cannot reduce the possibility for player_turn to get right to score
+     *      2. cannot increase the possibility for player_notTurn to get higher score
+     *      3. cannot increase the possibility for player_notTurn to get right to score
+     * otherwise, just random discard.
+     * @param player_turn the player in turn
+     * @param player_notTurn the player not in turn
+     */
     private static Card AIDiscard(Player player_turn, Player player_notTurn) {
 
         List<Card> availableChoices = new ArrayList<>();
@@ -1614,15 +1634,5 @@ public class Arboretum {
                 isPlacementValid(validState, placementString);
             }
         }
-        Position test1 = new Position("C00C00");
-        Position test2 = new Position(0, 0);
-        System.out.println(test1.hashCode());
-        System.out.println(test2.hashCode());
-        String outputString = new String("abc\nc");
-        System.out.println(outputString);
-        Arbor aArbor = new Arbor(validState[0][1]);
-        Arbor bArbor = new Arbor(validState[0][3]);
-        System.out.println(aArbor.currentScore()); //validState, 'A'
-        System.out.println(bArbor.currentScore()); //validState, 'B'
     }
 }

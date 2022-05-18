@@ -24,7 +24,7 @@ public class GUIPosition extends Rectangle {
         super();
         this.position=pos;
         this.arbor=arbor;
-        this.setFill(Color.LIGHTGREY);
+        this.setFill(Color.web("#B3774A"));
         this.guiArbor=gui;
         this.playedCard=null;
 

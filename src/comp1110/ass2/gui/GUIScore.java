@@ -3,6 +3,9 @@ package comp1110.ass2.gui;
 import comp1110.ass2.game.Arbor;
 import comp1110.ass2.game.Player;
 import javafx.scene.Group;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class GUIScore extends Group {
@@ -34,6 +37,10 @@ public class GUIScore extends Group {
         if (inverse) scoreText.setX(xPosArbor-ARBOR_X_SIZE*1.85);
         else scoreText.setX(xPosArbor+ARBOR_X_SIZE);
         scoreText.setY(yPosArbor);
+        String font_name = Font.getFamilies().get(25);
+        int size = 13;
+        Font font = Font.font(font_name, FontWeight.BOLD, FontPosture.REGULAR, size);
+        scoreText.setFont(font);
         this.getChildren().add(scoreText);
     }
 
