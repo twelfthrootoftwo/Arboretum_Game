@@ -22,29 +22,29 @@ declaration: >-
 #collaboration:
 #  - name:
 #    comment: >-
+
+# Use this to list any code that you used that you did not write,
+# aside from code provided by the lecturer.  Provide a comment
+# explaining your use and the URL to that code and the licence for
+# that code
 #
-## Use this to list any code that you used that you did not write,
-## aside from code provided by the lecturer.  Provide a comment
-## explaining your use and the URL to that code and the licence for
-## that code
-##
-## Add as many "url+licence+comment" entries as necessary
-## (or remove it altogether if you haven't used any external code)
-#code:
-#  - comment:
-#    url:
-#    licence:
+# Add as many "url+licence+comment" entries as necessary
+# (or remove it altogether if you haven't used any external code)
+code:
+  - comment: Example of overriding equals method for classes
+    url: https://stackoverflow.com/questions/34452816/java-comparing-two-identical-objects-gives-false
+    licence: CC BY-SA 3.0 https://stackoverflow.com/help/licensing
+
+# Use this to list any assets (artwork, sound, etc) that you used.
+# Provide a comment explaining your use of that asset and the URL
+# and license for the asset
 #
-## Use this to list any assets (artwork, sound, etc) that you used.
-## Provide a comment explaining your use of that asset and the URL
-## and license for the asset
-##
-## Add as many "url+licence+comment" entries as necessary
-## (or remove it altogether if you haven't used any external assets)
-#assets:
-#  - comment:
-#    url:
-#    licence:
+# Add as many "url+licence+comment" entries as necessary
+# (or remove it altogether if you haven't used any external assets)
+assets:
+  - comment: Card art
+    url: https://boardgamegeek.com/filepage/146943/arboretum-fan-made-cards
+    licence: BoardGameGeek terms of service https://boardgamegeek.com/terms#toc14
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer

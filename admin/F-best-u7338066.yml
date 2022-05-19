@@ -20,7 +20,7 @@ declaration: >-
 # (or remove it altogether if you haven't collaborated with anyone)
 collaboration:
   - name: Natasha Pegler
-      comment: Created method Arbor.currentScore() based on her functions in Arbor.
+    comment: Created method Arbor.currentScore() based on her functions in Arbor.
 
 
 # I wish to submit the following classes as entirely my own (remove this if

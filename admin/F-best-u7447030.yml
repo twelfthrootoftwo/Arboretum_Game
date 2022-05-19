@@ -13,6 +13,17 @@ declaration: >-
   I submit the work below for assessment as my best work. I declare that this
   is entirely my own work, with the following documented exceptions:
 
+# Use this to list names of people who you collaborated with, and a
+# comment about what you collaborated on.
+#
+# Add as many "name+comment" entries as necessary
+# (or remove it altogether if you haven't collaborated with anyone)
+collaboration:
+  - name: Hongzhe Zhu
+    comment: Created the in-game score display and validity testing which were used in the end-game score display, and extended Arbor scoring process to assist score display
+
+  - name: Junxian Chen
+    comment: Developed the initial viewer and interaction code which formed the foundation of the final GUI. Also reworked parts of Arbor and GUIArbor to interface with the AI and improve appearance.
 
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
@@ -24,11 +35,11 @@ class:
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
 method:
+   - Arbor scoring routine, https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/game/Arbor.java#L244-414
    - Game.updateDisplayHand() https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/Game.java#L291-312
    - Game.trackDraw(),Game.trackCardPlayed(),Game.trackCardDiscarded() https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/Game.java#L666-720
    - GUICard.findArbor(), https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/GUICard.java#L167-180
    - GUICard.findDiscard(), https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/GUICard.java#L311-324
-   - Arbor scoring routine, https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/game/Arbor.java#L244-414
 
 # sign *your* name and uid here
 name: Natasha Pegler
