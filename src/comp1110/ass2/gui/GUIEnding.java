@@ -65,7 +65,7 @@ public class GUIEnding extends Group {
         } else {
             //tie!
             this.content="---------GAME OVER---------" +
-                    '\n' + " " +'\n' + "                " +  "It's a tie!";
+                    '\n'+"It's a tie!\nBoth players plant a tree\nWhoever has the biggest tree in 5 years wins!";
         }
 
         Button restart   = new Button("New Game");

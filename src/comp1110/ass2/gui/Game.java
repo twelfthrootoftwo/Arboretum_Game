@@ -334,7 +334,7 @@ public class Game extends Application {
      */
     private boolean isGameEnd() {
         this.gameEnd = this.deck.isEmpty();
-
+//        this.gameEnd = true;
         System.out.println("Tracking game end possibility: " + this.gameEnd);
         return this.gameEnd;
     }
