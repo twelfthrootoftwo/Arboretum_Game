@@ -474,7 +474,6 @@ public class Arboretum {
         Card drawnCard = constructedDeck.drawTopCard();
 
         String cardCode = drawnCard.toString();
-        System.out.println(cardCode);
         return cardCode;
     }
 

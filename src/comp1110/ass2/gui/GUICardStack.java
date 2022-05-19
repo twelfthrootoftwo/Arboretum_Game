@@ -87,7 +87,7 @@ public class GUICardStack extends Group {
         //Relevant if the stack is empty, or if it's a discard and the top card display needs to change
         if(stack.isEmpty()||!this.isDeck) {
             if(this.topCard!=null) {
-                System.out.println("Removing top card "+topCard.getCard());
+//                System.out.println("Removing top card "+topCard.getCard());
                 this.getChildren().remove(this.topCard);
                 this.topCard=null;
             }

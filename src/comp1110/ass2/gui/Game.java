@@ -39,8 +39,12 @@ public class Game extends Application {
 
     private static final int SCORE_X = 450;
     private static final int SCORE_Y = 480;
+    private static final int HINT_X = 20;
+    private static final int HINT_Y = 20;
     private static final int ARBOR_X = 450;
     private static final int ARBOR_Y = 480;
+    private static final int hintx = 480;
+    private static final int hinty = 380;
     private static final int leftArborX = 10;
     private static final int leftArborY = 10;
     private static final int rightArborX = BOARD_WIDTH - leftArborX - ARBOR_X;
@@ -85,7 +89,11 @@ public class Game extends Application {
     private GUICardStack displayDeck;
     private GUICardStack displayDiscardA;
     private GUICardStack displayDiscardB;
+    private GUIHint guiHint;
     private Button playButton = new Button("Next");
+
+    private boolean playerAHuman = true;
+    private boolean playerBHuman = false;
 
 
     public Game() throws FileNotFoundException {
@@ -102,9 +110,9 @@ public class Game extends Application {
         // FIXME Task 16: Implement a computer opponent so that a human can play your game against the computer.
         // FIXME Task 18: Implement variant(s).
         stage.setTitle("comp1110.ass2.Arboretum");
+        GUIStart startScreen = new GUIStart(this,700,700, 250,0);
+        startScreen.toFront();
 
-
-//        //setup
         this.deck = new Deck(6);
         this.playerA = new Player("A", 6);
         this.playerB = new Player("B", 6);
@@ -116,11 +124,13 @@ public class Game extends Application {
         this.activeTurn = "A";
         this.turnState = TurnState.end;
 
+
         //add arbor, current score, cards, decks to display
         this.displayArborA = new GUIArbor(playerA, this, ARBOR_X, ARBOR_Y, leftArborX, leftArborY, arborMargin, false);
         this.displayArborB = new GUIArbor(playerB, this, ARBOR_X, ARBOR_Y, rightArborX, rightArborY, arborMargin, true);
         GUIScore GUIScoreA = new GUIScore(playerA, SCORE_X, SCORE_Y, leftArborX, leftArborY, false);
         GUIScore GUIScoreB = new GUIScore(playerB, SCORE_X, SCORE_Y, rightArborX, rightArborY, true);
+        this.guiHint = new GUIHint(this,HINT_X, HINT_Y,hintx,hinty);
         String font_name = Font.getFamilies().get(25);
         int size = 30;
         Font font = Font.font(font_name, FontWeight.BOLD, FontPosture.REGULAR, size);
@@ -138,7 +148,7 @@ public class Game extends Application {
                 new Stop(0, Color.web("#EEEEEE")),     //colors
                 new Stop(1, Color.web("#FCFCFC")))
         );
-        root.getChildren().addAll(displayArborA, displayArborB, playButton, GUIScoreA, GUIScoreB);
+        root.getChildren().addAll(displayArborA, displayArborB, playButton, GUIScoreA, GUIScoreB,guiHint);
 
         //displayArborA.updateFromBackend();
         //displayArborB.updateFromBackend();
@@ -163,9 +173,8 @@ public class Game extends Application {
         root.getChildren().addAll(displayDeck, displayDiscardA, displayDiscardB);
 
         //player settings
-        boolean playerAHuman = true;
-        boolean playerBHuman = false;
-
+        root.getChildren().add(startScreen);
+        guiHintUpdate();
         //await game start on button press
         playButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
@@ -180,7 +189,9 @@ public class Game extends Application {
                 }
                 //TurnState.end to achieve loop and state control
                 if (turnState == TurnState.end) {
+
                     turnState = TurnState.begin;
+                    guiHintUpdate();
                     //player A's turn
                     if (activeTurn.equals("A")) {
                         playerB.getDisplayArbor().endTurn();
@@ -208,13 +219,15 @@ public class Game extends Application {
                             displayDiscardA.updateTopCard();
                             System.out.println("AI Discard finish");
                             System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
-                            System.out.println("End A's turn, start B's turn");
+
                         }
+
                         activeTurn = "B";
                         // update score text
                         root.getChildren().remove(GUIScoreB);
                         GUIScoreB.update();
                         root.getChildren().add(GUIScoreB);
+
 
                     } else if (activeTurn.equals("B")) {
                         playerA.getDisplayArbor().endTurn();
@@ -244,7 +257,9 @@ public class Game extends Application {
                             System.out.println("AI Discard finish");
                             System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
 
+
                         }
+
                         activeTurn = "A";
                         // update score text
                         root.getChildren().remove(GUIScoreA);
@@ -259,6 +274,11 @@ public class Game extends Application {
 
     }
 
+    private void guiHintUpdate(){
+        root.getChildren().remove(guiHint);
+        guiHint.update();
+        root.getChildren().add(guiHint);
+    }
     /**
      * Contribution: Natasha
      * Setup to start the turn of a player, including changing GUIArbor display, drawing cards, and showing hand
@@ -448,6 +468,7 @@ public class Game extends Application {
                 }
             }
             this.turnState = TurnState.play;
+            guiHintUpdate();
         } else {
             //if availablePlayers2 is empty, then both discardPiles are empty, just draw from deck.
             System.out.println("ai draw from: deck");
@@ -455,6 +476,7 @@ public class Game extends Application {
             System.out.println("ai draw from: deck");
             player_turn.draw(this.deck);
             this.turnState = TurnState.play;
+            guiHintUpdate();
         }
     }
 
@@ -494,12 +516,14 @@ public class Game extends Application {
             System.out.println("PlayerA discard: " + result);
             playerA.discard(result);
             this.turnState = TurnState.end;
+            guiHintUpdate();
             this.playButton.setDisable(false);
         }
         if (player_turn.getName().equals("B")) {
             System.out.println("PlayerB discard: " + result);
             playerB.discard(result);
             this.turnState = TurnState.end;
+            guiHintUpdate();
             this.playButton.setDisable(false);
         }
     }
@@ -574,6 +598,7 @@ public class Game extends Application {
             Pair<Card, Position> pair = findCardToPlay(result);
             player.play(pair.getKey(), pair.getValue());
             this.turnState = TurnState.discard;
+            guiHintUpdate();
             return result;
         } else {
             //random select if reach the second level
@@ -585,6 +610,7 @@ public class Game extends Application {
                 Pair<Card, Position> pair = findCardToPlay(result);
                 player.play(pair.getKey(), pair.getValue());
                 this.turnState = TurnState.discard;
+                guiHintUpdate();
                 return result;
             } else {
                 //random select
@@ -595,6 +621,7 @@ public class Game extends Application {
                 Pair<Card, Position> pair = findCardToPlay(result);
                 player.play(pair.getKey(), pair.getValue());
                 this.turnState = TurnState.discard;
+                guiHintUpdate();
                 return result;
             }
         }
@@ -655,9 +682,11 @@ public class Game extends Application {
      */
     public boolean trackDraw() {
         if (this.turnState == TurnState.firstDraw) {
+            guiHintUpdate();
             this.turnState = TurnState.secondDraw;
             return true;
         } else if (this.turnState == TurnState.secondDraw) {
+            guiHintUpdate();
             this.turnState = TurnState.play;
             return true;
         } else return false;
@@ -665,6 +694,7 @@ public class Game extends Application {
 
     public boolean trackCardPlayed() {
         if (this.turnState == TurnState.play) {
+            guiHintUpdate();
             this.turnState = TurnState.discard;
             return true;
         }
@@ -673,6 +703,7 @@ public class Game extends Application {
 
     public boolean trackCardDiscarded() {
         if (this.turnState == TurnState.discard) {
+            guiHintUpdate();
             this.turnState = TurnState.end;
             this.playButton.setDisable(false);
             this.isGameEnd();
@@ -702,5 +733,24 @@ public class Game extends Application {
     //TODO - fix GUICard implementation so this isn't needed
     public Group getRoot() {
         return this.root;
+    }
+
+    public boolean isPlayerAHuman() {
+        return playerAHuman;
+    }
+
+    public void setPlayerAHuman(boolean playerAHuman) {
+        this.playerAHuman = playerAHuman;
+    }
+
+    public boolean isPlayerBHuman() {
+        return playerBHuman;
+    }
+    public void setPlayerBHuman(boolean playerBHuman) {
+        this.playerBHuman = playerBHuman;
+    }
+
+    public TurnState getTurnState() {
+        return this.turnState;
     }
 }

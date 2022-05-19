@@ -111,7 +111,7 @@ class GUICard extends ImageView {
         try {
             setImage(getImage(card));
         } catch (FileNotFoundException e) {
-            System.out.println("Image not found for card "+card);
+            System.out.println(e + " Image not found for card "+ card);
         }
 
 
