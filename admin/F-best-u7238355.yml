@@ -20,14 +20,10 @@ declaration: >-
 # (or remove it altogether if you haven't collaborated with anyone)
 collaboration:
   - name: Hongzhe Zhu
-    comment: Working together at Game.java. By using the method Arbor.currentScore()
-    from Hongzhe to calculate best score for AI implementation.
+    comment: Working together at Game.java. By using the method Arbor.currentScore() from Hongzhe to calculate best score for AI implementation.
 
   - name: Natasha Pegler
-    comment: Working together mainly cover all game, mainly at Game.java. Natasha has
-    create the ground structure of the game, most of advanced methods I created references
-    her methods, to get better game performance, i have improved many of her classes/methods such as
-    GUIArbor, GUIPosition...
+    comment: Working together mainly cover all game, mainly at Game.java. Natasha has create the ground structure of the game, most of advanced methods I created references her methods, to get better game performance, i have improved many of her classes/methods such as GUIArbor, GUIPosition...
 
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
