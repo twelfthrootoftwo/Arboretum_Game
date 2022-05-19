@@ -1,0 +1,47 @@
+# IMPORTANT: It is very important that you correctly complete this originality
+# statement.
+#
+# This is your statement of your submitted work being your own.
+# Incorrectly filling out this statement could lead to charges
+# of academic misconduct.
+# 
+# For information on how to fill this out correctly, see
+# https://cs.anu.edu.au/courses/comp1110/help/faq/09-originality/
+#
+
+declaration: >-
+  I submit the work below for assessment as my best work. I declare that this
+  is entirely my own work, with the following documented exceptions:
+
+# Use this to list names of people who you collaborated with, and a
+# comment about what you collaborated on.
+#
+# Add as many "name+comment" entries as necessary
+# (or remove it altogether if you haven't collaborated with anyone)
+collaboration:
+  - name: Hongzhe Zhu
+    comment: Working together at Game.java. By using the method Arbor.currentScore()
+    from Hongzhe to calculate best score for AI implementation.
+
+  - name: Natasha Pegler
+    comment: Working together mainly cover all game, mainly at Game.java. Natasha has
+    create the ground structure of the game, most of advanced methods I created references
+    her methods, to get better game performance, i have improved many of her classes/methods such as
+    GUIArbor, GUIPosition...
+
+# I wish to submit the following classes as entirely my own (remove this if
+# you want to just submit methods):
+class:
+   - https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/GUIHint.java
+   - https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/GUIStart.java
+
+# I wish to submit the following methods as entirely my own (remove this if
+# you want to just submit classes):
+method:
+   - https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/Game.java#L383-481
+   - https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/Game.java#L484-529
+   - https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/Game.java#L531-675
+
+# sign *your* name and uid here
+name: Junxian Chen
+uid: u7238355

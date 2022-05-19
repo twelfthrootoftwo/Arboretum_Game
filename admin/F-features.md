@@ -8,5 +8,6 @@ of our project implements the following features:
  - A basic playable game that snaps cards to their placement location and checks for validity (Task 11)
  - Playable against a computer opponent (Task 16)
  - Implements interesting game variant/s (Task 18)
-
-additional features...
+ - Game hint and instruction
+ - Start screen to choose player or computer to play with.
+ 
