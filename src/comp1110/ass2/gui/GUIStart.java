@@ -41,10 +41,12 @@ public class GUIStart extends Group {
         Font font = Font.font(font_name, FontWeight.BOLD, FontPosture.REGULAR, size);
 
         Button button1   = new Button("VS  Human");
-        Rectangle space = new Rectangle();
+        Rectangle space1 = new Rectangle();
         Button button2   = new Button("VS  Computer");
+        Button button3=new Button("Bot Battle");
         button1.setPadding(new Insets(50, 100, 50, 100));
         button2.setPadding(new Insets(50, 100, 50, 100));
+        button3.setPadding(new Insets(50, 100, 50, 100));
         button1.setStyle("-fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;" +
                 "-fx-background-radius: 8; " +
                 "-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),#9d4024,#d86e3a,radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);");
@@ -53,6 +55,10 @@ public class GUIStart extends Group {
                 "-fx-background-radius: 8; " +
                 "-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),#9d4024,#d86e3a,radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);");
         button2.setFont(font);
+        button3.setStyle("-fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;" +
+                "-fx-background-radius: 8; " +
+                "-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),#9d4024,#d86e3a,radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);");
+        button3.setFont(font);
         button1.setOnMouseClicked((new EventHandler<MouseEvent>() {
 
                     public void handle(MouseEvent event) {
@@ -65,14 +71,26 @@ public class GUIStart extends Group {
         button2.setOnMouseClicked((new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 //game.setPlayerAHuman(true);
+                game.setPlayerAHuman(true);
+                game.setPlayerBHuman(false);
+                game.getRoot().getChildren().remove(toRemove);
+
+            }
+        }));
+        button3.setOnMouseClicked((new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                //game.setPlayerAHuman(true);
                 game.setPlayerAHuman(false);
                 game.setPlayerBHuman(false);
                 game.getRoot().getChildren().remove(toRemove);
 
             }
         }));
-        space.setHeight(200);
-        space.setOpacity(0);
+        space1.setHeight(100);
+        space1.setOpacity(0);
+        Rectangle space2=new Rectangle();
+        space2.setHeight(100);
+        space2.setOpacity(0);
         root = new FlowPane();
 
         root.setStyle("-fx-background-color: rgba(0,0,0,0.4);");
@@ -84,7 +102,7 @@ public class GUIStart extends Group {
 
         border.setPadding(new Insets(100, 180, 100, 180));
 
-        border.getChildren().addAll(button1,space, button2);
+        border.getChildren().addAll(button1,space1, button2,space2,button3);
         root.getChildren().addAll(border);
 
 
