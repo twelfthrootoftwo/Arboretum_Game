@@ -2,6 +2,7 @@ package comp1110.ass2.game;
 
 import comp1110.ass2.Arboretum;
 import comp1110.ass2.gui.GUIArbor;
+import comp1110.ass2.gui.GUICardStack;
 
 import java.util.ArrayList;
 import java.util.List;

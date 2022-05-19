@@ -90,6 +90,8 @@ public class Game extends Application {
     private GUICardStack displayDeck;
     private GUICardStack displayDiscardA;
     private GUICardStack displayDiscardB;
+    private GUIScore GUIScoreA;
+    private GUIScore GUIScoreB;
     private GUIHint guiHint;
     private Button playButton;
     private GUIEnding endScreen;
@@ -220,30 +222,7 @@ public class Game extends Application {
                         updateDisplayHand(playerA);
                         //run AI if this player is computer controlled
                         if (!playerAHuman) {
-                            //AI draw cards
-                            AIDraw(playerA, playerB);
-                            //update discard GUI In case AI draw from player's discard
-                            updateDisplayHand(playerA);
-                            displayDiscardA.updateTopCard();
-                            displayDiscardB.updateTopCard();
-                            displayDeck.updateTopCard();
-                            System.out.println("AI draw finish");
-                            //AI make a move
-                            AIMove(playerA);
-                            //update Arbor GUI
-                            displayArborA.updateFromBackend();
-                            updateDisplayHand(playerA);
-                            System.out.println("AI Move finish");
-                            System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
-                            //AI discard a card
-                            AIDiscard(playerA, playerB);
-                            //update hand and discard GUI after discard
-                            //updateDisplayHand(playerA);
-                            displayDiscardA.updateTopCard();
-                            updateDisplayHand(playerA);
-                            System.out.println("AI Discard finish");
-                            System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
-
+                            AITurn(playerA,playerB);
                         }
                         updateDisplayHand(playerA);
                         activeTurn = "B";
@@ -261,33 +240,7 @@ public class Game extends Application {
                         updateDisplayHand(playerB);
                         //run AI if this player is computer controlled
                         if (!playerBHuman) {
-                            //AI draw cards
-                            AIDraw(playerB, playerA);
-                            //update discard GUI In case AI draw from player's discard
-                            updateDisplayHand(playerB);
-                            displayDiscardA.updateTopCard();
-                            displayDiscardB.updateTopCard();
-                            displayDeck.updateTopCard();
-
-                            System.out.println("AI draw finish");
-                            System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
-                            //AI make a move
-                            AIMove(playerB);
-                            //update Arbor GUI
-                            displayArborB.updateFromBackend();
-                            updateDisplayHand(playerB);
-                            System.out.println("AI Move finish");
-                            System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
-                            //AI discard a card
-                            AIDiscard(playerB, playerA);
-                            //update hand and discard GUI after discard
-                            //updateDisplayHand(playerB);
-                            displayDiscardB.updateTopCard();
-                            updateDisplayHand(playerB);
-                            System.out.println("AI Discard finish");
-                            System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
-
-
+                            AITurn(playerB,playerA);
                         }
                         updateDisplayHand(playerB);
                         activeTurn = "A";
@@ -798,5 +751,29 @@ public class Game extends Application {
     public void displayGameEnd() {
         endScreen = new GUIEnding(this, playerA, playerB, ARBOR_X + 2 * leftArborX, playButton.getLayoutY(), BOARD_WIDTH - 2 * (ARBOR_X + 2 * leftArborX), 300, generateGameState(playerA, playerB, deck, activeTurn));
         root.getChildren().add(endScreen);
+    }
+
+
+    private void AITurn(Player aiPlayer, Player otherPlayer) {
+        //AI draw cards
+        AIDraw(aiPlayer, otherPlayer);
+        displayDeck.updateTopCard();
+        System.out.println("AI draw finish");
+        updateDisplayHand(aiPlayer);
+        //AI make a move
+        AIMove(aiPlayer);
+        //update Arbor GUI
+        aiPlayer.getDisplayArbor().updateFromBackend();
+        System.out.println("AI Move finish");
+        updateDisplayHand(aiPlayer);
+        System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
+        //AI discard a card
+        AIDiscard(aiPlayer, otherPlayer);
+        //update hand and discard GUI after discard
+        displayDiscardA.updateTopCard();
+        displayDiscardB.updateTopCard();
+        System.out.println("AI Discard finish");
+        updateDisplayHand(aiPlayer);
+        System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
     }
 }
