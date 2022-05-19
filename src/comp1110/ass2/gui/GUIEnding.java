@@ -3,7 +3,6 @@ package comp1110.ass2.gui;
 import comp1110.ass2.Arboretum;
 import comp1110.ass2.game.Player;
 import comp1110.ass2.game.Species;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -14,11 +13,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public class GUIEnding extends Group {
     public Player winner;

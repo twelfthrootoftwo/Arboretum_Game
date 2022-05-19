@@ -39,6 +39,9 @@ public class GUIHint extends Group {
         this.getChildren().add(HintText);
     }
 
+    /**
+     * Update hint text with the latest information
+     */
     public void update(){
         if (game.getTurnState() == TurnState.firstDraw  || game.getTurnState() == TurnState.begin){
             this.test = "Draw Two cards from deck or discard.";

@@ -19,22 +19,23 @@ declaration: >-
 # Add as many "name+comment" entries as necessary
 # (or remove it altogether if you haven't collaborated with anyone)
 collaboration:
-  - name:
-    comment: >-
+  - name: Natasha Pegler
+      comment: Created method Arbor.currentScore() based on her functions in Arbor.
 
 
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
 class:
-   - 
-   - 
+   - GUIScore.java https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/GUIScore.java
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
 method:
-   - 
-   - 
+   - Arbor.seperateCards()
+   - Arbor.currentScore()
+   - Arbor.getHighestScore()
+   - Arboretum.speciesFullName()
 
 # sign *your* name and uid here
-name:
-uid:
+name: Hongzhe Zhu
+uid: u7338066

@@ -48,7 +48,7 @@ public class GUIScore extends Group {
     }
 
     /**
-     * Contribution: Natasha
+     * Contribution: Natasha, Hongzhe
      * Alternate constructor that just specifies x and y position
      * @param player - the Player to track
      * @param x - the x position
@@ -74,7 +74,10 @@ public class GUIScore extends Group {
         scoreText.setFont(font);
         this.getChildren().add(scoreText);
     }
-
+    /**
+     * Contribution: Hongzhe
+     * Updates the score with the latest information
+     */
     public void update(){
         this.score = "";
         for (String species : arbor.currentScore().keySet()){
