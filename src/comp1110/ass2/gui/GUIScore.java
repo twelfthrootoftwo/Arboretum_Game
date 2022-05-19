@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Arboretum;
 import comp1110.ass2.game.Arbor;
 import comp1110.ass2.game.Player;
 import javafx.scene.Group;
@@ -7,6 +8,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+
+import java.util.List;
 
 public class GUIScore extends Group {
     public Player player;
@@ -44,10 +47,38 @@ public class GUIScore extends Group {
         this.getChildren().add(scoreText);
     }
 
+    /**
+     * Contribution: Natasha
+     * Alternate constructor that just specifies x and y position
+     * @param player - the Player to track
+     * @param x - the x position
+     * @param y - the y position
+     * @param margin - offset between x and y positions and the text display
+     */
+    public GUIScore(Player player, double x, double y, int margin) {
+        this.player=player;
+        this.arbor=player.getArboretum();
+        this.setLayoutX(x);
+        this.setLayoutY(y);
+        this.heading = player +
+                " Score: " + newLine;
+        this.ARBOR_X_SIZE=0;
+        this.ARBOR_Y_SIZE=0;
+
+        scoreText = new Text(heading);
+        scoreText.setX(x+margin);
+        scoreText.setY(y+margin);
+        String font_name = Font.getFamilies().get(25);
+        int size = 13;
+        Font font = Font.font(font_name, FontWeight.BOLD, FontPosture.REGULAR, size);
+        scoreText.setFont(font);
+        this.getChildren().add(scoreText);
+    }
+
     public void update(){
         this.score = "";
         for (String species : arbor.currentScore().keySet()){
-            this.score += speciesFullName(species) + " : " + arbor.currentScore().get(species);
+            this.score += Arboretum.speciesFullName(species) + " : " + arbor.currentScore().get(species);
             this.score += newLine;
         }
         this.getChildren().remove(scoreText);
@@ -55,18 +86,36 @@ public class GUIScore extends Group {
         this.getChildren().add(scoreText);
     }
 
-    /** Contribution: Hongzhe
-     * Convert the short name to the full name of a species.
-     * @param shortName the short name of the species
-     * @return the full name of the species
+    /**
+     * Contribution: Natasha
+     * Variant update that only displays certain species according to input
+     * Used for the post-game display screen
+     * @param speciesList - a list of strings that should represent species one-letter codes
+     * @return an int as the total score for this set of species
      */
-    public String speciesFullName(String shortName){
-        if (shortName == "a") return "Cassia";
-        else if (shortName == "b") return "BlueSpruce";
-        else if (shortName == "c") return "Cherry";
-        else if (shortName == "d") return "Dogwood";
-        else if (shortName == "j") return "Jacaranda";
-        else return "Maple";
+    public int updateSetSpecies(List<String> speciesList){
+        int scoreVal=0;
+        this.score = "";
+
+        //for each species in list, add a line to the display and increase the total score
+        for (String species : speciesList){
+            if(arbor.currentScore().get(species)!=null) {
+                int speciesScore = arbor.currentScore().get(species);
+                this.score += Arboretum.speciesFullName(species) + " : " + speciesScore;
+                this.score += newLine;
+                scoreVal += speciesScore;
+            }
+        }
+        this.score+="Total score: "+scoreVal;
+
+        //change text
+        this.getChildren().remove(scoreText);
+        scoreText.setText(heading+score);
+        this.getChildren().add(scoreText);
+
+        return scoreVal;
     }
+
+
 }
 

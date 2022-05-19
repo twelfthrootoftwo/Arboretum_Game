@@ -180,8 +180,8 @@ public class Game extends Application {
             public void handle(MouseEvent event) {
                 //if the game should end, don't progress - instead show game end screen
                 if (gameEnd) {
-                    //displayGameEnd();
                     System.out.println("---------------GAME OVER---------------");
+                    displayGameEnd();
                     return;
                 }
                 if (turnState == TurnState.end){
@@ -205,6 +205,7 @@ public class Game extends Application {
                             //update discard GUI In case AI draw from player's discard
                             displayDiscardA.updateTopCard();
                             displayDiscardB.updateTopCard();
+                            displayDeck.updateTopCard();
                             System.out.println("AI draw finish");
                             //AI make a move
                             AIMove(playerA);
@@ -215,7 +216,7 @@ public class Game extends Application {
                             //AI discard a card
                             AIDiscard(playerA, playerB);
                             //update hand and discard GUI after discard
-                            updateDisplayHand(playerA);
+                            //updateDisplayHand(playerA);
                             displayDiscardA.updateTopCard();
                             System.out.println("AI Discard finish");
                             System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
@@ -241,6 +242,7 @@ public class Game extends Application {
                             //update discard GUI In case AI draw from player's discard
                             displayDiscardA.updateTopCard();
                             displayDiscardB.updateTopCard();
+                            displayDeck.updateTopCard();
                             System.out.println("AI draw finish");
                             System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                             //AI make a move
@@ -252,7 +254,7 @@ public class Game extends Application {
                             //AI discard a card
                             AIDiscard(playerB, playerA);
                             //update hand and discard GUI after discard
-                            updateDisplayHand(playerB);
+                            //updateDisplayHand(playerB);
                             displayDiscardB.updateTopCard();
                             System.out.println("AI Discard finish");
                             System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
@@ -266,6 +268,8 @@ public class Game extends Application {
                         GUIScoreA.update();
                         root.getChildren().add(GUIScoreA);
                     }
+
+                    isGameEnd();
                 }
             }
         }));
@@ -340,10 +344,6 @@ public class Game extends Application {
         return this.displayedHand;
     }
 
-    private Player getWinner() {
-        return null;
-    }
-
     /**
      * Contribution: Natasha
      * Checks if the deck is empty, meaning the game is over
@@ -352,6 +352,8 @@ public class Game extends Application {
      */
     private boolean isGameEnd() {
         this.gameEnd = this.deck.isEmpty();
+
+        System.out.println("Tracking game end possibility: "+this.gameEnd);
         return this.gameEnd;
     }
 
@@ -752,5 +754,14 @@ public class Game extends Application {
 
     public TurnState getTurnState() {
         return this.turnState;
+    }
+
+    /**
+     * Contribution: Natasha
+     * Shows the end game screen
+     */
+    public void displayGameEnd() {
+        GUIEnding endScreen=new GUIEnding(playerA,playerB,ARBOR_X+2*leftArborX,playButton.getLayoutY(),BOARD_WIDTH-2*(ARBOR_X+2*leftArborX),300,generateGameState(playerA, playerB, deck, activeTurn));
+        root.getChildren().add(endScreen);
     }
 }

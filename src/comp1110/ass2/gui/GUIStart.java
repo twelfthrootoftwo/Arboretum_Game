@@ -64,7 +64,8 @@ public class GUIStart extends Group {
                 }));
         button2.setOnMouseClicked((new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
-                game.setPlayerAHuman(true);
+                //game.setPlayerAHuman(true);
+                game.setPlayerAHuman(false);
                 game.setPlayerBHuman(false);
                 game.getRoot().getChildren().remove(toRemove);
 

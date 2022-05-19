@@ -1615,6 +1615,20 @@ public class Arboretum {
 
     }
 
+    /** Contribution: Hongzhe
+     * Convert the short name to the full name of a species.
+     * @param shortName the short name of the species
+     * @return the full name of the species
+     */
+    public static String speciesFullName(String shortName){
+        if (shortName == "a") return "Cassia";
+        else if (shortName == "b") return "BlueSpruce";
+        else if (shortName == "c") return "Cherry";
+        else if (shortName == "d") return "Dogwood";
+        else if (shortName == "j") return "Jacaranda";
+        else return "Maple";
+    }
+
     /**
      * Main method for testing purposes
      */
