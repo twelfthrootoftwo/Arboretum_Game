@@ -3,8 +3,10 @@ package comp1110.ass2.gui;
 import comp1110.ass2.Arboretum;
 import comp1110.ass2.game.Player;
 import comp1110.ass2.game.Species;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -26,7 +28,8 @@ public class GUIEnding extends Group {
     int size = 25;
     Font winnerAnnounce = Font.font(font_name, FontWeight.BOLD, FontPosture.REGULAR, size);
 
-    public GUIEnding(Player player1, Player player2, double x, double y, double boxSizeX, double boxSizeY, String[][] gameState) {
+    public GUIEnding(Game game, Player player1, Player player2, double x, double y, double boxSizeX, double boxSizeY, String[][] gameState) {
+        GUIEnding ending=this;
         GUIScore p1ScoreDisplay=new GUIScore(player1,5,5,5);
         GUIScore p2ScoreDisplay=new GUIScore(player2,boxSizeX*0.25,5,5);
 
@@ -65,6 +68,15 @@ public class GUIEnding extends Group {
         restart.setStyle("-fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;" +
                 "-fx-background-radius: 8; " +
                 "-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),#9d4024,#d86e3a,radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);");
+        restart.setOnMouseClicked((new EventHandler<MouseEvent>() {
+
+            public void handle(MouseEvent event) {
+                game.reset(ending);
+            }
+        }));
+        restart.setLayoutX(boxSizeX/2);
+        restart.setLayoutY(boxSizeY*0.9);
+
 
         endBox = new Rectangle(boxSizeX, boxSizeY);
         endBox.setFill(Color.WHITE);
@@ -76,7 +88,7 @@ public class GUIEnding extends Group {
         endText.setY(boxSizeY*0.75);
         endText.setFont(winnerAnnounce);
 
-        this.getChildren().addAll(endBox, endText,p1ScoreDisplay,p2ScoreDisplay);
+        this.getChildren().addAll(endBox, endText,p1ScoreDisplay,p2ScoreDisplay,restart);
         this.setLayoutX(x);
         this.setLayoutY(y);
     }
