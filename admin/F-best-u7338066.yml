@@ -20,7 +20,10 @@ declaration: >-
 # (or remove it altogether if you haven't collaborated with anyone)
 collaboration:
   - name: Natasha Pegler
-    comment: Created method Arbor.currentScore() based on her functions in Arbor.
+    comment: Created method Arbor.currentScore() based on her functions in Arbor.java.
+
+  - name: Junxian Chen
+    comment: update all score boxes under his 'next' button in Game.java.
 
 
 # I wish to submit the following classes as entirely my own (remove this if
@@ -31,10 +34,10 @@ class:
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
 method:
-   - Arbor.seperateCards()
-   - Arbor.currentScore()
-   - Arbor.getHighestScore()
-   - Arboretum.speciesFullName()
+   - Arbor.seperateCards() https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/Arbor.java#L454-471
+   - Arbor.currentScore() https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/Arbor.java#L472-487
+   - Arbor.getHighestScore() https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/Arbor.java#L489-495
+   - Arboretum.speciesFullName() https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/Arboretum.java#L1618-1630
 
 # sign *your* name and uid here
 name: Hongzhe Zhu
