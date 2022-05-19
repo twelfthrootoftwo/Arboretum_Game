@@ -17,16 +17,18 @@ declaration: >-
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
 class:
-   - GUIArbor
-   - GUIPosition
-   - GUICardStack
+   - GUIArbor https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/GUIArbor.java
+   - GUIPosition https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/GUIPosition.java
+   - GUICardStack https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/GUICardStack.java
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
 method:
-   - Game.updateDisplayHand()
-   - Game.trackDraw(),Game.trackCardPlayed(),Game.trackCardDiscarded()
-   - GUICard.findArbor(),GUICard.findDiscard()
+   - Game.updateDisplayHand() https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/Game.java#L291-312
+   - Game.trackDraw(),Game.trackCardPlayed(),Game.trackCardDiscarded() https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/Game.java#L666-720
+   - GUICard.findArbor(), https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/GUICard.java#L167-180
+   - GUICard.findDiscard(), https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/gui/GUICard.java#L311-324
+   - Arbor scoring routine, https://gitlab.cecs.anu.edu.au/u7447030/comp1110-ass2/-/blob/master/src/comp1110/ass2/game/Arbor.java#L244-414
 
 # sign *your* name and uid here
 name: Natasha Pegler
