@@ -2,6 +2,7 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.game.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -90,7 +91,8 @@ public class Game extends Application {
     private GUICardStack displayDiscardA;
     private GUICardStack displayDiscardB;
     private GUIHint guiHint;
-    private Button playButton = new Button("Next");
+    private Button playButton;
+    private GUIEnding endScreen;
 
     private boolean playerAHuman = true;
     private boolean playerBHuman = false;
@@ -99,9 +101,24 @@ public class Game extends Application {
     public Game() throws FileNotFoundException {
     }
 
-    private final Group root = new Group();
-    private final Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
+    private  Group root = new Group();
+    private  Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
+    public void displayApplication() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    root = new Group();
+                    scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
+                    gameEnd = false;
+                    start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -110,8 +127,7 @@ public class Game extends Application {
         // FIXME Task 16: Implement a computer opponent so that a human can play your game against the computer.
         // FIXME Task 18: Implement variant(s).
         stage.setTitle("comp1110.ass2.Arboretum");
-        GUIStart startScreen = new GUIStart(this,700,700, 250,0);
-        startScreen.toFront();
+        Platform.setImplicitExit(false);
 
         this.deck = new Deck(6);
         this.playerA = new Player("A", 6);
@@ -130,17 +146,18 @@ public class Game extends Application {
         this.displayArborB = new GUIArbor(playerB, this, ARBOR_X, ARBOR_Y, rightArborX, rightArborY, arborMargin, true);
         GUIScore GUIScoreA = new GUIScore(playerA, SCORE_X, SCORE_Y, leftArborX, leftArborY, false);
         GUIScore GUIScoreB = new GUIScore(playerB, SCORE_X, SCORE_Y, rightArborX, rightArborY, true);
-        this.guiHint = new GUIHint(this,HINT_X, HINT_Y,hintx,hinty);
+        this.guiHint = new GUIHint(this, HINT_X, HINT_Y, hintx, hinty);
         String font_name = Font.getFamilies().get(25);
         int size = 30;
         Font font = Font.font(font_name, FontWeight.BOLD, FontPosture.REGULAR, size);
+        playButton = new Button("Next");
         playButton.setFont(font);
         playButton.setLayoutX(555);
         playButton.setLayoutY(180);
         playButton.setPadding(new Insets(8, 15, 15, 15));
         playButton.setStyle("-fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;" +
-                            "-fx-background-radius: 8; " +
-                            "-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),#9d4024,#d86e3a,radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);");
+                "-fx-background-radius: 8; " +
+                "-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),#9d4024,#d86e3a,radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);");
 
         scene.setFill(new LinearGradient(
                 0, 0, 1, 1, true,                      //sizing
@@ -148,7 +165,7 @@ public class Game extends Application {
                 new Stop(0, Color.web("#EEEEEE")),     //colors
                 new Stop(1, Color.web("#FCFCFC")))
         );
-        root.getChildren().addAll(displayArborA, displayArborB, playButton, GUIScoreA, GUIScoreB,guiHint);
+        root.getChildren().addAll(guiHint, displayArborA, displayArborB, playButton, GUIScoreA, GUIScoreB);
 
         //displayArborA.updateFromBackend();
         //displayArborB.updateFromBackend();
@@ -171,10 +188,11 @@ public class Game extends Application {
         this.displayDiscardA = new GUICardStack(this.playerA.getDiscardPile(), this, this.root, leftDiscardX, leftDiscardY);
         this.displayDiscardB = new GUICardStack(this.playerB.getDiscardPile(), this, this.root, rightDiscardX, rightDiscardY);
         root.getChildren().addAll(displayDeck, displayDiscardA, displayDiscardB);
-
+        GUIStart startScreen = new GUIStart(this, 700, 700, 250, 0);
+        startScreen.toFront();
         //player settings
         root.getChildren().add(startScreen);
-        guiHintUpdate();
+
         //await game start on button press
         playButton.setOnMouseClicked((new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
@@ -184,7 +202,7 @@ public class Game extends Application {
                     displayGameEnd();
                     return;
                 }
-                if (turnState == TurnState.end){
+                if (turnState == TurnState.end) {
                     playButton.setDisable(true);
                 }
                 //TurnState.end to achieve loop and state control
@@ -194,15 +212,18 @@ public class Game extends Application {
                     guiHintUpdate();
                     //player A's turn
                     if (activeTurn.equals("A")) {
+
                         playerB.getDisplayArbor().endTurn();
                         startTurn(playerA, playerAHuman);
                         System.out.println("End B's turn, start A's turn");
                         System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
+                        updateDisplayHand(playerA);
                         //run AI if this player is computer controlled
                         if (!playerAHuman) {
                             //AI draw cards
                             AIDraw(playerA, playerB);
                             //update discard GUI In case AI draw from player's discard
+                            updateDisplayHand(playerA);
                             displayDiscardA.updateTopCard();
                             displayDiscardB.updateTopCard();
                             displayDeck.updateTopCard();
@@ -211,6 +232,7 @@ public class Game extends Application {
                             AIMove(playerA);
                             //update Arbor GUI
                             displayArborA.updateFromBackend();
+                            updateDisplayHand(playerA);
                             System.out.println("AI Move finish");
                             System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                             //AI discard a card
@@ -218,11 +240,12 @@ public class Game extends Application {
                             //update hand and discard GUI after discard
                             //updateDisplayHand(playerA);
                             displayDiscardA.updateTopCard();
+                            updateDisplayHand(playerA);
                             System.out.println("AI Discard finish");
                             System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
 
                         }
-
+                        updateDisplayHand(playerA);
                         activeTurn = "B";
                         // update score text
                         root.getChildren().remove(GUIScoreB);
@@ -235,20 +258,24 @@ public class Game extends Application {
                         startTurn(playerB, playerBHuman);
                         System.out.println("End A's turn, start B's turn");
                         System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
+                        updateDisplayHand(playerB);
                         //run AI if this player is computer controlled
                         if (!playerBHuman) {
                             //AI draw cards
                             AIDraw(playerB, playerA);
                             //update discard GUI In case AI draw from player's discard
+                            updateDisplayHand(playerB);
                             displayDiscardA.updateTopCard();
                             displayDiscardB.updateTopCard();
                             displayDeck.updateTopCard();
+
                             System.out.println("AI draw finish");
                             System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                             //AI make a move
                             AIMove(playerB);
                             //update Arbor GUI
                             displayArborB.updateFromBackend();
+                            updateDisplayHand(playerB);
                             System.out.println("AI Move finish");
                             System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                             //AI discard a card
@@ -256,12 +283,13 @@ public class Game extends Application {
                             //update hand and discard GUI after discard
                             //updateDisplayHand(playerB);
                             displayDiscardB.updateTopCard();
+                            updateDisplayHand(playerB);
                             System.out.println("AI Discard finish");
                             System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
 
 
                         }
-
+                        updateDisplayHand(playerB);
                         activeTurn = "A";
                         // update score text
                         root.getChildren().remove(GUIScoreA);
@@ -278,11 +306,12 @@ public class Game extends Application {
 
     }
 
-    private void guiHintUpdate(){
+    public void guiHintUpdate() {
         root.getChildren().remove(guiHint);
         guiHint.update();
         root.getChildren().add(guiHint);
     }
+
     /**
      * Contribution: Natasha
      * Setup to start the turn of a player, including changing GUIArbor display, drawing cards, and showing hand
@@ -353,17 +382,18 @@ public class Game extends Application {
     private boolean isGameEnd() {
         this.gameEnd = this.deck.isEmpty();
 
-        System.out.println("Tracking game end possibility: "+this.gameEnd);
+        System.out.println("Tracking game end possibility: " + this.gameEnd);
         return this.gameEnd;
     }
 
     /**
      * Contribution: Junxian
      * Generate current GameState for calculate and display
+     *
      * @param playerA current player A
      * @param playerB current player B
-     * @param deck current deck
-     * @param turn the name of current player to play
+     * @param deck    current deck
+     * @param turn    the name of current player to play
      * @return String[sharedState][hiddenState] as task
      */
     private String[][] generateGameState(Player playerA, Player playerB, Deck deck, String turn) {
@@ -387,12 +417,13 @@ public class Game extends Application {
      * perform an AI draw action, draw two cards by AI decided. The only known information is the top cards on both side
      * discardPile, by checking if draw these card will bring advantage to player_turn or disadvantage to player_notTurn
      * which :
-     *      1. if using these cards from discardPile can increase the score of player_turn
-     *      2. if taking these cards from discardPile can reduce the possibility that player_notTurn get right to it's
-     *      score
+     * 1. if using these cards from discardPile can increase the score of player_turn
+     * 2. if taking these cards from discardPile can reduce the possibility that player_notTurn get right to it's
+     * score
      * after draw one card, the status should update to get the info under that draw card.
      * otherwise, AI will draw card from deck
-     * @param player_turn the player in turn
+     *
+     * @param player_turn    the player in turn
      * @param player_notTurn the player not in turn
      */
     private void AIDraw(Player player_turn, Player player_notTurn) {
@@ -486,11 +517,12 @@ public class Game extends Application {
     /**
      * Contribution: Junxian
      * discard A card for player_turn, the card to discard should:
-     *      1. cannot reduce the possibility for player_turn to get right to score
-     *      2. cannot increase the possibility for player_notTurn to get higher score
-     *      3. cannot increase the possibility for player_notTurn to get right to score
+     * 1. cannot reduce the possibility for player_turn to get right to score
+     * 2. cannot increase the possibility for player_notTurn to get higher score
+     * 3. cannot increase the possibility for player_notTurn to get right to score
      * otherwise, just random discard.
-     * @param player_turn the player in turn
+     *
+     * @param player_turn    the player in turn
      * @param player_notTurn the player not in turn
      */
     private void AIDiscard(Player player_turn, Player player_notTurn) {
@@ -632,6 +664,7 @@ public class Game extends Application {
     /**
      * Contribution: Junxian
      * helper method to get the latest card in an arbor
+     *
      * @param arbor arbor
      * @return pair of (Card, Position) to place
      */
@@ -648,6 +681,7 @@ public class Game extends Application {
     /**
      * Contribution: Junxian
      * helper method to compare two arbors and return the one has bigger score.
+     *
      * @param scoreOld scoreOld
      * @param scoreNew scoreNew
      * @return an arbor that has bigger score
@@ -748,6 +782,7 @@ public class Game extends Application {
     public boolean isPlayerBHuman() {
         return playerBHuman;
     }
+
     public void setPlayerBHuman(boolean playerBHuman) {
         this.playerBHuman = playerBHuman;
     }
@@ -761,7 +796,7 @@ public class Game extends Application {
      * Shows the end game screen
      */
     public void displayGameEnd() {
-        GUIEnding endScreen=new GUIEnding(playerA,playerB,ARBOR_X+2*leftArborX,playButton.getLayoutY(),BOARD_WIDTH-2*(ARBOR_X+2*leftArborX),300,generateGameState(playerA, playerB, deck, activeTurn));
+        endScreen = new GUIEnding(this, playerA, playerB, ARBOR_X + 2 * leftArborX, playButton.getLayoutY(), BOARD_WIDTH - 2 * (ARBOR_X + 2 * leftArborX), 300, generateGameState(playerA, playerB, deck, activeTurn));
         root.getChildren().add(endScreen);
     }
 }

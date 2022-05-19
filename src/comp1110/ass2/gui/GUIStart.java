@@ -65,6 +65,7 @@ public class GUIStart extends Group {
                         game.setPlayerAHuman(true);
                         game.setPlayerBHuman(true);
                         game.getRoot().getChildren().remove(toRemove);
+                        game.guiHintUpdate();
 
                     }
                 }));
@@ -74,6 +75,7 @@ public class GUIStart extends Group {
                 game.setPlayerAHuman(true);
                 game.setPlayerBHuman(false);
                 game.getRoot().getChildren().remove(toRemove);
+                game.guiHintUpdate();
 
             }
         }));
@@ -83,6 +85,7 @@ public class GUIStart extends Group {
                 game.setPlayerAHuman(false);
                 game.setPlayerBHuman(false);
                 game.getRoot().getChildren().remove(toRemove);
+                game.guiHintUpdate();
 
             }
         }));
