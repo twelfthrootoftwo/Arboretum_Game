@@ -212,6 +212,7 @@ public class Game extends Application {
 
                     turnState = TurnState.begin;
                     guiHintUpdate();
+
                     //player A's turn
                     if (activeTurn.equals("A")) {
 
@@ -227,12 +228,13 @@ public class Game extends Application {
                         updateDisplayHand(playerA);
                         activeTurn = "B";
                         // update score text
-                        root.getChildren().remove(GUIScoreB);
-                        GUIScoreB.update();
-                        root.getChildren().add(GUIScoreB);
+                        root.getChildren().remove(GUIScoreA);
+                        GUIScoreA.update();
+                        root.getChildren().add(GUIScoreA);
 
 
                     } else if (activeTurn.equals("B")) {
+
                         playerA.getDisplayArbor().endTurn();
                         startTurn(playerB, playerBHuman);
                         System.out.println("End A's turn, start B's turn");
@@ -248,6 +250,9 @@ public class Game extends Application {
                         root.getChildren().remove(GUIScoreA);
                         GUIScoreA.update();
                         root.getChildren().add(GUIScoreA);
+                        root.getChildren().remove(GUIScoreB);
+                        GUIScoreB.update();
+                        root.getChildren().add(GUIScoreB);
                     }
 
                     isGameEnd();
