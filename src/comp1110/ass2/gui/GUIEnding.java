@@ -21,8 +21,8 @@ public class GUIEnding extends Group {
     Rectangle endBox;
     Text endText;
     String content;
-    String font_name = Font.getFamilies().get(25);
-    int size = 25;
+    String font_name = Font.getFamilies().get(21);
+    int size = 20;
     Font winnerAnnounce = Font.font(font_name, FontWeight.BOLD, FontPosture.REGULAR, size);
 
     public GUIEnding(Game game, Player player1, Player player2, double x, double y, double boxSizeX, double boxSizeY, String[][] gameState) {
@@ -51,15 +51,15 @@ public class GUIEnding extends Group {
         //assign winner and text for the player with the higher score
         if(p1TotalScore>p2TotalScore) {
             this.winner = player1;
-            this.content = "---------GAME OVER---------" +
+            this.content = "--------GAME OVER--------" +
                     '\n' + " " +'\n' + "                " +  player1.getName() + " Wins!";
         } else if (p1TotalScore<p2TotalScore) {
             this.winner = player2;
-            this.content = "---------GAME OVER---------" +
+            this.content = "--------GAME OVER--------" +
                     '\n' + " " +'\n' + "                " +  player2.getName() + " Wins!";
         } else {
             //tie!
-            this.content="---------GAME OVER---------" +
+            this.content="--------GAME OVER--------" +
                     '\n'+"It's a tie!\nBoth players plant a tree\nWhoever has the biggest tree in 5 years wins!";
         }
 
