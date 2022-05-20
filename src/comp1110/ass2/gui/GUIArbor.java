@@ -47,7 +47,6 @@ public class GUIArbor extends Group {
     //display elements
     Rectangle borderOutside;
     Rectangle borderInside;
-    Rectangle scoreBox;
 
     public GUIArbor(Player player, Game game, int xSize,int ySize, int xPos, int yPos,int margin, boolean inverse) {
         this.player=player;
@@ -72,7 +71,6 @@ public class GUIArbor extends Group {
                 new Stop(1, Color.web("#E2BBAA")))
         );
         borderInside=new Rectangle(xSize-margin*2,ySize-margin*2);
-//        borderOutside.setFill(Color.LIGHTGREY);
         borderInside.setFill(new LinearGradient(
                 0, 0, 1, 1, true,                      //sizing
                 CycleMethod.NO_CYCLE,                  //cycling
@@ -100,8 +98,8 @@ public class GUIArbor extends Group {
     public void update() {
         this.updateScale();//find the new position slot sizes
         this.updatePosDisplay();//change the position display with new numbers and sizes
-        this.layout();//?
-        this.layoutChildren();//?
+        this.layout();
+        this.layoutChildren();
 
     }
 

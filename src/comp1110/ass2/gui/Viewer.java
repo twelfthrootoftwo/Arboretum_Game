@@ -452,14 +452,12 @@ public class Viewer extends Application {
         Label boardLabel = new Label("Player Turn ID");
         turnIDTextField = new TextField();
         turnIDTextField.setPrefWidth(TEXTBOX_WIDTH);
-//        Label aArboretum = new Label("Player A comp1100.ass2.Arboretum:");
         Label aArboretum = new Label("Player A Arboretum:");
         aArboretumTextField = new TextField();
         aArboretumTextField.setPrefWidth(TEXTBOX_WIDTH);
         Label aDiscard = new Label("Player A Discard:");
         aDiscardTextField = new TextField();
         aDiscardTextField.setPrefWidth(TEXTBOX_WIDTH);
-//        Label bArboretum = new Label("Player B comp1100.ass2.Arboretum:");
         Label bArboretum = new Label("Player B Arboretum:");
         bArboretumTextField = new TextField();
         bArboretumTextField.setPrefWidth(TEXTBOX_WIDTH);
@@ -479,11 +477,9 @@ public class Viewer extends Application {
 
         Button displayState = new Button("Display State");
         displayState.setOnAction(e -> {
-//            String[] sharedState = {turnIDTextField.getText(), aArboretumTextField.getText(), aDiscardTextField.getText(), bArboretumTextField.getText(), bDiscardTextField.getText()};
             String[] sharedState = {"A", "Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01", "Aa7c4d6", "Bj5C00C00j6S01C00j7S02W01j4C00W01m6C00E01m3C00W02j3N01W01", "Bb2d4c5a1d5"};
-//            String[] hiddenState = {deckTextField.getText(), aHandTextField.getText(), bHandTextField.getText()};
             String[] hiddenState = {"a3a8b5b6c2c7d1d3d7d8m1", "Ab3b4c1j1m2m5m8", "Ba6b7b8c8d2j2j8"};
-            displayState(new String[][]{sharedState, hiddenState});//[[A, Ab1C00C00a4N01C00c3C00E01c6N02C00m7N02W01m4N01E01a5N02E01a2S01E01, Aa7c4d6, Bj5C00C00j6S01C00j7S02W01j4C00W01m6C00E01m3C00W02j3N01W01, Bb2d4c5a1d5], [a3a8b5b6c2c7d1d3d7d8m1, Ab3b4c1j1m2m5m8, Ba6b7b8c8d2j2j8]]
+            displayState(new String[][]{sharedState, hiddenState});
 
         });
 
