@@ -221,7 +221,7 @@ public class Game extends Application {
 
                         playerB.getDisplayArbor().endTurn();
                         startTurn(playerA, playerAHuman);
-                        System.out.println("End B's turn, start A's turn");
+                        System.out.println("End B's turn, start A's  turn ");
                         System.out.println(Arrays.deepToString(generateGameState(playerA, playerB, deck, activeTurn)));
                         updateDisplayHand(playerA);
                         //run AI if this player is computer controlled
