@@ -23,6 +23,7 @@ import javafx.util.Pair;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+import static comp1110.ass2.AITournament.generateAction;
 import static java.lang.Thread.sleep;
 
 public class Game extends Application {
@@ -764,11 +765,25 @@ public class Game extends Application {
 
     private void AITurn(Player aiPlayer, Player otherPlayer) {
         //AI draw cards
+        String[][] gameState=generateGameState(playerA, playerB, deck, activeTurn);
+        String handString="";
+        if(gameState[0][0].equals("A")) handString=gameState[1][1];
+        else handString=gameState[1][2];
+        System.out.println("Tournament generated draw: "+generateAction(gameState[0],handString,gameState[1][0].length()/2));
+
         AIDraw(aiPlayer, otherPlayer);
         displayDeck.updateTopCard();
         System.out.println("AI draw finish");
         updateDisplayHand(aiPlayer);
+
+
         //AI make a move
+        gameState=generateGameState(playerA, playerB, deck, activeTurn);
+        handString="";
+        if(gameState[0][0].equals("A")) handString=gameState[1][1];
+        else handString=gameState[1][2];
+        System.out.println("Tournament generated play & discard: "+generateAction(gameState[0],handString,gameState[1][0].length()/2));
+
         AIMove(aiPlayer);
         //update Arbor GUI
         aiPlayer.getDisplayArbor().updateFromBackend();

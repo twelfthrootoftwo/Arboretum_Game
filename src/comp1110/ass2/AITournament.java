@@ -30,6 +30,10 @@ public class AITournament {
      * @return a valid move for this player.
      */
     public static String generateAction(String[] sharedState, String hand, int deckSize) {
+        System.out.println("State: "+Arrays.toString(sharedState));
+        System.out.println("Hand: "+hand);
+        System.out.println("Deck size: "+deckSize);
+
         String activeArbor="";
         String activeDiscard="";
         String otherArbor="";
@@ -46,10 +50,10 @@ public class AITournament {
             otherDiscard=sharedState[2];
         }
         Player activePlayer=new Player("A",hand,activeArbor,activeDiscard);
-        Player otherPlayer=new Player("B","",otherArbor,otherDiscard);
+        Player otherPlayer=new Player("B","Ba1a1a1a1a1a1a1",otherArbor,otherDiscard);
 
         //check if draw or placement
-        if(hand.length()==18){
+        if(hand.length()==19){
             //placement
             String move=tournamentAIMove(activePlayer);
             String discard=tournamentAIDiscard(activePlayer,otherPlayer);
@@ -180,6 +184,7 @@ public class AITournament {
             int highScore=0;
             CardStack drawLocation=null;
             for(CardStack stack:availableDraws.keySet()) {
+                if(drawLocation==null) drawLocation=stack;
                 int scoreToCompare=0;
                 for (String species : availableDraws.get(stack).keySet()) {
                     scoreToCompare += availableDraws.get(stack).get(species);
@@ -240,6 +245,7 @@ public class AITournament {
         String highestKey="";
         Integer highestScore=0;
         for(String key:scoringMoves.keySet()){
+            if(highestScore==0) highestKey=key;
             Integer currentScore=0;
             HashMap<String,Integer> scoreMap=scoringMoves.get(key);
             for(String species:scoreMap.keySet()){

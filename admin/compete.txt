@@ -1,0 +1,2 @@
+BirbBrain
+Our AI logic as developed for the assignment, streamlined for use in the AI-only tournament
