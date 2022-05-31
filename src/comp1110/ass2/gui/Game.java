@@ -647,7 +647,7 @@ public class Game extends Application {
      * @param scoreNew scoreNew
      * @return an arbor that has bigger score
      */
-    private HashMap<String, Integer> compareScores(HashMap<String, Integer> scoreOld, HashMap<String, Integer> scoreNew) {
+    public static HashMap<String, Integer> compareScores(HashMap<String, Integer> scoreOld, HashMap<String, Integer> scoreNew) {
         if (!scoreOld.isEmpty() && !scoreNew.isEmpty()) {
             String keyOld = Collections.max(scoreOld.entrySet(), Map.Entry.comparingByValue()).getKey();
             String keyNew = Collections.max(scoreNew.entrySet(), Map.Entry.comparingByValue()).getKey();

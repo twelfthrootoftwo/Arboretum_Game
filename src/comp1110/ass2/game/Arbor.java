@@ -497,5 +497,18 @@ public class Arbor {
     public List<Card> getArboretumCardList() {
         return arboretumCardList;
     }
+
+    /**
+     * Removes any card at the specified position
+     * FOR USE IN AI ANALYSIS ONLY
+     * @param pos - the position to clear
+     */
+    public void clearPosition(Position pos){
+        Card toRemove=this.arbor.get(pos);
+        this.arboretumList.remove(toRemove.toString());
+        this.arboretumCardList.remove(toRemove);
+        this.arbor.replace(pos,null);
+
+    }
 }
 
