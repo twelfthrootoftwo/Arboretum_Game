@@ -1,13 +1,8 @@
 package comp1110.ass2;
 
 import comp1110.ass2.game.*;
-import comp1110.ass2.gui.Game;
-import comp1110.ass2.gui.TurnState;
-import javafx.util.Pair;
 
 import java.util.*;
-
-import static comp1110.ass2.gui.Game.compareScores;
 
 public class AITournament {
 
@@ -30,9 +25,9 @@ public class AITournament {
      * @return a valid move for this player.
      */
     public static String generateAction(String[] sharedState, String hand, int deckSize) {
-        System.out.println("State: "+Arrays.toString(sharedState));
-        System.out.println("Hand: "+hand);
-        System.out.println("Deck size: "+deckSize);
+        //System.out.println("State: "+Arrays.toString(sharedState));
+        //System.out.println("Hand: "+hand);
+        //System.out.println("Deck size: "+deckSize);
 
         String activeArbor="";
         String activeDiscard="";
@@ -91,28 +86,31 @@ public class AITournament {
                 }
             }
         }
+        String result="";
         //random select if reach the third level
         if (!availableResults2.isEmpty()) {
-            String result = Collections.max(availableResults2.entrySet(), Map.Entry.comparingByValue()).getKey();
-            System.out.println("AI Move R2 is: " + result);
-            return result;
+            result = Collections.max(availableResults2.entrySet(), Map.Entry.comparingByValue()).getKey();
+            //System.out.println("AI Move R2 is: " + result);
         } else {
             //random select if reach the second level
             if (!scoringMoves.isEmpty()) {
                 List<String> keysAsArray = new ArrayList<>(scoringMoves.keySet());
                 Random rand = new Random();
-                String result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
-                System.out.println("AI Move R1 is: " + result);
-                return result;
+                result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
+                //System.out.println("AI Move R1 is: " + result);
             } else {
                 //random select
                 List<String> keysAsArray = new ArrayList<String>(allMoves.keySet());
                 Random rand = new Random();
-                String result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
-                System.out.println("AI Move R0 is: " + result);
-                return result;
+                result = keysAsArray.get(rand.nextInt(keysAsArray.size()));
+                //System.out.println("AI Move R0 is: " + result);
             }
         }
+        Card toPlay=new Card(result.substring(0,2));
+        player.discard(toPlay);
+        //System.out.println("Play: "+result);
+        //System.out.println("Hand after play: "+Arrays.toString(player.getHand().toArray()));
+        return result;
     }
 
     private static String tournamentAIDiscard(Player player_turn, Player player_notTurn) {
@@ -135,6 +133,9 @@ public class AITournament {
         } else {
             result = player_turn.getHand().get(rand.nextInt(player_turn.getHand().size()));
         }
+        player_turn.discard(result);
+        //System.out.println("Discard: "+result);
+        //System.out.println("Hand after discard: "+Arrays.toString(player_turn.getHand().toArray()));
         return result.toString();
     }
 
@@ -257,6 +258,36 @@ public class AITournament {
             }
         }
         return highestKey;
+    }
+
+    /**
+     * Duplicate of compareScores from Game
+     * @param scoreOld
+     * @param scoreNew
+     * @return
+     */
+    public static HashMap<String, Integer> compareScores(HashMap<String, Integer> scoreOld, HashMap<String, Integer> scoreNew) {
+        if (!scoreOld.isEmpty() && !scoreNew.isEmpty()) {
+            String keyOld = Collections.max(scoreOld.entrySet(), Map.Entry.comparingByValue()).getKey();
+            String keyNew = Collections.max(scoreNew.entrySet(), Map.Entry.comparingByValue()).getKey();
+            if (scoreOld.get(keyOld) < scoreNew.get(keyNew)) {
+                return scoreNew;
+            } else if (scoreOld.get(keyOld) > scoreNew.get(keyNew)) {
+                return scoreOld;
+            } else {
+                int sumNew = scoreNew.values().stream().mapToInt(Integer::intValue).sum();
+                int sumOld = scoreOld.values().stream().mapToInt(Integer::intValue).sum();
+                if (sumNew > sumOld) {
+                    return scoreNew;
+                } else {
+                    return scoreOld;
+                }
+            }
+        } else {
+            return null;
+        }
+
+
     }
 
 }
