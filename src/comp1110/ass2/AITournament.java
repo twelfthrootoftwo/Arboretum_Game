@@ -207,13 +207,48 @@ public class AITournament {
         //store currentScore for later score comparing
         HashMap<String, Integer> currentScore = arboretum.currentScore();
 
+        //record species with high scores
+        //the AI will try to keep cards in hand for species scoring above this margin
+        int keepCardCutoff=4;
+        HashMap<Species,Card>topCardPerSpecies=new HashMap<>();
+        for(String species:currentScore.keySet()) {
+            if(currentScore.get(species)>=keepCardCutoff) {
+                topCardPerSpecies.put(Species.valueOf(species),null);
+            }
+        }
+
         //Streamline original process - store only play strings and resulting scores
         HashMap<String,HashMap<String, Integer>>allMoves=new HashMap<>();//all possible moves
         HashMap<String,HashMap<String, Integer>>scoringMoves=new HashMap<>();//only those that increase the score
 
         //for each card in player hand...
         for (Card card : hand) {
-            findSingleCardMoves(arboretum,card,currentScore,allMoves,scoringMoves);
+
+            //check if this is a high scoring species
+            //if it is, hang on to the highest value card with that species
+            Species thisSpecies=card.getSpecies();
+            if(topCardPerSpecies.containsKey(thisSpecies)) {
+                Card storedCard=topCardPerSpecies.get(thisSpecies);
+                if(storedCard==null){
+                    //no current highest card for this species
+                    //store this card and don't check its scoring potential
+                    topCardPerSpecies.put(thisSpecies,card);
+                } else if(storedCard.getNumber()>card.getNumber()) {
+                    //another card has higher value
+                    //look for moves with this card
+                    findSingleCardMoves(arboretum,card,currentScore,allMoves,scoringMoves);
+                } else {
+                    //there's a recorded card for this species, but this one is better
+                    //store this card and check moves for the other
+                    findSingleCardMoves(arboretum,storedCard,currentScore,allMoves,scoringMoves);
+                    topCardPerSpecies.put(thisSpecies,card);
+                }
+            } else {
+                //not a high scoring species
+                //just try to maximise board score
+                findSingleCardMoves(arboretum,card,currentScore,allMoves,scoringMoves);
+            }
+
         }
 
         HashMap[] moveRecords=new HashMap[]{allMoves,scoringMoves};
